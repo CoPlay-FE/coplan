@@ -1,0 +1,22 @@
+//테스트용 코드임(미완성)
+'use client'
+
+import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
+
+export default function ThemeToggle() {
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+  if (!mounted) return null
+
+  return (
+    <button
+      className="bg_white_FFFFFF rounded border px-4 py-2"
+      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+    >
+      ({theme} 모드)
+    </button>
+  )
+}

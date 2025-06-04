@@ -5,22 +5,29 @@
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
-    "esModuleInterop": true,
+    "esModuleInterop": true, // CommonJS 모듈도 ESModules처럼 import 가능
     "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
+    "moduleResolution": "node", // Node.js 방식으로 모듈 탐색
+    "resolveJsonModule": true, // JSON 파일 import 가능
+    "isolatedModules": true, // Next.js 필수: 모듈 단위로 타입 검사
     "jsx": "preserve",
     "incremental": true,
+    "noFallthroughCasesInSwitch": true, // switch문 실수 방지 (break 누락)
+    "forceConsistentCasingInFileNames": true, // 파일명 대소문자 일관성 체크
     "plugins": [
       {
         "name": "next"
       }
     ],
+    "baseUrl": ".", // 절대 경로 기준: 프로젝트 루트
     "paths": {
-      "@/*": ["./src/*"]
+      // alias 설정
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/app/shared/components/*"],
+      "@hooks/*": ["./src/app/shared/hooks/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+
   "exclude": ["node_modules"]
 }
