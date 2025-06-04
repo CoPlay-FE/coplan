@@ -1,6 +1,4 @@
-name: TIL (Today I Learned)
-description: 오늘 새롭게 배운 내용을 정리해보세요.
-labels: [TIL, learning]
+title: "[TIL]"
 
 body:
   - type: textarea
