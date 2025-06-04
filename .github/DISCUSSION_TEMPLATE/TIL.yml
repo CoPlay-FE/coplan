@@ -25,7 +25,7 @@ body:
     id: solution
     attributes:
       label: ✅ 핵심 정리 / 해결 방법
-      description: 알게 된 개념을 짧고 명확하게 정리해주세요. 코드 예시, 이미지, 도식 등을 활용해도 좋아요.
+      description: 알게 된 개념을 짧고 명확하게 정리해주세요. 필요하다면 코드 예시, 이미지, 도식 등을 활용해서 설명을 시각화해도 좋습니다.
       placeholder: |
         예)
         ```js
@@ -39,9 +39,9 @@ body:
     id: thought
     attributes:
       label: 🧠 느낀점 또는 생각 메모
-      description: 배운 내용에 대한 느낀 점이나 의문이 생긴 부분을 자유롭게 작성해주세요.
+      description: 간략하게 배운점에 대한 느낀점을 작성해 주세요.
       placeholder: |
-        예) 이 내용은 좀 더 테스트해봐야 할 것 같아요. 혹시 더 좋은 접근이 있을까요?
+        예) 간략하게 배운점에 대한 느낀점을 작성해 주세요. 잘 모르겠거나 더 좋은 방법이 있을까? 라는 의문이 드신다면 같이 작성하면 좋아요.
     validations:
       required: false
 
