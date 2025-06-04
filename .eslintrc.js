@@ -59,7 +59,6 @@ module.exports = {
 
     // TailwindCSS 관련
     'tailwindcss/no-contradicting-classname': 'warn', // 모순되는 Tailwind CSS 클래스가 같이 쓰인 경우 경고 (예: block + hidden)
-    'tailwindcss/no-unknown-classname': 'off', // import 경로에서도 자꾸 에러를 일으키는게 귀찮아서 껐습니다.
     'tailwindcss/enforces-shorthand': 'warn', // 축약 가능한 클래스 축약 여부 검사 (경고)
 
     //Next.js 12부터는 JSX 사용할 때 import React from 'react'를 명시적으로 쓸 필요가 없다고 함

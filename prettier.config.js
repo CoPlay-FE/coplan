@@ -7,9 +7,9 @@ module.exports = {
   tabWidth: 2,
   printWidth: 80,
   arrowParens: 'always',
-  endOfLine: 'lf',
+  endOfLine: 'auto',
   bracketSpacing: true,
   bracketSameLine: false,
   jsxSingleQuote: false,
-  plugins: ['prettier-plugin-tailwindcss'], // ✅ 플러그인 등록
+  plugins: ['prettier-plugin-tailwindcss'],
 }
