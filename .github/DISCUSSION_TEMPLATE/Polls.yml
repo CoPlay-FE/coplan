@@ -1,39 +1,86 @@
-# ⚠️ 참고: GitHub Discussions에서는 yml 템플릿이 작동하지 않음
-# 이 형식은 마크다운 템플릿을 공유용으로 yaml로 변환한 것일 뿐입니다
-
-title:"[Poll]"
+title: "[Poll]"
 body:
   - type: markdown
     attributes:
       value: |
-        ## 🗣️ 논의 주제: [여기에 주제 요약 입력]
+        ## 🗣️ 팀 논의 및 의사결정
+        팀 내 기술적 결정이나 정책 논의를 위한 템플릿입니다.
+        
+  - type: input
+    id: topic
+    attributes:
+      label: "📋 논의 주제"
+      description: "논의할 주제를 간단히 요약해주세요"
+      placeholder: "예: CSS 단위 기준 통일, API 응답 구조 정의 등"
+    validations:
+      required: true
+      
+  - type: input
+    id: author
+    attributes:
+      label: "🙋‍♂️ 작성자"
+      description: "작성자 이름을 입력해주세요"
+      placeholder: "본인 이름"
+    validations:
+      required: true
 
-        ### 📅 작성일: MM-DD  
-        ### 🙋‍♂️ 작성자: 본인 이름  
-
-        ---
-
-        ### 🧩 문제 상황 / 논의 배경  
-        > 현재 어떤 문제가 발생했는지, 또는 왜 이 논의를 하게 되었는지 작성해주세요.
-
+  - type: textarea
+    id: problem_background
+    attributes:
+      label: "🧩 문제 상황 / 논의 배경"
+      description: "현재 어떤 문제가 발생했는지, 또는 왜 이 논의를 하게 되었는지 작성해주세요"
+      placeholder: |
         예시:
         - 공통 스타일의 기준 단위가 팀원마다 다르게 적용되고 있음
         - API 응답 구조에 대한 해석 차이가 있어 정리가 필요함
+      render: markdown
+    validations:
+      required: true
 
-        ---
-
-        ### 🎯 논의 목표  
-        > 이 논의가 어떤 결정을 위한 것인지 명확히 적어주세요.
-
+  - type: textarea
+    id: discussion_goal
+    attributes:
+      label: "🎯 논의 목표"
+      description: "이 논의가 어떤 결정을 위한 것인지 명확히 적어주세요"
+      placeholder: |
         예시:
         - px vs rem 단위 기준 통일
         - 로그인 실패 응답 코드를 어떤 방식으로 처리할지 정하기
+      render: markdown
+    validations:
+      required: true
 
-        ---
-
-        ### 📌 현재 제안된 안 또는 선택지  
-        > 아래처럼 항목을 정리해주시고, 팀원들이 👍 로 투표할 수 있도록 하면 좋아요!
-
-        1. ✅ **안 A**: [내용 요약]  
-        2. 💡 **안 B**: [내용 요약]  
+  - type: textarea
+    id: proposed_options
+    attributes:
+      label: "📌 현재 제안된 안 또는 선택지"
+      description: "팀원들이 👍 로 투표할 수 있도록 선택지를 정리해주세요"
+      placeholder: |
+        1. ✅ **안 A**: [내용 요약]
+        2. 💡 **안 B**: [내용 요약]
         3. 📝 **기타 의견 있음** → 댓글로 작성해주세요!
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: "📎 추가 정보 (선택사항)"
+      description: "참고 자료나 추가적인 맥락이 있다면 작성해주세요"
+      placeholder: |
+        - 관련 이슈 링크
+        - 참고 문서
+        - 기타 고려사항
+      render: markdown
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### 📝 참여 방법
+        - 각 제안된 안에 👍 이모지로 투표해주세요
+        - 추가 의견이나 새로운 제안은 댓글로 남겨주세요
+        - 논의가 활발히 진행될 수 있도록 적극적인 참여 부탁드립니다!
