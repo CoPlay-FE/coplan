@@ -13,7 +13,7 @@ export default function ThemeToggle() {
 
   return (
     <button
-      className="bg_white_FFFFFF rounded border px-4 py-2"
+      className="BG-white Text-black Border-btn rounded border px-4 py-2"
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
     >
       ({theme} 모드)

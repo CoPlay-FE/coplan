@@ -19,10 +19,9 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
-    'plugin:react-hooks/recommended', // Hook은 반드시 컴포넌트 최상단에서만 사용하도록 함. & 의존성 배열 누락 경고 등
+    'plugin:react-hooks/recommended', // Hook은 반드시 컴포넌트 최상단에서만 사용 & 의존성 배열 누락 경고 등
     'plugin:@next/next/core-web-vitals',
     'plugin:prettier/recommended', // Prettier 연동
-    'plugin:tailwindcss/recommended', //추가해봄........................
   ],
   plugins: [
     // 규칙 처리용 플러그인.
@@ -32,13 +31,13 @@ module.exports = {
     'prettier',
     'import',
     'tailwindcss',
-    'simple-import-sort', // ✅ import 정렬
+    'simple-import-sort',
   ],
   rules: {
     'no-console': 'warn', // console.log 사용 시 경고만. 개발 중 허용하되 남기지 않도록.
     'prefer-const': 'warn', // let → const 가능하면 const 사용 권장.
     'func-style': ['warn', 'declaration', { allowArrowFunctions: true }], // 함수 선언식 허용, 화살표 함수 허용, 함수 표현식 경고
-    // 함수 표현식도 경고 없이 허용하고 싶다면: 'func-style': 'off' 로 수정해서 사용 가능
+    // ✅ 함수 표현식도 경고 없이 허용하고 싶다면: 'func-style': 'off' 로 수정해서 사용 가능
     // 일단 저희는 함수 선언식을 기본으로 사용하기로 했으니, 경고정도는 걸어두는거로 합시당
 
     // 'no-unused-vars': 선언만 해놓고 사용하지 않은 변수나 함수 인자 등을 잡아냄. *JS용은 비활성화 하고, TS버전으로 교체함
@@ -46,24 +45,21 @@ module.exports = {
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     'prettier/prettier': 'warn', // Prettier 경고 (설정은 .prettierrc 따름)
-
-    'simple-import-sort/imports': 'warn', // ✅
-    'simple-import-sort/exports': 'warn', // ✅
-
+    'simple-import-sort/imports': 'warn', // import 정렬
+    'simple-import-sort/exports': 'warn',
     'import/no-anonymous-default-export': [
       // 익명 default export를 import에서 제한해둠
+      // export default () => {} 는 허용
       'error',
       {
-        allowArrowFunction: true, // export default () => {} 는 허용 // 저렇게 작성하는 경우가 거의 없었던거 같지만..
-        allowAnonymousFunction: false,
+        allowArrowFunction: true,
         allowAnonymousClass: false,
       },
     ],
 
     // TailwindCSS 관련
-    // 'tailwindcss/classnames-order': 정렬검사는, 자동 정렬 사용한다면 생략.
     'tailwindcss/no-contradicting-classname': 'warn', // 모순되는 Tailwind CSS 클래스가 같이 쓰인 경우 경고 (예: block + hidden)
-    'tailwindcss/no-unknown-classname': 'warn', // Tailwind에 정의되지 않은 클래스명 사용 경고
+    'tailwindcss/no-unknown-classname': 'off', // import 경로에서도 자꾸 에러를 일으키는게 귀찮아서 껐습니다.
     'tailwindcss/enforces-shorthand': 'warn', // 축약 가능한 클래스 축약 여부 검사 (경고)
 
     //Next.js 12부터는 JSX 사용할 때 import React from 'react'를 명시적으로 쓸 필요가 없다고 함
