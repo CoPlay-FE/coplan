@@ -9,32 +9,43 @@ jobs:
   deploy:
     if: github.event.pull_request.merged == true
     runs-on: self-hosted
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v3
 
       - name: Deploy to EC2
         run: |
-          set -e  # 에러 시 중단
+          set -e
 
           # 배포 로깅
           echo "🚀 Starting deployment..."
           echo "📝 PR: #${{ github.event.pull_request.number }}"
           echo "🔄 Commit: ${{ github.sha }}"
 
+          # 메모리 정리
+          echo "🧹 Cleaning up Docker resources..."
+          docker system prune -f
+
           # 브랜치별 환경 설정
           if [ "${{ github.event.pull_request.base.ref }}" = "main" ]; then
             CONTAINER_NAME="app-prod"
             ENV_FILE="app-prod.env"
+            OTHER_CONTAINER="app-dev"
             echo "🚀 Deploying to PRODUCTION"
           elif [ "${{ github.event.pull_request.base.ref }}" = "develop" ]; then
             CONTAINER_NAME="app-dev"
             ENV_FILE="app-dev.env"
+            OTHER_CONTAINER="app-prod"
             echo "🧪 Deploying to DEVELOPMENT"
           fi
 
           # 배포 디렉토리 설정
           DEPLOY_DIR="/home/ubuntu/coplan/app"
+
+          # 메모리 확보를 위해 다른 컨테이너 중지
+          echo "⏸️ Stopping other container to free memory..."
+          docker compose stop ${OTHER_CONTAINER} || true
 
           # rsync로 파일 동기화
           echo "📂 Synchronizing files..."
@@ -58,11 +69,15 @@ jobs:
 
           # Docker 이미지 빌드
           echo "🔨 Building Docker image..."
-          docker compose build ${CONTAINER_NAME}
+          DOCKER_BUILDKIT=1 docker compose build ${CONTAINER_NAME}
 
           # 컨테이너 교체 (무중단 배포)
           echo "🔄 Updating container..."
           docker compose up -d --no-deps ${CONTAINER_NAME}
+
+          # 다른 컨테이너 재시작
+          echo "🔄 Restarting other container..."
+          docker compose up -d ${OTHER_CONTAINER}
 
           # 헬스체크
           echo "🏥 Health check..."
