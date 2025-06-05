@@ -20,32 +20,61 @@ jobs:
           # 배포 로깅
           echo "🚀 Starting deployment..."
           echo "📝 PR: #${{ github.event.pull_request.number }}"
+          echo "🔄 Commit: ${{ github.sha }}"
 
           # 브랜치별 환경 설정
           if [ "${{ github.event.pull_request.base.ref }}" = "main" ]; then
             CONTAINER_NAME="app-prod"
+            ENV_FILE="app-prod.env"
             echo "🚀 Deploying to PRODUCTION"
           elif [ "${{ github.event.pull_request.base.ref }}" = "develop" ]; then
             CONTAINER_NAME="app-dev"
+            ENV_FILE="app-dev.env"
             echo "🧪 Deploying to DEVELOPMENT"
           fi
 
-          # 코드 복사
-          cp -r . /home/ubuntu/coplan/app/
+          # 배포 디렉토리 설정
+          DEPLOY_DIR="/home/ubuntu/coplan/app"
+
+          # rsync로 파일 동기화
+          echo "📂 Synchronizing files..."
+          rsync -av \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='.next' \
+            --exclude='.env*' \
+            --exclude='*.log' \
+            --delete \
+            ./ ${DEPLOY_DIR}/
+
+          # 작업 디렉토리 이동
           cd /home/ubuntu/coplan
 
           # 환경변수 파일 복사 (있는 경우만)
-          if [ -f "/home/ubuntu/env/${CONTAINER_NAME}.env" ]; then
+          if [ -f "/home/ubuntu/env/${ENV_FILE}" ]; then
             echo "📋 Copying environment variables..."
-            cp /home/ubuntu/env/${CONTAINER_NAME}.env ./app/.env.production
+            cp "/home/ubuntu/env/${ENV_FILE}" "${DEPLOY_DIR}/.env.production"
           fi
 
-          # 빌드 및 배포
-          docker compose build $CONTAINER_NAME
-          docker compose up -d --no-deps --build $CONTAINER_NAME
+          # Docker 이미지 빌드
+          echo "🔨 Building Docker image..."
+          docker compose build ${CONTAINER_NAME}
 
-          # 간단한 헬스체크
+          # 컨테이너 교체 (무중단 배포)
+          echo "🔄 Updating container..."
+          docker compose up -d --no-deps ${CONTAINER_NAME}
+
+          # 헬스체크
+          echo "🏥 Health check..."
           sleep 10
-          docker ps | grep $CONTAINER_NAME
 
-          echo "✅ Deployment completed!"
+          if docker ps | grep -q ${CONTAINER_NAME}; then
+            echo "✅ Container is running"
+            docker logs --tail 20 ${CONTAINER_NAME}
+          else
+            echo "❌ Container failed to start"
+            docker logs ${CONTAINER_NAME}
+            exit 1
+          fi
+
+          echo "✅ Deployment completed successfully!"
