@@ -23,10 +23,10 @@ jobs:
 
           # 브랜치별 환경 설정
           if [ "${{ github.event.pull_request.base.ref }}" = "main" ]; then
-            CONTAINER_NAME="coplan-prod"
+            CONTAINER_NAME="app-prod"
             echo "🚀 Deploying to PRODUCTION"
           elif [ "${{ github.event.pull_request.base.ref }}" = "develop" ]; then
-            CONTAINER_NAME="coplan-dev"
+            CONTAINER_NAME="app-dev"
             echo "🧪 Deploying to DEVELOPMENT"
           fi
 
