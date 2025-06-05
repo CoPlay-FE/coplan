@@ -1,0 +1,51 @@
+name: Deploy to EC2
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main, develop]
+
+jobs:
+  deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Deploy to EC2
+        run: |
+          set -e  # 에러 시 중단
+
+          # 배포 로깅
+          echo "🚀 Starting deployment..."
+          echo "📝 PR: #${{ github.event.pull_request.number }}"
+
+          # 브랜치별 환경 설정
+          if [ "${{ github.event.pull_request.base.ref }}" = "main" ]; then
+            CONTAINER_NAME="coplan-prod"
+            echo "🚀 Deploying to PRODUCTION"
+          elif [ "${{ github.event.pull_request.base.ref }}" = "develop" ]; then
+            CONTAINER_NAME="coplan-dev"
+            echo "🧪 Deploying to DEVELOPMENT"
+          fi
+
+          # 코드 복사
+          cp -r . /home/ubuntu/coplan/app/
+          cd /home/ubuntu/coplan
+
+          # 환경변수 파일 복사 (있는 경우만)
+          if [ -f "/home/ubuntu/env/${CONTAINER_NAME}.env" ]; then
+            echo "📋 Copying environment variables..."
+            cp /home/ubuntu/env/${CONTAINER_NAME}.env ./app/.env.production
+          fi
+
+          # 빌드 및 배포
+          docker compose build $CONTAINER_NAME
+          docker compose up -d --no-deps --build $CONTAINER_NAME
+
+          # 간단한 헬스체크
+          sleep 10
+          docker ps | grep $CONTAINER_NAME
+
+          echo "✅ Deployment completed!"
