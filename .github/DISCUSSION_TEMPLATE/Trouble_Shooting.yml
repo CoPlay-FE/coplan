@@ -1,0 +1,63 @@
+title: "[Trouble_Shooting]"
+body:
+  - type: textarea
+    id: problem_description
+    attributes:
+      label: "🐞 문제 상황 (Problem Description)"
+      description: "무엇이 문제였는지를 명확하게 설명해주세요. 가능하면 스크린샷, 콘솔 에러, 동작 영상 등도 첨부해주세요."
+      placeholder: "예: 버튼 클릭 시 아무 동작 없음, 콘솔에 500 에러 발생 등"
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: "💻 환경 정보 (Environment)"
+      description: "문제가 발생한 환경 정보를 적어주세요. 해당 정보를 기반으로 같은 환경에서 재현할 수 있습니다. 비워도 괜찮습니다."
+      placeholder: |
+        - 브라우저: (예: Chrome 123)
+        - 프론트엔드 프레임워크: (예: React 18, Vite 사용)
+        - 배포 환경: (예: Vercel)
+        - API 서버: (예: 외부 REST API, 수정 불가)
+      render: markdown
+    validations:
+      required: false
+
+  - type: textarea
+    id: investigation
+    attributes:
+      label: "🔍 발생 원인 분석 (Investigation)"
+      description: "문제의 원인을 어떻게 추적했는지, 의심했던 부분과 실제 원인을 기록해주세요. 콘솔 로그, 브레이크포인트, 조건 테스트 등 어떤 방법을 사용했는지도 좋습니다."
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: attempts
+    attributes:
+      label: "🛠 시도해본 해결 방법 (Attempts)"
+      description: "시도했던 해결 방법과 결과를 간단히 남겨주세요. 이모지를 활용하면 상태를 한눈에 파악하기 좋습니다."
+      placeholder: |
+        ✅ 성공   ❌ 실패   ⚠ 정확한 결과 판단 어려움
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: final_solution
+    attributes:
+      label: "✅ 최종 해결 방법 (Final Solution)"
+      description: "문제를 어떻게 해결했는지를 명확하게 작성해주세요. 해결한 코드 일부나 설정 변경 내용이 있다면 포함해도 좋습니다. 팀원들이 동일한 이슈를 겪었을 때 참고할 수 있도록 정리해주세요."
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: lessons_learned
+    attributes:
+      label: "💡 알게 된 점 (Lessons Learned)"
+      description: "이번 문제를 통해 새롭게 알게 된 점, 문서화하고 싶은 포인트, 앞으로 같은 문제가 발생하지 않도록 하기 위한 교훈 등을 작성해주세요. TIL와 연관된다면 넘버로 링크 해주셔도 좋습니다."
+      render: markdown
+    validations:
+      required: false

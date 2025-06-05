@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Coplan
 
 ## 프로젝트 시작하기 전에
@@ -57,3 +58,6 @@ function add(a, b) {
 ### 3. next-themes 라이트, 다크 모드
 
 - globals.css에 작성한 커스텀 유틸 클래스(@apply) 참고하여, 클래스명 가져다 사용하거나 직접 커스텀 가능
+=======
+# coplan
+>>>>>>> main
