@@ -1,21 +1,29 @@
-FROM node:18-alpine
-
+# 1단계: 모든 의존성 설치 (캐시용)
+FROM node:18-alpine AS deps
 WORKDIR /app
-
-# 의존성 파일 복사
 COPY package*.json ./
+RUN npm ci  
 
-# 모든 의존성 설치 (dev 포함)
-RUN npm ci
+# 2단계: 소스 빌드
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .  
+RUN npm run build  
 
-# 소스 코드 복사
-COPY . .
+# 3단계: 프로덕션 실행 환경
+FROM node:18-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV production
 
-# Next.js 빌드
-RUN npm run build
+# 프로덕션 의존성만 재설치
+COPY package*.json ./
+RUN npm ci --only=production
 
-# 포트 설정
+# 빌드 결과물만 복사
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/next.config.mjs ./
+
 EXPOSE 3000
-
-# 서버 실행
 CMD ["npm", "start"]
