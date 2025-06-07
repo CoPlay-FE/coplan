@@ -1,0 +1,56 @@
+name: Deploy to EC2
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main, develop]
+
+jobs:
+  deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: self-hosted
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to EC2
+        run: |
+          echo "🚀 Starting deployment..."
+          echo "🔄 Branch: ${{ github.ref_name }}"
+          echo "🔄 Commit: ${{ github.sha }}"
+
+          # 메모리 정리
+          echo "🧹 Cleaning up memory..."
+          docker system prune -f
+
+          # 앱 디렉토리로 코드 복사
+          echo "📂 Copying files..."
+          rsync -av --delete \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='.next' \
+            ./ /home/ubuntu/coplan/app/
+
+          # 배포 디렉토리로 이동
+          cd /home/ubuntu/coplan
+
+          # Docker 컨테이너 재시작
+          echo "🔄 Restarting containers..."
+          docker compose down
+          docker compose up -d --build
+
+          # 헬스체크
+          echo "🏥 Health checking..."
+          sleep 15
+
+          if docker ps | grep -q coplan-app; then
+            echo "✅ Deployment completed successfully!"
+            docker logs --tail 10 coplan-app
+            echo "🌐 Service available at: http://15.164.127.149"
+          else
+            echo "❌ Deployment failed!"
+            docker logs coplan-app
+            exit 1
+          fi
