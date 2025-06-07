@@ -1,11 +1,11 @@
 import axios from 'axios'
 import { useAuthStore } from '@/app/features/auth/store/auth-store'
 
-const instance = axios.create({
+const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 })
 
-instance.interceptors.request.use(
+api.interceptors.request.use(
   (config) => {
     const token = useAuthStore.getState().accessToken
     const publicPaths = ['/15-2/auth/login', '/15-2/users']
@@ -20,4 +20,4 @@ instance.interceptors.request.use(
   },
 )
 
-export default instance
+export default api
