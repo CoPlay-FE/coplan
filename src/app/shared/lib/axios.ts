@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useAuthStore } from '@/app/features/store/auth-store'
+import { useAuthStore } from '@/app/features/auth/store/auth-store'
 
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
