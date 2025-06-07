@@ -24,6 +24,7 @@
       // alias 설정
       "@/*": ["./src/*"],
       "@components/*": ["./src/app/shared/components/*"],
+      "@store/*": ["./src/app/shared/store/*"],
       "@hooks/*": ["./src/app/shared/hooks/*"]
     }
   },
