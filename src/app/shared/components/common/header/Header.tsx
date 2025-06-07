@@ -8,7 +8,7 @@ import Image from 'next/image'
 export default function Header() {
   const pathname = usePathname()
   const router = useRouter()
-  const mypage = () => {
+  const goToMypage = () => {
     router.push('/mypage')
   }
   const { user, logout } = useUserStore() // Zustand 상태
@@ -74,7 +74,7 @@ export default function Header() {
           </div>
           <span className="text-sm">배유철 {user?.name}</span>
           {/* 드롭다운 메뉴 */}
-          <button onClick={mypage} className="text-xs">
+          <button onClick={goToMypage} className="text-xs">
             마이페이지
           </button>
           <button onClick={logout} className="text-xs">
