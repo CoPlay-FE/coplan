@@ -1,4 +1,4 @@
-import { User } from '@/app/shared/types/user'
+import { User } from '@/app/shared/types/user.type'
 
 export interface LoginRequest {
   email: string

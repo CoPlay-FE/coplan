@@ -1,6 +1,6 @@
 import api from '@/app/shared/lib/axios'
-import { AUTH_ENDPOINT } from './auth-endpoint'
-import { LoginRequest, SignupRequest, AuthState } from '../types/auth'
+import { AUTH_ENDPOINT } from './authEndpoint'
+import { LoginRequest, SignupRequest, AuthState } from '../types/auth.type'
 
 export const login = (data: LoginRequest) => {
   return api.post<AuthState>(AUTH_ENDPOINT.LOGIN, data)
