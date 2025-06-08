@@ -5,8 +5,13 @@ export interface LoginRequest {
   password: string
 }
 
+export interface LoginResponse {
+  accessToken: string
+  user: User
+}
+
 export interface SignupRequest {
-  name: string
+  nickname: string
   email: string
   password: string
 }
@@ -17,5 +22,5 @@ export interface AuthState {
   isLoggedIn: boolean
   setAccessToken: (token: string) => void
   setUser: (user: User) => void
-  logout: () => void
+  clearAuthState: () => void
 }
