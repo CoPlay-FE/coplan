@@ -1,28 +1,26 @@
-# 1단계: 모든 의존성 설치 (캐시용)
-FROM node:18-alpine AS deps
+FROM node:18-alpine AS base
+
+FROM base AS deps
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
-# 2단계: 빌드 (standalone 모드)
-FROM node:18-alpine AS builder
+FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Next.js standalone 빌드 생성
 RUN npm run build
 
-# 3단계: 프로덕션 실행 환경
-FROM node:18-alpine AS runner
+FROM base AS runner
 WORKDIR /app
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 
 EXPOSE 3000
-ENV PORT 3000
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
 CMD ["node", "server.js"]

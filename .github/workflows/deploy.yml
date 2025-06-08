@@ -9,87 +9,48 @@ jobs:
   deploy:
     if: github.event.pull_request.merged == true
     runs-on: self-hosted
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Deploy to EC2
         run: |
-          set -e
-
-          # 배포 로깅
           echo "🚀 Starting deployment..."
-          echo "📝 PR: #${{ github.event.pull_request.number }}"
+          echo "🔄 Branch: ${{ github.ref_name }}"
           echo "🔄 Commit: ${{ github.sha }}"
 
           # 메모리 정리
-          echo "🧹 Cleaning up Docker resources..."
+          echo "🧹 Cleaning up memory..."
           docker system prune -f
 
-          # 브랜치별 환경 설정
-          if [ "${{ github.event.pull_request.base.ref }}" = "main" ]; then
-            CONTAINER_NAME="app-prod"
-            ENV_FILE="app-prod.env"
-            OTHER_CONTAINER="app-dev"
-            echo "🚀 Deploying to PRODUCTION"
-          elif [ "${{ github.event.pull_request.base.ref }}" = "develop" ]; then
-            CONTAINER_NAME="app-dev"
-            ENV_FILE="app-dev.env"
-            OTHER_CONTAINER="app-prod"
-            echo "🧪 Deploying to DEVELOPMENT"
-          fi
-
-          # 배포 디렉토리 설정
-          DEPLOY_DIR="/home/ubuntu/coplan/app"
-
-          # 메모리 확보를 위해 다른 컨테이너 중지
-          echo "⏸️ Stopping other container to free memory..."
-          docker compose stop ${OTHER_CONTAINER} || true
-
-          # rsync로 파일 동기화
-          echo "📂 Synchronizing files..."
-          rsync -av \
+          # 앱 디렉토리로 코드 복사
+          echo "📂 Copying files..."
+          rsync -av --delete \
             --exclude='.git' \
             --exclude='node_modules' \
             --exclude='.next' \
-            --exclude='.env*' \
-            --exclude='*.log' \
-            --delete \
-            ./ ${DEPLOY_DIR}/
+            ./ /home/ubuntu/coplan/app/
 
-          # 작업 디렉토리 이동
+          # 배포 디렉토리로 이동
           cd /home/ubuntu/coplan
 
-          # 환경변수 파일 복사 (있는 경우만)
-          if [ -f "/home/ubuntu/env/${ENV_FILE}" ]; then
-            echo "📋 Copying environment variables..."
-            cp "/home/ubuntu/env/${ENV_FILE}" "${DEPLOY_DIR}/.env.production"
-          fi
-
-          # Docker 이미지 빌드
-          echo "🔨 Building Docker image..."
-          DOCKER_BUILDKIT=1 docker compose build ${CONTAINER_NAME}
-
-          # 컨테이너 교체 (무중단 배포)
-          echo "🔄 Updating container..."
-          docker compose up -d --no-deps ${CONTAINER_NAME}
-
-          # 다른 컨테이너 재시작
-          echo "🔄 Restarting other container..."
-          docker compose up -d ${OTHER_CONTAINER}
+          # Docker 컨테이너 재시작
+          echo "🔄 Restarting containers..."
+          docker compose down
+          docker compose up -d --build
 
           # 헬스체크
-          echo "🏥 Health check..."
-          sleep 10
+          echo "🏥 Health checking..."
+          sleep 15
 
-          if docker ps | grep -q ${CONTAINER_NAME}; then
-            echo "✅ Container is running"
-            docker logs --tail 20 ${CONTAINER_NAME}
+          if docker ps | grep -q coplan-app; then
+            echo "✅ Deployment completed successfully!"
+            docker logs --tail 10 coplan-app
+            echo "🌐 Service available at: http://15.164.127.149"
           else
-            echo "❌ Container failed to start"
-            docker logs ${CONTAINER_NAME}
+            echo "❌ Deployment failed!"
+            docker logs coplan-app
             exit 1
           fi
-
-          echo "✅ Deployment completed successfully!"

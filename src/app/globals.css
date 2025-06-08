@@ -40,3 +40,9 @@ body {
 .BG-currentDashboard {
   @apply bg-[#E8F4FF] dark:bg-[#2C3641];
 }
+.BG-ThemeToggle {
+  @apply bg-[#D9D9D9] dark:bg-[#646464];
+}
+.BG-ThemeToggleButton {
+  @apply bg-[#FFFFFF] dark:bg-[#D3D3D3];
+}
