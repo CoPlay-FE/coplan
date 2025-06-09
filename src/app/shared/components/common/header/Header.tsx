@@ -2,6 +2,7 @@
 
 import { useUserStore } from '@store/useUserStore' // Zustand 예시
 import { usePathname, useRouter } from 'next/navigation'
+import { cn } from '@lib/cn' // 클래스 이름 병합 유틸리티
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -29,7 +30,10 @@ export default function Header() {
           <nav className="hidden gap-8 text-sm text-gray-600 dark:text-gray-300 md:flex">
             <Link
               href="/dashboard"
-              className={`Border-btn flex items-center gap-6 rounded-md border-solid px-12 py-6 ${pathname === '/dashboard' ? 'font-semibold' : ''}`}
+              className={cn(
+                'Border-btn flex items-center gap-6 rounded-md border-solid px-12 py-6',
+                pathname === '/dashboard' && 'font-semibold',
+              )}
             >
               <div className="relative flex size-12">
                 <Image src="/images/management.png" fill alt="관리 버튼" />
@@ -38,7 +42,10 @@ export default function Header() {
             </Link>
             <Link
               href="/modal"
-              className={`Border-btn flex items-center gap-6 rounded-6 border-solid px-12 py-6 ${pathname === '/modal' ? 'font-semibold' : ''}`}
+              className={cn(
+                'Border-btn flex items-center gap-6 rounded-6 border-solid px-12 py-6',
+                pathname === '/modal' && 'font-semibold',
+              )}
             >
               <div className="relative flex size-12">
                 <Image src="/images/invitation.png" fill alt="초대 버튼" />
