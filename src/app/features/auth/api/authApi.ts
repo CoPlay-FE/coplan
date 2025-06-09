@@ -8,7 +8,7 @@ export const login = async (data: LoginRequest): Promise<LoginResponse> => {
   return response.data
 }
 
-export const signup = async (data: SignupRequest) => {
+export const signup = async (data: SignupRequest): Promise<SignupResponse> => {
   const response = await api.post<SignupResponse>(AUTH_ENDPOINT.SIGNUP, data)
   return response.data
 }
