@@ -3,21 +3,15 @@ import { login as loginApi, signup as signupApi } from '../api/authApi'
 import { LoginRequest, SignupRequest } from '../types/auth.type'
 
 export function useAuth() {
-  const {
-    setAccessToken,
-    setUser,
-    clearAuthState,
-    accessToken,
-    user,
-    isLoggedIn,
-  } = useAuthStore()
+  const { setAccessToken, setUser, clearAuthState } = useAuthStore()
 
   async function login(data: LoginRequest) {
     const response = await loginApi(data)
-    const { user, accessToken } = response.data
+    const token = response.data.accessToken
+    const user = response.data.user
 
-    if (accessToken && user) {
-      setAccessToken(accessToken)
+    if (token && user) {
+      setAccessToken(token)
       setUser(user)
     } else {
       throw new Error('유효하지 않은 응답입니다.')
@@ -36,8 +30,5 @@ export function useAuth() {
     login,
     signup,
     logout,
-    accessToken,
-    user,
-    isLoggedIn,
   }
 }
