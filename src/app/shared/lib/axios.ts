@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useAuthStore } from '@/app/features/auth/store/authStore'
+import { useAuthStore } from '@/app/features/auth/store/useAuthStore'
 import { AUTH_ENDPOINT } from '@/app/features/auth/api/authEndpoint'
 
 const api = axios.create({

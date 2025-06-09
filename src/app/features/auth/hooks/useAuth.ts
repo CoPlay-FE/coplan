@@ -1,4 +1,4 @@
-import { useAuthStore } from '../store/authStore'
+import { useAuthStore } from '../store/useAuthStore'
 import { login as loginApi, signup as signupApi } from '../api/authApi'
 import { LoginRequest, SignupRequest } from '../types/auth.type'
 
