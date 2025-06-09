@@ -34,6 +34,9 @@ body {
 .Border-section {
   @apply border border-[#D9D9D9] dark:border-[#000000];
 }
+.Border-column {
+  @apply border-r border-[#EEEEEE] dark:border-[#262626];
+}
 .BG-addPhoto {
   @apply bg-[#F5F5F5] dark:bg-[#2E2E2E];
 }

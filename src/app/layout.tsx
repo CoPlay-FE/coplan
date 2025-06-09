@@ -3,6 +3,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 
 import { Providers } from './providers'
+import ThemeToggle from './shared/components/ThemeToggle'
 
 export const metadata: Metadata = {
   title: 'Coplan',
@@ -17,7 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <ThemeToggle />
+          {/* 푸쉬하기 전에 이거 삭제해야함 */}
+          {children}
+        </Providers>
       </body>
     </html>
   )
