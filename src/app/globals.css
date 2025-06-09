@@ -28,6 +28,9 @@ body {
 .Text-gray {
   @apply text-[#787486] dark:text-[#BCBCBC];
 }
+.Text-white {
+  @apply text-[#FFFFFF] dark:text-[#333236];
+}
 .Border-btn {
   @apply border border-[#D9D9D9] dark:border-[#747474];
 }
