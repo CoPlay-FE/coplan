@@ -7,15 +7,14 @@ export function useAuth() {
 
   async function login(data: LoginRequest) {
     const response = await loginApi(data)
-    const token = response.data.accessToken
-    const user = response.data.user
+    const { accessToken, user } = response
 
-    if (token && user) {
-      setAccessToken(token)
-      setUser(user)
-    } else {
+    if (!accessToken || !user) {
       throw new Error('유효하지 않은 응답입니다.')
     }
+
+    setAccessToken(accessToken)
+    setUser(user)
   }
 
   async function signup(data: SignupRequest) {

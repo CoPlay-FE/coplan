@@ -10,8 +10,9 @@ api.interceptors.request.use(
   (config) => {
     const token = useAuthStore.getState().accessToken
     const publicPaths = [AUTH_ENDPOINT.LOGIN, AUTH_ENDPOINT.SIGNUP]
+    const isPulicPath = publicPaths.some((path) => config.url?.includes(path))
 
-    if (!publicPaths.includes(config.url || '') && token) {
+    if (isPulicPath && token) {
       config.headers.Authorization = `Bearer ${token}`
     }
     return config
