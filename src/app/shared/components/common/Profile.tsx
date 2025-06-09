@@ -51,6 +51,7 @@ export function Profile({ nickname, imageUrl, size = 36 }: ProfileProps) {
   const { user } = useUserStore()
 
   return imageUrl ? (
+    // 프로필 이미지가 있을 때
     <div className="flex items-center gap-4">
       <div className="relative size-48 overflow-hidden rounded-full">
         <Image
@@ -63,6 +64,7 @@ export function Profile({ nickname, imageUrl, size = 36 }: ProfileProps) {
       <span className="text-sm font-semibold">사{user?.name}</span>
     </div>
   ) : (
+    // 프로필 이미지가 없을 때
     <>
       <div
         className="ml-8 flex items-center justify-center rounded-full font-semibold text-white"
