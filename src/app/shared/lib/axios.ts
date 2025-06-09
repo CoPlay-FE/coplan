@@ -12,7 +12,7 @@ api.interceptors.request.use(
     const publicPaths = [AUTH_ENDPOINT.LOGIN, AUTH_ENDPOINT.SIGNUP]
     const isPulicPath = publicPaths.some((path) => config.url?.includes(path))
 
-    if (isPulicPath && token) {
+    if (!isPulicPath && token) {
       config.headers.Authorization = `Bearer ${token}`
     }
     return config
