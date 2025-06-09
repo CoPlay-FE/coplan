@@ -14,7 +14,7 @@ export default function Header() {
   const { user, logout } = useUserStore() // Zustand 상태
 
   return (
-    <header className="flex items-center justify-between border-b border-gray-200 bg-white px-36 py-16 dark:border-gray-700 dark:bg-black">
+    <header className="BG-White Border-section Text-black flex items-center justify-between border-b px-36 py-16">
       {/* 좌측 대시보드명 */}
       <div className="flex items-center gap-8">
         <div className="font-bold">대시보드 명</div>
@@ -29,7 +29,7 @@ export default function Header() {
           <nav className="hidden gap-8 text-sm text-gray-600 dark:text-gray-300 md:flex">
             <Link
               href="/dashboard"
-              className={`flex items-center gap-6 rounded-md border-2 border-solid px-8 py-4 ${pathname === '/dashboard' ? 'font-semibold' : ''}`}
+              className={`Border-btn flex items-center gap-6 rounded-md border-solid px-12 py-6 ${pathname === '/dashboard' ? 'font-semibold' : ''}`}
             >
               <div className="relative flex size-12">
                 <Image src="/images/management.png" fill alt="관리 버튼" />
@@ -38,7 +38,7 @@ export default function Header() {
             </Link>
             <Link
               href="/modal"
-              className={`flex items-center gap-6 rounded-6 border-2 border-solid px-8 py-4 ${pathname === '/modal' ? 'font-semibold' : ''}`}
+              className={`Border-btn flex items-center gap-6 rounded-6 border-solid px-12 py-6 ${pathname === '/modal' ? 'font-semibold' : ''}`}
             >
               <div className="relative flex size-12">
                 <Image src="/images/invitation.png" fill alt="초대 버튼" />
