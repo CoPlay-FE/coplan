@@ -1,6 +1,5 @@
 'use client'
-
-import { useUserStore } from '@store/useUserStore' // Zustand 예시
+ Zustand 예시
 import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@lib/cn' // 클래스 이름 병합 유틸리티
 import Link from 'next/link'
@@ -13,7 +12,6 @@ export default function Header() {
   const goToMypage = () => {
     router.push('/mypage')
   }
-  const { logout } = useUserStore() // Zustand 상태
 
   return (
     <header className="BG-White Border-section Text-black flex items-center justify-between border-b px-36 py-16">
@@ -69,7 +67,7 @@ export default function Header() {
           <button onClick={goToMypage} className="text-xs">
             마이페이지
           </button>
-          <button onClick={logout} className="text-xs">
+          <button onClick={goToMypage} className="text-xs">
             로그아웃
           </button>
         </>
