@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const axiosClient = axios.create({
-  baseURL: 'https://sp-taskify-api.vercel.app',
+  baseURL: 'https://sp-taskify-api.vercel.app/7-6',
 })
 
 // 작업용 임시 토큰

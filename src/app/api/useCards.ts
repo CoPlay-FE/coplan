@@ -28,9 +28,12 @@ export interface CardResponse {
   cursorId: number
 }
 
-export async function fetchCards(columnId: number): Promise<CardResponse> {
+export async function fetchCards(
+  columnId: number,
+  size: number = 10,
+): Promise<CardResponse> {
   const res = await axiosClient.get<CardResponse>(
-    `/7-6/cards?size=10&columnId=${columnId}`,
+    `/cards?size=${size}&columnId=${columnId}`,
   )
   return res.data
 }
