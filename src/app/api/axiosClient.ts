@@ -5,8 +5,7 @@ const axiosClient = axios.create({
 })
 
 // 작업용 임시 토큰
-const TEMP_TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTc4NiwidGVhbUlkIjoiNy02IiwiaWF0IjoxNzQ5MzEyOTI3LCJpc3MiOiJzcC10YXNraWZ5In0.JFrNYvsX_b5-yCMm-Nsmp56gaVwzJ7JfBqYirBR3qw0'
+const TEMP_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN
 
 axiosClient.interceptors.request.use((config) => {
   if (TEMP_TOKEN) {

@@ -21,11 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Providers>
-          <ThemeToggle />
-          {/* 푸쉬하기 전에 이거 삭제해야함 */}
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )

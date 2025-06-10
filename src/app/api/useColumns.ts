@@ -16,7 +16,7 @@ export interface ColumnsResponse {
 }
 
 //fetch 함수 (API 호출 전용)
-export async function fetchColums(dashboardId: number): Promise<Column[]> {
+export async function fetchColumns(dashboardId: number): Promise<Column[]> {
   const res = await axiosClient.get<ColumnsResponse>(
     `/7-6/columns?dashboardId=${dashboardId}`,
   )
@@ -27,6 +27,6 @@ export async function fetchColums(dashboardId: number): Promise<Column[]> {
 export default function useColumns(dashboardId: number) {
   return useQuery<Column[]>({
     queryKey: ['columns', dashboardId],
-    queryFn: () => fetchColums(dashboardId),
+    queryFn: () => fetchColumns(dashboardId),
   })
 }
