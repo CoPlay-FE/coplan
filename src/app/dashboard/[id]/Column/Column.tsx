@@ -11,9 +11,7 @@ export default function Column({ column }: { column: Column }) {
   if (isLoading) return <p>loading...</p>
   if (error) return <p>error...{error.message}</p>
 
-  //onclick 적용하고, PR올리고, DND구현 먼저 하기
   return (
-    //px-6 pb-3 pt-5
     <div className="BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20">
       <div className="mb-24 flex items-center justify-between">
         <div className="flex items-center">
