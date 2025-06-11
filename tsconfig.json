@@ -25,7 +25,8 @@
       "@/*": ["./src/*"],
       "@components/*": ["./src/app/shared/components/*"],
       "@store/*": ["./src/app/shared/store/*"],
-      "@hooks/*": ["./src/app/shared/hooks/*"]
+      "@hooks/*": ["./src/app/shared/hooks/*"],
+      "@lib/*": ["./src/app/shared/lib/*"]
     }
   },
   "include": [
