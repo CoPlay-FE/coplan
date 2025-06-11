@@ -40,6 +40,9 @@ body {
 .Border-column {
   @apply border-r border-[#EEEEEE] dark:border-[#262626];
 }
+.Border-bottom {
+  @apply border-b border-[#D9D9D9] dark:border-[#707070];
+}
 .BG-addPhoto {
   @apply bg-[#F5F5F5] dark:bg-[#2E2E2E];
 }
