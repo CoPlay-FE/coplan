@@ -39,8 +39,8 @@ const Input = forwardRef<HTMLInputElement, CustomInputProps>(
           <input
             id={id}
             className={cn(
-              'Border-btn Text-black h-50 w-full rounded-8 px-16 py-12 text-base font-normal',
-              hasError && 'Border-error border',
+              'Text-black h-50 w-full rounded-8 px-16 py-12 text-base font-normal',
+              hasError ? 'Border-error' : 'Border-btn',
             )}
             type={inputType}
             placeholder={placeText}
