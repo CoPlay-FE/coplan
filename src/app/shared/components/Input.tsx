@@ -1,4 +1,4 @@
-'use clinet'
+'use client'
 
 import Image from 'next/image'
 import { forwardRef, InputHTMLAttributes, useState } from 'react'
@@ -49,9 +49,9 @@ const Input = forwardRef<HTMLInputElement, CustomInputProps>(
               type={inputType}
               placeholder={placeholder}
               name={name}
-              ref={ref}
               autoComplete={autoComplete}
               {...rest}
+              ref={ref}
             />
             <button
               type="button"
@@ -76,9 +76,9 @@ const Input = forwardRef<HTMLInputElement, CustomInputProps>(
             type={inputType}
             placeholder={placeholder}
             name={name}
-            ref={ref}
             autoComplete={autoComplete}
             {...rest}
+            ref={ref}
           />
         )}
 
