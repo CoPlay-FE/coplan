@@ -9,6 +9,7 @@ export default function CreateDashboardButton({
 }: CreateDashboardButtonProps): JSX.Element {
   return (
     <button
+      type="button"
       onClick={onClick}
       className="flex size-20 items-center justify-center rounded-6 transition-colors hover:bg-gray-50"
       aria-label="새 대시보드 생성"

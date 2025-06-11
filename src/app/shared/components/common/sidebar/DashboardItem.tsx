@@ -15,6 +15,8 @@ export default function DashboardItem({
 
   return (
     <button
+      type="button"
+      aria-current={isActive ? 'page' : undefined}
       onClick={handleClick}
       className={`Text-black flex w-full items-center gap-12 rounded-6 px-12 py-8 text-left text-18 transition-colors hover:bg-gray-50 ${
         isActive ? 'BG-currentDashboard font-medium' : ''
