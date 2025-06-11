@@ -3,6 +3,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 
 import { Providers } from './providers'
+import ThemeToggle from './shared/components/ThemeToggle'
 
 export const metadata: Metadata = {
   title: 'Coplan',
