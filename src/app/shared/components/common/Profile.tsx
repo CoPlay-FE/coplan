@@ -1,7 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import { useUserStore } from '@store/useUserStore'
 
 type ProfileProps = {
   nickname: string
@@ -48,8 +47,6 @@ export function Profile({ nickname, imageUrl, size = 36 }: ProfileProps) {
   const initial = getInitial(nickname)
   const bgColor = getColor(nickname)
 
-  const { user } = useUserStore()
-
   return imageUrl ? (
     // 프로필 이미지가 있을 때
     <div className="flex items-center gap-4">
@@ -61,7 +58,7 @@ export function Profile({ nickname, imageUrl, size = 36 }: ProfileProps) {
           className="size-full object-cover"
         />
       </div>
-      <span className="text-sm font-semibold">사{user?.name}</span>
+      <span className="text-sm font-semibold">사용자</span>
     </div>
   ) : (
     // 프로필 이미지가 없을 때
