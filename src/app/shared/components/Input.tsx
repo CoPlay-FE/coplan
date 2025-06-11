@@ -1,4 +1,5 @@
 'use clinet'
+
 import Image from 'next/image'
 import { forwardRef, InputHTMLAttributes, useState } from 'react'
 
@@ -6,8 +7,10 @@ import { cn } from '../lib/cn'
 
 interface CustomInputProps extends InputHTMLAttributes<HTMLInputElement> {
   labelName: string
+  name: string
   type?: React.HTMLInputTypeAttribute
-  placeText?: string
+  autoComplete?: string
+  placeholder?: string
   hasError?: boolean
   errorMessage?: string
 }
@@ -16,43 +19,44 @@ const Input = forwardRef<HTMLInputElement, CustomInputProps>(
   function Input(props, ref) {
     const {
       labelName,
+      name,
       type = 'text',
-      placeText,
+      placeholder,
       hasError,
       errorMessage,
+      autoComplete,
       ...rest
     } = props
 
-    const id = props.name
     const [showPassword, setShowPassword] = useState(false)
-
     const isPassword = type === 'password'
     const inputType = isPassword && showPassword ? 'text' : type
 
     return (
       <div className="flex flex-col gap-8">
-        <label htmlFor={id} className="Text-black text-base font-normal">
+        <label htmlFor={name} className="Text-black text-base font-normal">
           {labelName}
         </label>
 
-        <div className="relative w-full">
-          <input
-            id={id}
-            className={cn(
-              'Text-black h-50 w-full rounded-8 px-16 py-12 text-base font-normal',
-              hasError ? 'Border-error' : 'Border-btn',
-            )}
-            type={inputType}
-            placeholder={placeText}
-            ref={ref}
-            {...rest}
-          />
-
-          {isPassword && (
+        {isPassword ? (
+          <div className="relative w-full">
+            <input
+              id={name}
+              className={cn(
+                'Text-black h-50 w-full rounded-8 px-16 py-12 text-base font-normal',
+                hasError ? 'Border-error' : 'Border-btn',
+              )}
+              type={inputType}
+              placeholder={placeholder}
+              name={name}
+              ref={ref}
+              autoComplete={autoComplete}
+              {...rest}
+            />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-16 top-1/4"
+              className="absolute right-16 top-1/2 translate-y-[-50%]"
             >
               <Image
                 src={`/images/visibility-${showPassword ? 'on' : 'off'}.svg`}
@@ -61,8 +65,22 @@ const Input = forwardRef<HTMLInputElement, CustomInputProps>(
                 height={24}
               />
             </button>
-          )}
-        </div>
+          </div>
+        ) : (
+          <input
+            id={name}
+            className={cn(
+              'Text-black h-50 w-full rounded-8 px-16 py-12 text-base font-normal',
+              hasError ? 'Border-error' : 'Border-btn',
+            )}
+            type={inputType}
+            placeholder={placeholder}
+            name={name}
+            ref={ref}
+            autoComplete={autoComplete}
+            {...rest}
+          />
+        )}
 
         {hasError && errorMessage && (
           <p className="Text-error text-sm font-normal">{errorMessage}</p>
