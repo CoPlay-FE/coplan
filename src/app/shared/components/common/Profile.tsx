@@ -58,7 +58,7 @@ export function Profile({ nickname, imageUrl, size = 36 }: ProfileProps) {
           className="size-full object-cover"
         />
       </div>
-      <span className="text-sm font-semibold">사용자</span>
+      <span className="text-sm font-semibold">{nickname}</span>
     </div>
   ) : (
     // 프로필 이미지가 없을 때

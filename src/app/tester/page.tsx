@@ -1,5 +1,7 @@
-import ThemeToggle from '@components/ThemeToggle'
 import Image from 'next/image'
+
+import Sidebar from '@/app/shared/components/common/sidebar/Sidebar'
+import ThemeToggle from '@/app/shared/components/ThemeToggle'
 
 //<초기 설정 안내>
 
@@ -16,35 +18,56 @@ import Image from 'next/image'
 
 export default function Home() {
   return (
-    <>
-      <div>
-        <h1 className="BG-blue">- test page -</h1>
-        <ThemeToggle />
-        <div className="relative h-[200px] w-[300px]">
-          <Image
-            src="/images/logo-light.svg"
-            alt="Logo"
-            fill
-            className="object-contain"
-            priority
-          />
+    <div className="flex">
+      {/* 사이드바 */}
+      <Sidebar />
+
+      {/* 메인 콘텐츠 영역 */}
+      <div className="ml-300 p-20">
+        {/* 헤더 영역 */}
+        <div className="mb-24">
+          <h1 className="mb-16 text-24 font-bold">Sidebar 테스트 페이지</h1>
+          <p className="Text-gray mb-20">왼쪽에 사이드바 만들어보자잇!</p>
+          <ThemeToggle />
+        </div>
+
+        {/* 기존 테스트 요소들 */}
+        <div className="space-y-24">
+          <div>
+            <h2 className="mb-12 text-20 font-semibold">로고 테스트</h2>
+            <div className="Border-section relative h-[200px] w-[300px] rounded-8 p-16">
+              <Image
+                src="/images/logo-light2.svg"
+                alt="Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+          </div>
+
+          {/* pxr 단위 테스트 */}
+          <div>
+            <h2 className="mb-12 text-20 font-semibold">pxr 단위 테스트</h2>
+            <div className="mb-8 rounded-6 bg-blue-100 p-[32px] text-[16px]">
+              <p>This text should be 16px (일반 px 단위)</p>
+            </div>
+            <div className="rounded-6 bg-blue-100 p-32 text-16">
+              <p>This text should be 1rem → converted 16 to 1rem: using pxr</p>
+            </div>
+          </div>
+
+          {/* Gap 테스트 */}
+          <div>
+            <h2 className="mb-12 text-20 font-semibold">Gap 테스트</h2>
+            <div className="flex gap-16 rounded-6 bg-gray-100 p-16">
+              <div className="rounded-4 bg-blue-300 p-16">AAA</div>
+              <div className="rounded-4 bg-green-300 p-16">BBB</div>
+              <div className="rounded-4 bg-red-300 p-16">CCC</div>
+            </div>
+          </div>
         </div>
       </div>
-      {/*  <pxr 단위 사용>
-      - [300px] -> 300으로 작성하면 브라우저에서는 알아서 rem으로 변환하여 적용됨 */}
-      <div className="bg-blue-100 p-[32px] text-[16px]">
-        <p>This text should be 16px</p>
-      </div>
-      <div className="bg-blue-100 p-32 text-16">
-        <p>This text should be 1rem → converted 16 to 1rem: using pxr</p>
-      </div>
-      {/*  <pxr 단위 사용>
-      - 원래 gap-4는 16px인데, pxr적용 시에는 gap-16으로 작성*/}
-      <div className="gap-16 bg-gray-100 p-4 marker:flex">
-        <div className="bg-blue-300 p-4">AAA</div>
-        <div className="bg-green-300 p-4">BBB</div>
-        <div className="bg-red-300 p-4">CCC</div>
-      </div>
-    </>
+    </div>
   )
 }
