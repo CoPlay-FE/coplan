@@ -18,7 +18,7 @@ export default function AuthLogo({ text }: AuthLogoProps): JSX.Element {
       <Link className="relative block h-[250px] w-full" href="/">
         <Image
           src={isDark ? '/images/logo-dark.svg' : '/images/logo-light.svg'}
-          alt="CoPlan 로고고"
+          alt="CoPlan 로고"
           className="object-contain"
           fill
           priority
