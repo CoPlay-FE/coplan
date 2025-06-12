@@ -6,7 +6,7 @@ export async function updateCardColumn(
   columnId: number,
 ): Promise<{ success: boolean }> {
   const res = await axiosClient.put<{ success: boolean }>(`/cards/${cardId}`, {
-    columnId: columnId, // 키랑 밸류가 일치할떄는 축약해서 column으로 작성해도 무방함.
+    columnId: columnId,
   })
   return res.data
 }
