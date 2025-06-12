@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import type { Card } from '@/app/api/useCards'
+import type { Card, CardResponse } from '@/app/api/useCards'
 
 import { updateCardColumn } from './updateCardColumn'
 
@@ -20,28 +20,37 @@ export const useCardMutation = () => {
       await queryClient.cancelQueries({ queryKey: ['columnId'] })
       // 업데이트 이전 데이터 챙겨뒀다가 롤백할때 사용
       // *['columnId', columnId]는 'columnId'라는 키 그룹 안에서 특정 columnId 값에 해당하는 캐시 데이터를 꺼낸다는 뜻 ...
-      const previousCards =
-        queryClient.getQueryData<Card[]>(['columnId', columnId]) || []
+      const previousData = queryClient.getQueryData<CardResponse>([
+        'columnId',
+        columnId,
+      ])
 
       // 낙관적 업데이트(캐시 업데이트)
       // setQueryData 함수는 'columnId'라는 쿼리 키에 저장된 기존 데이터를 내부에서 꺼내서
-      // 업데이트 함수의 인자 oldCards에 보내줌. 만약 해당 키에 데이터가 없는 경우 undefined되는걸 방지하기 위해 [] 처리함.
-      queryClient.setQueryData<Card[]>(
+      // 업데이트 함수의 인자 oldCards에 보내줌.
+      // * CardResponse형을 저장해둬서, 원하는, 카드형 배열을 꺼내려면 cards까지 접근해야 함
+      queryClient.setQueryData<CardResponse>(
         ['columnId', columnId],
-        (oldCards = []) =>
-          oldCards.map((card) =>
-            card.id === cardId ? { ...card, columnId: columnId } : card,
-          ),
+        (oldCards) => {
+          if (!oldCards) return undefined
+          return {
+            ...oldCards,
+            cards: oldCards.cards.map((card) =>
+              card.id === cardId ? { ...card, columnId: columnId } : card,
+            ),
+          }
+        },
       )
-      return { previousCards }
+
+      return { previousData }
     },
 
     // 3. 에러 발생 시 롤백
     onError: (error, variables, context) => {
-      if (context?.previousCards) {
-        queryClient.setQueryData<Card[]>(
+      if (context?.previousData) {
+        queryClient.setQueryData<CardResponse>(
           ['columnId', variables.columnId],
-          context.previousCards,
+          context.previousData,
         )
       }
       console.error('카드 이동 실패:', error)

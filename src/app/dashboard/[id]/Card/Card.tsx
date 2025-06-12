@@ -2,12 +2,24 @@ import Image from 'next/image'
 
 import type { Card } from '@/app/api/useCards'
 
+import { useDragStore } from '../store/useDragStore'
 import Tags from './Tags'
 
-export default function Card({ card }: { card: Card }) {
-  const { imageUrl, title, tags, dueDate, assignee } = card
+export default function Card({
+  card,
+  columnId,
+}: {
+  card: Card
+  columnId: number
+}) {
+  const { id, imageUrl, title, tags, dueDate, assignee } = card
+  const { setDraggingCard } = useDragStore()
   return (
-    <div className="BG-white Border-section relative w-314 rounded-6 border-solid px-20 py-16">
+    <div
+      draggable="true"
+      onDragStart={() => setDraggingCard({ cardId: id, columnId: columnId })}
+      className="BG-white Border-section relative w-314 rounded-6 border-solid px-20 py-16"
+    >
       Todo Card
       {imageUrl && (
         <Image
@@ -17,6 +29,7 @@ export default function Card({ card }: { card: Card }) {
           height={600}
           className="h-auto w-full rounded-6 object-contain"
           priority
+          draggable="false"
         />
       )}
       <p>{title}</p>
