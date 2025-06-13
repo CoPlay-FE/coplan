@@ -1,14 +1,15 @@
+import { useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useState } from 'react'
 
 import useCards from '@/app/api/useCards'
-import type { Column } from '@/app/api/useColumns'
+import type { Column as ColumnType } from '@/app/api/useColumns'
 import { cn } from '@/app/shared/lib/cn'
 
 import { useCardMutation } from '../api/useCardMutation'
 import Card from '../Card/Card'
 import { useDragStore } from '../store/useDragStore'
-export default function Column({ column }: { column: Column }) {
+export default function Column({ column }: { column: ColumnType }) {
   const { id, title }: { id: number; title: string } = column
   const { data, isLoading, error } = useCards(id)
   const [isDraggingover, setDraggingover] = useState(false)
@@ -32,6 +33,7 @@ export default function Column({ column }: { column: Column }) {
         e.preventDefault()
         if (isDraggingover) setDraggingover(false)
         const draggingCard = useDragStore.getState().draggingCard
+
         if (!draggingCard) {
           console.log('no dragging card') //TODO - toast 처리 🍞
           return
@@ -42,7 +44,7 @@ export default function Column({ column }: { column: Column }) {
           return
         }
         cardMutation.mutate({ cardId: draggingCard.cardId, columnId: id })
-        clearDraggingCard()
+        //  clearDraggingCard()
       }}
       className={cn(
         'BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20',

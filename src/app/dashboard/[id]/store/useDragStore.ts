@@ -1,7 +1,10 @@
 import { create } from 'zustand'
-
+interface draggingCard {
+  cardId: number
+  columnId: number
+}
 interface DragStore {
-  draggingCard: { cardId: number; columnId: number } | null
+  draggingCard: draggingCard | null
   setDraggingCard: (data: { cardId: number; columnId: number }) => void
   clearDraggingCard: () => void
 }
