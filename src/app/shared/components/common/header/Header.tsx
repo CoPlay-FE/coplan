@@ -51,10 +51,11 @@ export default function Header() {
               초대하기
             </Link>
           </nav>
-
+          {/* 협업자 목록 */}
           <CollaboratorList />
           <div className="flex items-center gap-16">
-            <UserDropdown />
+            {/* 사용자 정보 드롭다운 */}
+            <UserDropdown />|{/* 다크모드 토글 */}
             <ThemeToggle />
           </div>
         </div>
