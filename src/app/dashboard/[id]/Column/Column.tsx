@@ -32,7 +32,15 @@ export default function Column({ column }: { column: Column }) {
         e.preventDefault()
         if (isDraggingover) setDraggingover(false)
         const draggingCard = useDragStore.getState().draggingCard
-        if (!draggingCard) return //null 방지
+        if (!draggingCard) {
+          console.log('no dragging card') //TODO - toast 처리 🍞
+          return
+        }
+        // 동일 컬럼이면 무시
+        if (draggingCard.columnId === id) {
+          clearDraggingCard()
+          return
+        }
         cardMutation.mutate({ cardId: draggingCard.cardId, columnId: id })
         clearDraggingCard()
       }}
