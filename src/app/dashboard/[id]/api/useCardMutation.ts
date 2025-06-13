@@ -17,7 +17,14 @@ export const useCardMutation = () => {
 
     // 2. 낙관적 UI 처리 (서버 요청 전에 실행됨)
     onMutate: async ({ cardId, columnId }) => {
-      await queryClient.cancelQueries({ queryKey: ['columnId', columnId] })
+      const currentCard = useDragStore.getState().draggingCard
+
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: ['columnId', columnId] }),
+        queryClient.cancelQueries({
+          queryKey: ['columnId', currentCard?.columnId],
+        }),
+      ])
 
       // 업데이트 이전 데이터 챙겨뒀다가 롤백할때 사용
       const previousData = queryClient.getQueryData<CardResponse>([
@@ -25,13 +32,14 @@ export const useCardMutation = () => {
         columnId,
       ])
 
-      const currentCard = useDragStore.getState().draggingCard
+      // Guard return
       if (
         !currentCard ||
         currentCard.cardId !== cardId ||
         currentCard.columnId === columnId
       ) {
         console.log('no dragging card || is not a dragging card || same column')
+        clearDraggingCard()
         return
       }
 
