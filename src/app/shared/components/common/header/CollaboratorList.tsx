@@ -1,6 +1,7 @@
 'use client'
 
 import CollaboratorItem from '../CollaboratorItem'
+import Tooltip from './Tooltip' // ✅ 추가
 
 export const mockCollaborators = [
   { nickname: '홍길동', imageUrl: '/images/collaborator.png' },
@@ -28,26 +29,27 @@ export default function CollaboratorList({
   return (
     <div className="flex gap-4">
       {visibleCollaborators.map((collab) => (
-        <div
-          key={collab.nickname}
-          className="flex flex-col items-center text-xs"
-        >
-          <CollaboratorItem
-            nickname={collab.nickname}
-            imageUrl={collab.imageUrl}
-            size={48}
-          />
-          <span className="mt-2">{collab.nickname}</span>
-        </div>
+        <Tooltip key={collab.nickname} content={collab.nickname}>
+          <div className="flex flex-col items-center text-xs">
+            <CollaboratorItem
+              nickname={collab.nickname}
+              imageUrl={collab.imageUrl}
+              size={48}
+            />
+          </div>
+        </Tooltip>
       ))}
 
       {extraCount > 0 && (
-        <div className="flex flex-col items-center text-xs">
-          <div className="Text-white flex size-48 items-center justify-center rounded-full bg-gray-300 text-sm font-semibold">
-            +{extraCount}
+        <Tooltip
+          content={`${visibleCollaborators[0].nickname} 외 ${extraCount}명`}
+        >
+          <div className="flex flex-col items-center text-xs">
+            <div className="Text-white flex size-48 items-center justify-center rounded-full bg-gray-300 text-sm font-semibold">
+              +{extraCount}
+            </div>
           </div>
-          <span className="mt-2">외 {extraCount}명</span>
-        </div>
+        </Tooltip>
       )}
     </div>
   )
