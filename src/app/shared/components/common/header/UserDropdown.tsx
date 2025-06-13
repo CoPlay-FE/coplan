@@ -23,18 +23,18 @@ export default function UserDropdown() {
           <UserInfo nickname="닉네임" size={36} />
         </div>
       }
-      width="w-80"
+      width="w-6"
       align="center"
     >
       <button
         onClick={goToMypage}
-        className="w-full p-5 text-xs hover:bg-gray-100 hover:text-black"
+        className="w-full p-8 text-xs hover:bg-gray-100 hover:text-black"
       >
         마이페이지
       </button>
       <button
         onClick={handleLogout}
-        className="w-full p-5 text-xs hover:bg-gray-100 hover:text-black"
+        className="w-full p-8 text-xs hover:bg-gray-100 hover:text-black"
       >
         로그아웃
       </button>
