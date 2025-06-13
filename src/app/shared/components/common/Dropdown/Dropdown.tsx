@@ -1,59 +1,80 @@
-'use client'
-
-import { cn } from '@lib/cn' // 클래스 이름 병합 유틸리티
-import { ReactNode, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 type DropdownProps = {
-  trigger: ReactNode
-  children: ReactNode
-  align?: 'left' | 'right' | 'center'
+  trigger: React.ReactNode
+  children: React.ReactNode
   width?: string
+  align?: 'left' | 'center' | 'right'
 }
 
 export default function Dropdown({
   trigger,
   children,
-  align = 'center',
-  width = 'w-40',
+  width = 'w-48',
+  align = 'left',
 }: DropdownProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
+  const [open, setOpen] = useState(false)
+  const triggerRef = useRef<HTMLDivElement>(null)
+  const [coords, setCoords] = useState<{ top: number; left: number }>({
+    top: 0,
+    left: 0,
+  })
+
+  const toggleOpen = () => setOpen((prev) => !prev)
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setIsOpen(false)
-      }
-    }
+    if (open && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect()
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+      let left = rect.left
+      if (align === 'center') left = rect.left + rect.width / 2
+      else if (align === 'right') left = rect.right
+
+      setCoords({
+        top: rect.bottom + window.scrollY,
+        left,
+      })
+    }
+  }, [open, align])
+
+  const menu = open
+    ? createPortal(
+        <div
+          style={{
+            position: 'absolute',
+            top: coords.top,
+            left: coords.left,
+            transform:
+              align === 'center'
+                ? 'translateX(-50%)'
+                : align === 'right'
+                  ? 'translateX(-100%)'
+                  : undefined,
+            width: width === 'w-48' ? '12rem' : undefined, // 필요에 따라 width 조절
+            backgroundColor: 'BG-white',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+            borderRadius: 8,
+            zIndex: 9999,
+          }}
+          onClick={() => setOpen(false)}
+        >
+          {children}
+        </div>,
+        document.body,
+      )
+    : null
 
   return (
-    <div ref={ref} className="relative inline-block">
+    <>
       <div
-        onClick={() => setIsOpen((prev) => !prev)}
-        className="cursor-pointer"
+        ref={triggerRef}
+        onClick={toggleOpen}
+        className="inline-block cursor-pointer"
       >
         {trigger}
       </div>
-
-      {isOpen && (
-        <div
-          className={cn(
-            'BG-gray absolute z-50 mt-4 rounded border shadow-md',
-            width,
-            {
-              'left-0': align === 'left',
-              'right-0': align === 'right',
-              'left-1/2 -translate-x-1/2': align === 'center',
-            },
-          )}
-        >
-          {children}
-        </div>
-      )}
-    </div>
+      {menu}
+    </>
   )
 }
