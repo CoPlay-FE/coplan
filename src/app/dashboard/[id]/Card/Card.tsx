@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import type { Card } from '@/app/api/useCards'
+import type { Card as CardType } from '@/app/api/useCards'
 
 import { useDragStore } from '../store/useDragStore'
 import Tags from './Tags'
@@ -9,7 +9,7 @@ export default function Card({
   card,
   columnId,
 }: {
-  card: Card
+  card: CardType
   columnId: number
 }) {
   const { id, imageUrl, title, tags, dueDate, assignee } = card
