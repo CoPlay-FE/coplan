@@ -8,7 +8,7 @@ interface FormData {
   password: string
 }
 
-export default function MyForm() {
+export default function Login() {
   const {
     register,
     handleSubmit,
@@ -54,7 +54,7 @@ export default function MyForm() {
         hasError={touchedFields.password && !!errors.password}
         errorMessage={touchedFields.password ? errors.password?.message : ''}
       />
-
+      <Input labelName="안녕" name="text" />
       <button
         type="submit"
         className="mt-4 rounded bg-blue-500 py-2 text-white"
