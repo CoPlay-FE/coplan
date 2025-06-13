@@ -1,6 +1,6 @@
 'use client'
 
-import CollaboratorItem from '../CollaboratorItem'
+import CollaboratorItem from '../../CollaboratorItem'
 import Tooltip from './Tooltip' // ✅ 추가
 
 export const mockCollaborators = [

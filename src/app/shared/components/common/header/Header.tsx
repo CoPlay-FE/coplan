@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import ThemeToggle from '../../ThemeToggle'
-import CollaboratorList from './CollaboratorList'
+import CollaboratorList from './Collaborator/CollaboratorList'
 import UserDropdown from './UserDropdown'
 
 export default function Header() {
