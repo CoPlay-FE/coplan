@@ -1,7 +1,12 @@
+'use client'
+
 import Image from 'next/image'
 
 import Sidebar from '@/app/shared/components/common/sidebar/Sidebar'
 import ThemeToggle from '@/app/shared/components/ThemeToggle'
+
+import CreateDashboardModal from '../shared/components/common/sidebar/modal/CreateDashboardModal'
+import { useModalStore } from '../shared/store/useModalStore'
 
 //<초기 설정 안내>
 
@@ -17,6 +22,8 @@ import ThemeToggle from '@/app/shared/components/ThemeToggle'
 // globals.css에 작성한 커스텀 유틸 클래스(@apply) 참고해서, 클래스명 가져다 사용하거나 직접 커스텀
 
 export default function Home() {
+  const { openCreateDashboardModal } = useModalStore()
+
   return (
     <div className="flex">
       {/* 사이드바 */}
@@ -29,6 +36,16 @@ export default function Home() {
           <h1 className="mb-16 text-24 font-bold">Sidebar 테스트 페이지</h1>
           <p className="Text-gray mb-20">왼쪽에 사이드바 만들어보자잇!</p>
           <ThemeToggle />
+
+          {/* 모달 테스트 버튼 */}
+          <button
+            onClick={openCreateDashboardModal}
+            className="BG-blue mt=12 rounded-6 px-16 py-10 text-white"
+          >
+            대시보드 생성 모달 테스트
+          </button>
+          {/* 모달 버튼 컴포넌트 추가 */}
+          <CreateDashboardModal />
         </div>
 
         {/* 기존 테스트 요소들 */}
