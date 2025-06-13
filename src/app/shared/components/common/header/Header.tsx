@@ -6,15 +6,16 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import ThemeToggle from '../../ThemeToggle'
+import CollaboratorList from './CollaboratorList'
 import UserDropdown from './UserDropdown'
 
 export default function Header() {
   const pathname = usePathname()
 
   return (
-    <header className="Border-bottom Text-black flex items-center justify-between border-b px-18 py-12">
+    <header className="Border-bottom Text-black flex items-center justify-between border-b px-64 py-12">
       {/* 좌측 대시보드명 */}
-      <div className="flex items-center gap-8">
+      <div className="ml-280 flex items-center gap-8">
         <div className="font-bold">대시보드 명</div>
         <div className="relative h-12 w-14 overflow-hidden">
           <Image src="/images/crown.png" fill alt="내가 만든 대시보드" />
@@ -22,7 +23,7 @@ export default function Header() {
       </div>
 
       {/* 우측 사용자 정보/다크모드 */}
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-32">
         <nav className="Text-gray hidden gap-8 text-sm md:flex">
           <Link
             href="/dashboard"
@@ -50,16 +51,8 @@ export default function Header() {
           </Link>
         </nav>
         {/* 공동작업자 프로필 이미지 */}
-        <div className="relative mx-16 size-48 overflow-hidden rounded-full">
-          <Image
-            src="/images/collaborator.png"
-            fill
-            alt="초대된 사용자"
-            style={{ objectFit: 'cover' }}
-          />
-        </div>
-        |
-        <div className="flex items-center gap-16">
+        <CollaboratorList />|
+        <div className="flex items-center gap-32">
           {/* 드롭다운 메뉴 */}
           <UserDropdown />
           {/* 다크모드 토글 버튼 */}
