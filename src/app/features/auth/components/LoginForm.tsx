@@ -52,7 +52,7 @@ export default function LoginForm() {
         type="submit"
         className={cn(
           'mt-8 h-50 w-full rounded-8 text-lg font-medium text-white',
-          allFilled ? 'BG-blue' : 'BG-blue-disabled',
+          allFilled && !isSubmitting ? 'BG-blue' : 'BG-blue-disabled',
         )}
         disabled={!allFilled || isSubmitting}
       >
