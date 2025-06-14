@@ -1,5 +1,5 @@
-import { useAuthStore } from '../store/useAuthStore'
 import { login as loginApi, signup as signupApi } from '../api/authApi'
+import { useAuthStore } from '../store/useAuthStore'
 import { LoginRequest, SignupRequest } from '../types/auth.type'
 
 export function useAuth() {
@@ -23,6 +23,7 @@ export function useAuth() {
 
   function logout() {
     clearAuthState()
+    useAuthStore.persist.clearStorage()
   }
 
   return {
