@@ -9,7 +9,7 @@ export function useLoginSubmit() {
   const { login } = useAuth()
   const router = useRouter()
 
-  async function handleSubmit(data: LoginRequest) {
+  async function submit(data: LoginRequest) {
     try {
       await login(data)
       toast.success('로그인 성공')
@@ -24,5 +24,5 @@ export function useLoginSubmit() {
     }
   }
 
-  return { handleSubmit }
+  return { submit }
 }

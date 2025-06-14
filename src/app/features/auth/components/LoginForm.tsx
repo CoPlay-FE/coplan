@@ -22,14 +22,14 @@ export default function LoginForm() {
     },
   })
 
-  const { handleSubmit: submitLogin } = useLoginSubmit()
+  const { submit } = useLoginSubmit()
   const watch = useWatch({ control })
   const allFilled = watch.email?.trim() !== '' && watch.password?.trim() !== ''
   const showEmailError = !!errors.email
   const showPasswordError = !!errors.password
 
   return (
-    <form className="flex flex-col gap-16" onSubmit={handleSubmit(submitLogin)}>
+    <form className="flex flex-col gap-16" onSubmit={handleSubmit(submit)}>
       <Input
         labelName="이메일"
         type="email"
