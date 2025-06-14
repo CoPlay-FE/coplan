@@ -17,7 +17,9 @@ export default function Card({
   return (
     <div
       draggable="true"
-      onDragStart={() => setDraggingCard({ cardId: id, columnId: columnId })}
+      onDragStart={() =>
+        setDraggingCard({ columnId: columnId, cardData: card })
+      }
       className="BG-white Border-section relative w-314 rounded-6 border-solid px-20 py-16"
     >
       Todo Card

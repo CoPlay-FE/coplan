@@ -1,11 +1,13 @@
 import { create } from 'zustand'
+
+import { Card } from '../type/Card'
 interface draggingCard {
-  cardId: number
   columnId: number
+  cardData: Card
 }
 interface DragStore {
   draggingCard: draggingCard | null
-  setDraggingCard: (data: { cardId: number; columnId: number }) => void
+  setDraggingCard: (data: { columnId: number; cardData: Card }) => void
   clearDraggingCard: () => void
 }
 export const useDragStore = create<DragStore>((set) => ({
