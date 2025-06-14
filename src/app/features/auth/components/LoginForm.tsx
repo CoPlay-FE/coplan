@@ -56,7 +56,7 @@ export default function LoginForm() {
         )}
         disabled={!allFilled || isSubmitting}
       >
-        제출하기
+        로그인
       </button>
     </form>
   )
