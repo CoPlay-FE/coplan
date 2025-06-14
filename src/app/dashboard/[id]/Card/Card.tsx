@@ -16,10 +16,10 @@ export default function Card({
   const { setDraggingCard } = useDragStore()
   return (
     <div
+      data-card-id={card.id}
+      data-card-data={JSON.stringify(card)}
       draggable="true"
-      onDragStart={() =>
-        setDraggingCard({ columnId: columnId, cardData: card })
-      }
+      onDragStart={() => setDraggingCard({ cardData: card })}
       className="BG-white Border-section relative w-314 rounded-6 border-solid px-20 py-16"
     >
       Todo Card

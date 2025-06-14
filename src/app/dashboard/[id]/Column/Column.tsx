@@ -39,7 +39,7 @@ export default function Column({ column }: { column: ColumnType }) {
           return
         }
         // 동일 컬럼이면 무시
-        if (draggingCard.columnId === id) {
+        if (draggingCard.cardData.columnId === id) {
           clearDraggingCard()
           return
         }
@@ -48,6 +48,7 @@ export default function Column({ column }: { column: ColumnType }) {
           cardData: draggingCard.cardData,
         })
       }}
+      data-column-id={id}
       className={cn(
         'BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20',
         {

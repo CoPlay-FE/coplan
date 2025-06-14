@@ -27,7 +27,7 @@ export const useCardMutation = () => {
       await Promise.all([
         queryClient.cancelQueries({ queryKey: ['columnId', columnId] }),
         queryClient.cancelQueries({
-          queryKey: ['columnId', currentCard?.columnId],
+          queryKey: ['columnId', currentCard?.cardData.columnId],
         }),
       ])
 
@@ -41,7 +41,7 @@ export const useCardMutation = () => {
       if (
         !currentCard ||
         currentCard.cardData.id !== cardData.id ||
-        currentCard.columnId === columnId
+        currentCard.cardData.columnId === columnId
       ) {
         console.log('no dragging card || is not a dragging card || same column')
         clearDraggingCard()
@@ -51,7 +51,7 @@ export const useCardMutation = () => {
       // A. 이전 컬럼에서 카드 제거 & 카드 추출
       // setQueryData의 콜백함수의 리턴값이 쿼리키 캐시에 저장됨(캐시 업데이트)
       queryClient.setQueryData<CardResponse>(
-        ['columnId', currentCard.columnId],
+        ['columnId', currentCard.cardData.columnId],
         (oldData) => {
           if (!oldData) return
 
