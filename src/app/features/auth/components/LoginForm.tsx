@@ -51,7 +51,7 @@ export default function LoginForm() {
       <button
         type="submit"
         className={cn(
-          'mt-8 h-50 w-full rounded-8 text-white',
+          'mt-8 h-50 w-full rounded-8 text-lg font-medium text-white',
           allFilled ? 'BG-blue' : 'BG-blue-disabled',
         )}
         disabled={!allFilled || isSubmitting}
