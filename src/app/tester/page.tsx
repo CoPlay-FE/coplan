@@ -40,7 +40,7 @@ export default function Home() {
           {/* 모달 테스트 버튼 */}
           <button
             onClick={openCreateDashboardModal}
-            className="BG-blue mt=12 rounded-6 px-16 py-10 text-white"
+            className="BG-blue mt-12 rounded-6 px-16 py-10 text-white"
           >
             대시보드 생성 모달 테스트
           </button>

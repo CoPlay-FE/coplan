@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import api from '@/app/shared/lib/axios'
 import { useModalStore } from '@/app/shared/store/useModalStore'
@@ -21,6 +21,13 @@ export default function CreateDashboardModal() {
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  useEffect(() => {
+    if (!createDashboardModalOpen) {
+      setFormData({ title: '', color: DASHBOARD_COLORS[0] })
+      setIsSubmitting(false)
+    }
+  }, [createDashboardModalOpen])
 
   if (!createDashboardModalOpen) {
     return null
