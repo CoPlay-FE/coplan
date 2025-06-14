@@ -1,18 +1,57 @@
+import { useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
+import { useState } from 'react'
 
 import useCards from '@/app/api/useCards'
-import type { Column } from '@/app/api/useColumns'
+import type { Column as ColumnType } from '@/app/api/useColumns'
+import { cn } from '@/app/shared/lib/cn'
 
+import { useCardMutation } from '../api/useCardMutation'
 import Card from '../Card/Card'
-export default function Column({ column }: { column: Column }) {
+import { useDragStore } from '../store/useDragStore'
+export default function Column({ column }: { column: ColumnType }) {
   const { id, title }: { id: number; title: string } = column
   const { data, isLoading, error } = useCards(id)
+  const [isDraggingover, setDraggingover] = useState(false)
+  const { clearDraggingCard } = useDragStore()
+  const cardMutation = useCardMutation()
 
   if (isLoading) return <p>loading...</p>
   if (error) return <p>error...{error.message}</p>
 
   return (
-    <div className="BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20">
+    <div
+      onDragOver={(e) => {
+        e.preventDefault() //브라우저 기본은 드롭 비허용. 이걸 막아줘야 drop 가능
+        if (!isDraggingover) setDraggingover(true) //dragOver 이벤트 발생하는 내내 setState 실행 방지(처음 false일때만 setDraggingOver실행)
+      }}
+      onDragLeave={(e) => {
+        e.preventDefault()
+        if (isDraggingover) setDraggingover(false)
+      }}
+      onDrop={(e) => {
+        e.preventDefault()
+        if (isDraggingover) setDraggingover(false)
+        const draggingCard = useDragStore.getState().draggingCard
+
+        if (!draggingCard) {
+          console.log('no dragging card') //TODO - toast 처리 🍞
+          return
+        }
+        // 동일 컬럼이면 무시
+        if (draggingCard.columnId === id) {
+          clearDraggingCard()
+          return
+        }
+        cardMutation.mutate({ cardId: draggingCard.cardId, columnId: id })
+      }}
+      className={cn(
+        'BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20',
+        {
+          '!border-blue-500': isDraggingover,
+        },
+      )}
+    >
       <div className="mb-24 flex items-center justify-between">
         <div className="flex items-center">
           <div className="mb-7 mr-8 size-8 rounded-25 bg-blue-500"></div>
@@ -38,7 +77,9 @@ export default function Column({ column }: { column: Column }) {
           />
         </div>
       </button>
-      {data?.cards.map((card) => <Card key={card.id} card={card} />)}
+      {data?.cards.map((card) => (
+        <Card key={card.id} card={card} columnId={id} />
+      ))}
     </div>
   )
 }

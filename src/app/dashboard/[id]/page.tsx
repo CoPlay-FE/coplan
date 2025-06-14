@@ -14,7 +14,7 @@ export default function DashboardID() {
   return (
     <>
       <div className="fixed left-0 h-1080 w-300 bg-gray-100">사이드바</div>
-      <div className="ml-300">
+      <div className="ml-300 select-none">
         <div className="flex">
           {columns?.map((column) => <Column key={column.id} column={column} />)}
           <div className="BG-gray Border-column p-20">
