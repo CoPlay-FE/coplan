@@ -15,7 +15,7 @@ export default function LoginForm() {
     formState: { errors, isSubmitting },
     control,
   } = useForm<LoginRequest>({
-    mode: 'all',
+    mode: 'onChange',
     defaultValues: {
       email: '',
       password: '',
