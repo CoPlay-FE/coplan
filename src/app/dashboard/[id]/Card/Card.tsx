@@ -21,7 +21,7 @@ export default function Card({
       data-card-data={JSON.stringify(card)}
       draggable="true"
       onDragStart={() => setDraggingCard({ cardData: card })}
-      className="BG-white Border-section relative w-314 rounded-6 border-solid px-20 py-16"
+      className="BG-white Border-section relative rounded-6 border-solid px-20 py-16"
     >
       {imageUrl && (
         <Image
@@ -46,7 +46,7 @@ export default function Card({
             width={18}
             height={18}
           />
-          <div className="Text-gray mt-2 text-12 font-medium leading-none">
+          <div className="Text-gray mt-4 text-12 font-medium leading-none">
             {dueDate}
           </div>
         </div>

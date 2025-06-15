@@ -102,7 +102,7 @@ export default function DashboardID() {
       <div className="fixed left-0 h-1080 w-300 bg-gray-100">사이드바</div>
       <div className="ml-300 select-none">
         <div
-          className="flex"
+          className="tablet:flex-col flex"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}

@@ -53,7 +53,7 @@ export default function Column({ column }: { column: ColumnType }) {
       }}
       data-column-id={id}
       className={cn(
-        'BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20',
+        'BG-gray Border-column tablet:w-584 flex w-354 shrink-0 flex-col gap-16 p-20',
         {
           '!border-blue-500': isDraggingover,
         },
@@ -76,7 +76,7 @@ export default function Column({ column }: { column: ColumnType }) {
         />
       </div>
       <button
-        className="BG-white Border-btn rounded-6 px-146 py-9"
+        className="BG-white Border-btn flex justify-center rounded-6 py-9"
         onClick={() => setOpenCreateCard(true)}
       >
         <div className="flex h-22 w-22 items-center justify-center rounded-4 bg-blue-100">
