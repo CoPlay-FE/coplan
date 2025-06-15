@@ -1,6 +1,7 @@
 import Image from 'next/image'
 
 import type { Card as CardType } from '@/app/api/useCards'
+import { Avatar } from '@/app/shared/components/common/Avatar'
 
 import { useDragStore } from '../store/useDragStore'
 import Tags from './Tags'
@@ -37,7 +38,7 @@ export default function Card({
         {title}
       </h3>
       <Tags tags={tags} />
-      <div className="mt-8 flex content-around">
+      <div className="mt-8 flex content-around items-center">
         <div className="flex size-full items-center gap-6">
           <Image
             src={'/images/calendar.svg'}
@@ -49,7 +50,13 @@ export default function Card({
             {dueDate}
           </div>
         </div>
-        <p>프로필</p>
+        <div className="shrink-0">
+          <Avatar
+            nickname={assignee.nickname}
+            imageUrl={assignee.profileImageUrl}
+            size={24}
+          />
+        </div>
       </div>
     </div>
   )
