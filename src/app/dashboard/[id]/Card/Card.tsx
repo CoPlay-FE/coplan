@@ -22,22 +22,35 @@ export default function Card({
       onDragStart={() => setDraggingCard({ cardData: card })}
       className="BG-white Border-section relative w-314 rounded-6 border-solid px-20 py-16"
     >
-      Todo Card
       {imageUrl && (
         <Image
           src={imageUrl}
           alt="카드 이미지"
           width={400}
           height={600}
-          className="h-auto w-full rounded-6 object-contain"
+          className="mb-15 h-auto w-full rounded-6 object-contain"
           priority
           draggable="false"
         />
       )}
-      <p>{title}</p>
+      <h3 className="Text-black mb-10 text-16 font-medium leading-relaxed">
+        {title}
+      </h3>
       <Tags tags={tags} />
-      <p>{dueDate}</p>
-      <p>프로필</p>
+      <div className="mt-8 flex content-around">
+        <div className="flex size-full items-center gap-6">
+          <Image
+            src={'/images/calendar.svg'}
+            alt="마감일"
+            width={18}
+            height={18}
+          />
+          <div className="Text-gray mt-2 text-12 font-medium leading-none">
+            {dueDate}
+          </div>
+        </div>
+        <p>프로필</p>
+      </div>
     </div>
   )
 }

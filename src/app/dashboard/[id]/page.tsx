@@ -7,27 +7,26 @@ import useColumns from '@/app/api/useColumns'
 
 import { useCardMutation } from './api/useCardMutation'
 import Column from './Column/Column'
+import { closestColumn } from './lib/closestColumn'
 import { useDragStore } from './store/useDragStore'
 import { Card } from './type/Card'
 export default function DashboardID() {
   const dashboard = 15120
   const { data: columns, isLoading, error } = useColumns(dashboard)
-  const { draggingCard, setDraggingCard } = useDragStore()
-
   const touchPos = useRef({ x: 0, y: 0 })
   const cardMutation = useCardMutation()
+  const { draggingCard, setDraggingCard } = useDragStore()
 
-  // 카드 드래그하는 터치가 확실할때만 카드 데이터 가져오게 하고싶은데,
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    // 개선점.. longpress 적용, requestAnimationFrame 적용
     // 1. 터치 대상 찾기
     const target = e.target as HTMLElement
-    const cardEl = target.closest('[data-card-data]') as HTMLElement // div형태의 DOM요소 자체를 반환함
+    const cardEl = target.closest('[data-card-data]') as HTMLElement // 카드를 DOM요소 자체의 형태로 반환
     if (!cardEl) return
     const cardData: Card = JSON.parse(cardEl.dataset.cardData || '{}') // 터치한 카드의 <Card>데이터 가져옴
     setDraggingCard({ cardData: cardData }) // 전역상태에, 현재 드래그할 카드 저장(후에 뮤테이션 함수에 전달해서 캐시 업데이트에 사용)
-    console.log('⭕️testing', cardData.title, cardData.id, cardData.columnId)
 
-    // 2. 터치 좌표 저장
+    // 2. 카드 영역 내 터치 좌표 계산 (저장)
     const touch = e.touches[0]
     const rect = cardEl.getBoundingClientRect()
     touchPos.current = {
@@ -35,16 +34,16 @@ export default function DashboardID() {
       y: touch.clientY - rect.top,
     }
 
-    // 🧱 복제 요소 생성
+    // 3. 🧱 복제 요소 생성
     const clone = cardEl.cloneNode(true) as HTMLElement
     clone.id = 'dragged-clone'
     clone.style.position = 'fixed'
     clone.style.left = `${touch.clientX - touchPos.current.x}px`
     clone.style.top = `${touch.clientY - touchPos.current.y}px`
-    clone.style.pointerEvents = 'none' // pointer-events: none을 드래그 중인 카드에 설정하면 elementFromPoint가 그 카드에 막히지 않고 아래 요소를 잘 탐지합니다.
+    clone.style.pointerEvents = 'none' // pointer-events: none을 드래그 중인 카드에 설정하면 elementFromPoint가 그 카드에 막히지 않고 아래 요소를 탐지할수 있음
     clone.style.opacity = '0.8'
     clone.style.zIndex = '9999'
-    clone.style.width = `${rect.width}px` // 크기 일치
+    clone.style.width = `${rect.width}px`
     document.body.appendChild(clone)
   }
 
@@ -60,16 +59,15 @@ export default function DashboardID() {
       clone.style.top = `${touchY - touchPos.current.y}px`
     }
 
-    // 2. 현재 터치 위치에 있는 맨 위 요소 확인
-    const elementBelow = document.elementFromPoint(touchX, touchY)
-
-    // 3. 가장 가까운 column 요소 찾기 (data-column-id로 마킹해두는 것이 좋음)
+    // 2. 현재 위치의 컬럼
+    const elementBelow = document.elementFromPoint(touchX, touchY) // 좌표 위치의 맨 위에 있는 요소
     const columnEl = elementBelow?.closest(
       '[data-column-id]',
     ) as HTMLElement | null
 
+    // 3. 현재 위치의 컬럼의 스타일 변형
     if (columnEl) {
-      // 현재 터치오버 위치의 컬럼 스타일 조정
+      // columnEl.classList.add('BG-drag-hovered')
     } else {
       console.log('⚠️ 컬럼 위에 없음')
     }
@@ -77,29 +75,20 @@ export default function DashboardID() {
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!draggingCard?.cardData) return
-
-    // 클론카드 제거
+    // 1. 🧱 클론 카드 제거
     const clone = document.getElementById('dragged-clone')
     if (clone) {
       clone.remove()
     }
 
-    // 어느 컬럼 위에서 끝났는지 체크해야함.
-    // 3. 가장 가까운 column 요소 찾기 (data-column-id로 마킹해두는 것이 좋음)
-    const touch = e.changedTouches?.[0]
-    const touchX = touch.clientX
-    const touchY = touch.clientY
-    const elementBelow = document.elementFromPoint(touchX, touchY)
-    const columnEl = elementBelow?.closest(
-      '[data-column-id]',
-    ) as HTMLElement | null
-    // 위에 코드는 get Column함수로 뺄까보다(매개변수로 이벤트 받고, columnEl리턴하는)
-    if (!columnEl) return //컬럼위에가 아니면 리턴
+    // 2. 타겟 컬럼 가져오기
+    const columnEl = closestColumn(e)
+    if (!columnEl) return
     const columnId = Number(columnEl?.dataset.columnId)
 
-    // 동일컬럼이면 취소 리턴
-    if (columnId === draggingCard.cardData.columnId) return
-    // 낙관적 UI 함수 호출
+    if (columnId === draggingCard.cardData.columnId) return // 드래그한 카드와 동일한 컬럼이면 동작 취소
+
+    // 3. 타겟 컬럼으로 카드데이터 이동 (useCardMutation.ts - 서버, 캐시 업데이트)
     cardMutation.mutate({
       columnId: columnId,
       cardData: draggingCard?.cardData,
