@@ -1,0 +1,60 @@
+'use client'
+
+import Input from '@components/Input'
+import { cn } from '@lib/cn'
+import { useForm } from 'react-hook-form'
+
+import { useLoginSubmit } from '../hooks/useLoginSubmit'
+import { loginValidation } from '../schemas/loginValidation'
+import { LoginRequest } from '../types/auth.type'
+
+export default function LoginForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<LoginRequest>({
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
+
+  const { submit } = useLoginSubmit()
+  const showEmailError = !!errors.email
+  const showPasswordError = !!errors.password
+
+  return (
+    <form className="flex flex-col gap-16" onSubmit={handleSubmit(submit)}>
+      <Input
+        labelName="이메일"
+        type="email"
+        placeholder="이메일 입력"
+        autoComplete="email"
+        {...register('email', loginValidation.email)}
+        hasError={showEmailError}
+        errorMessage={errors.email?.message}
+      />
+      <Input
+        labelName="비밀번호"
+        type="password"
+        placeholder="비밀번호 입력"
+        autoComplete="off"
+        {...register('password', loginValidation.password)}
+        hasError={showPasswordError}
+        errorMessage={errors.password?.message}
+      />
+      <button
+        type="submit"
+        className={cn(
+          'mt-8 h-50 w-full rounded-8 text-lg font-medium text-white',
+          isValid && !isSubmitting ? 'BG-blue' : 'BG-blue-disabled',
+        )}
+        disabled={!isValid || isSubmitting}
+      >
+        로그인
+      </button>
+    </form>
+  )
+}
