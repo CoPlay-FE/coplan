@@ -2,7 +2,7 @@
 
 import Input from '@components/Input'
 import { cn } from '@lib/cn'
-import { useForm, useWatch } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
 import { useLoginSubmit } from '../hooks/useLoginSubmit'
 import { loginValidation } from '../schemas/loginValidation'
@@ -12,8 +12,7 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-    control,
+    formState: { errors, isSubmitting, isValid },
   } = useForm<LoginRequest>({
     mode: 'onChange',
     defaultValues: {
@@ -23,8 +22,6 @@ export default function LoginForm() {
   })
 
   const { submit } = useLoginSubmit()
-  const watch = useWatch({ control })
-  const allFilled = watch.email?.trim() !== '' && watch.password?.trim() !== ''
   const showEmailError = !!errors.email
   const showPasswordError = !!errors.password
 
@@ -52,9 +49,9 @@ export default function LoginForm() {
         type="submit"
         className={cn(
           'mt-8 h-50 w-full rounded-8 text-lg font-medium text-white',
-          allFilled && !isSubmitting ? 'BG-blue' : 'BG-blue-disabled',
+          isValid && !isSubmitting ? 'BG-blue' : 'BG-blue-disabled',
         )}
-        disabled={!allFilled || isSubmitting}
+        disabled={!isValid || isSubmitting}
       >
         로그인
       </button>
