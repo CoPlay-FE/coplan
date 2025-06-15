@@ -22,6 +22,9 @@ body {
 .BG-blue {
   @apply bg-[#83C8FA] hover:bg-[#5FBBFF] dark:bg-[#228DFF] dark:hover:bg-[#2172C9];
 }
+.BG-blue-disabled {
+  @apply cursor-not-allowed bg-[#9FA6B2];
+}
 .BG-violet {
   @apply bg-[#228DFF];
 }
