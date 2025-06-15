@@ -32,3 +32,10 @@ export interface CreateDashboardRequest {
   title: string
   color: string
 }
+
+// 대시보드 생성 모달
+export interface ModalState {
+  createDashboardModalOpen: boolean
+  openCreateDashboardModal: () => void
+  closeCreateDashboardModal: () => void
+}

@@ -4,12 +4,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
+import { useModalStore } from '@/app/shared/store/useModalStore'
+
 import CreateDashboardButton from './CreateDashboardButton'
 import DashboardItem from './DashboardItem'
 
 export default function Sidebar(): JSX.Element {
   const pathname = usePathname()
   const router = useRouter()
+  const { openCreateDashboardModal } = useModalStore()
 
   // TODO: 목데이터 - API 연동시 삭제예정
   const mockDashboards = [
@@ -65,8 +68,7 @@ export default function Sidebar(): JSX.Element {
   }
 
   const handleCreateDashboard = () => {
-    // TODO: 대시보드 생성 모달 열기
-    console.log('대시보드 생성 모달 열기임')
+    openCreateDashboardModal()
   }
   return (
     <aside className="BG-white Border-section fixed left-0 top-0 h-screen w-300 overflow-y-auto">

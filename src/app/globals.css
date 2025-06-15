@@ -25,7 +25,9 @@ body {
 .BG-blue-disabled {
   @apply cursor-not-allowed bg-[#9FA6B2];
 }
-
+.BG-violet {
+  @apply bg-[#228DFF];
+}
 .Text-black {
   @apply text-[#333236] dark:text-[#FFFFFF];
 }
