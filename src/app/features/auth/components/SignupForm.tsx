@@ -2,7 +2,7 @@
 
 import Input from '@components/Input'
 import { cn } from '@lib/cn'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useConfirmPasswordValidation } from '../hooks/useConfirmPasswordValidation'
@@ -28,13 +28,8 @@ export default function SignupForm() {
   })
 
   const [isChecked, setIsChecked] = useState(false)
-  const password = getValues('password')
   const { submit } = useSignupSubmit()
   const validation = useConfirmPasswordValidation(getValues)
-
-  useEffect(() => {
-    trigger('confirmPassword')
-  }, [password, trigger])
 
   function handleAgree() {
     setIsChecked((prev) => !prev)
@@ -65,7 +60,10 @@ export default function SignupForm() {
         type="password"
         placeholder="8자 이상 입력해 주세요"
         autoComplete="new-password"
-        {...register('password', signupValidation.password)}
+        {...register('password', {
+          ...signupValidation.password,
+          onChange: () => trigger('confirmPassword'),
+        })}
         hasError={!!errors.password}
         errorMessage={errors.password?.message}
       />
