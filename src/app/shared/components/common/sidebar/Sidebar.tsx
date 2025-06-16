@@ -59,7 +59,7 @@ export default function Sidebar(): JSX.Element {
               <div className="Text-red text-14">{error}</div>
             </div>
           ) : dashboards.length === 0 ? (
-            <div className="justify-left flex items-center py-20">
+            <div className="flex items-center justify-start py-20">
               <div className="Text-gray text-14">대시보드가 없습니다.</div>
             </div>
           ) : (
