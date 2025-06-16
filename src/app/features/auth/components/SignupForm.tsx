@@ -41,10 +41,7 @@ export default function SignupForm() {
   }
 
   return (
-    <form
-      className="mt-30 flex flex-col gap-16"
-      onSubmit={handleSubmit(submit)}
-    >
+    <form className="flex flex-col gap-16" onSubmit={handleSubmit(submit)}>
       <Input
         labelName="이메일"
         type="email"
@@ -81,14 +78,17 @@ export default function SignupForm() {
         hasError={!!errors.confirmPassword}
         errorMessage={errors.confirmPassword?.message}
       />
-      <div className="flex gap-8">
+      <div className="flex items-center gap-8">
         <input
           type="checkbox"
           id="terms"
+          className="size-16 rounded-4"
           onChange={handleAgree}
           checked={isChecked}
         />
-        <label htmlFor="terms">이용약관에 동의합니다.</label>
+        <label className="text-base" htmlFor="terms">
+          이용약관에 동의합니다.
+        </label>
       </div>
       <button
         type="submit"
