@@ -42,7 +42,7 @@ export default function CreateDashboardModal() {
     try {
       setIsSubmitting(true)
 
-      const response = await api.post(`/dashboards`, formData)
+      const response = await api.post(`/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards`, formData)
 
       const data = response.data
 
