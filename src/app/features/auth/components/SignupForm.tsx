@@ -27,7 +27,7 @@ export default function SignupForm() {
     },
   })
 
-  const [checked, setChecked] = useState(false)
+  const [isChecked, setIsChecked] = useState(false)
   const password = getValues('password')
   const { submit } = useSignupSubmit()
   const validation = useConfirmPasswordValidation(getValues)
@@ -37,7 +37,7 @@ export default function SignupForm() {
   }, [password, trigger])
 
   function handleAgree() {
-    setChecked((prev) => !prev)
+    setIsChecked((prev) => !prev)
   }
 
   return (
@@ -86,7 +86,7 @@ export default function SignupForm() {
           type="checkbox"
           id="terms"
           onChange={handleAgree}
-          checked={checked}
+          checked={isChecked}
         />
         <label htmlFor="terms">이용약관에 동의합니다.</label>
       </div>
@@ -94,9 +94,11 @@ export default function SignupForm() {
         type="submit"
         className={cn(
           'mt-8 h-50 w-full rounded-8 text-lg font-medium text-white',
-          isValid && checked && !isSubmitting ? 'BG-blue' : 'BG-blue-disabled',
+          isValid && isChecked && !isSubmitting
+            ? 'BG-blue'
+            : 'BG-blue-disabled',
         )}
-        disabled={isSubmitting || !isValid || !checked}
+        disabled={isSubmitting || !isValid || !isChecked}
       >
         회원가입
       </button>
