@@ -7,22 +7,26 @@ import useColumns from '@/app/api/useColumns'
 
 import { useCardMutation } from './api/useCardMutation'
 import Column from './Column/Column'
-import { closestColumn } from './lib/closestColumn'
 import { useDragStore } from './store/useDragStore'
-import { Card } from './type/Card'
+import type { Card } from './type/Card'
+
 export default function DashboardID() {
   const dashboard = 15120
   const { data: columns, isLoading, error } = useColumns(dashboard)
-  const touchPos = useRef({ x: 0, y: 0 })
-  const cardMutation = useCardMutation()
   const { draggingCard, setDraggingCard } = useDragStore()
+  const cardMutation = useCardMutation()
+  const touchPos = useRef({ x: 0, y: 0 })
+  const prevColumn = useRef<HTMLElement | null>(null)
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     // 개선점.. longpress 적용, requestAnimationFrame 적용
     // 1. 터치 대상 찾기
     const target = e.target as HTMLElement
-    const cardEl = target.closest('[data-card-data]') as HTMLElement // 카드를 DOM요소 자체의 형태로 반환
+    const cardEl = target.closest('[data-card-data]') as HTMLElement
+    const columnEl = target.closest('[data-column-id]') as HTMLElement | null
+
     if (!cardEl) return
+    prevColumn.current = columnEl
     const cardData: Card = JSON.parse(cardEl.dataset.cardData || '{}') // 터치한 카드의 <Card>데이터 가져옴
     setDraggingCard({ cardData: cardData }) // 전역상태에, 현재 드래그할 카드 저장(후에 뮤테이션 함수에 전달해서 캐시 업데이트에 사용)
 
@@ -60,29 +64,36 @@ export default function DashboardID() {
     }
 
     // 2. 현재 위치의 컬럼
-    const elementBelow = document.elementFromPoint(touchX, touchY) // 좌표 위치의 맨 위에 있는 요소
-    const columnEl = elementBelow?.closest(
-      '[data-column-id]',
-    ) as HTMLElement | null
+    const columnEl = document
+      .elementFromPoint(touchX, touchY)
+      ?.closest('[data-column-id]') as HTMLElement | null
 
     // 3. 현재 위치의 컬럼의 스타일 변형
-    if (columnEl) {
-      // columnEl.classList.add('BG-drag-hovered')
-    } else {
-      console.log('⚠️ 컬럼 위에 없음')
+    if (columnEl && columnEl !== prevColumn.current) {
+      columnEl.classList.add('BG-drag-hovered')
+      prevColumn.current?.classList.remove('BG-drag-hovered')
+      prevColumn.current = columnEl
     }
   }
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!draggingCard?.cardData) return
+
     // 1. 🧱 클론 카드 제거
     const clone = document.getElementById('dragged-clone')
     if (clone) {
       clone.remove()
+      prevColumn.current?.classList.remove('BG-drag-hovered')
     }
 
     // 2. 타겟 컬럼 가져오기
-    const columnEl = closestColumn(e)
+    const touch = e.changedTouches?.[0]
+    const touchX = touch.clientX
+    const touchY = touch.clientY
+    const columnEl = document
+      .elementFromPoint(touchX, touchY)
+      ?.closest('[data-column-id]') as HTMLElement | null
+
     if (!columnEl) return
     const columnId = Number(columnEl?.dataset.columnId)
 
