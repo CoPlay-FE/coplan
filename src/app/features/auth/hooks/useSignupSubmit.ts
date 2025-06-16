@@ -12,7 +12,7 @@ export function useSignupSubmit() {
   async function submit(data: SignupRequest) {
     try {
       await signup(data)
-      toast.success('회원가입 성공')
+      toast.success('가입이 완료되었습니다!')
       router.push('/login')
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
