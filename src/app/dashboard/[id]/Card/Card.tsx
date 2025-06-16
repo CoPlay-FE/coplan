@@ -21,6 +21,7 @@ export default function Card({
       data-card-data={JSON.stringify(card)}
       draggable="true"
       onDragStart={() => setDraggingCard({ cardData: card })}
+      onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
       className="BG-white Border-section relative rounded-6 border-solid px-20 py-16"
     >
       {imageUrl && (
