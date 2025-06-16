@@ -1,6 +1,4 @@
-import { SignupFormData } from '../types/auth.type'
-
-export const staticSignupValidation = {
+export const signupValidation = {
   email: {
     required: '이메일을 입력해 주세요.',
     pattern: {
@@ -22,14 +20,4 @@ export const staticSignupValidation = {
       message: '한글 또는 영어만 입력할 수 있으며, 최대 10자까지 가능합니다.',
     },
   },
-}
-
-export function getConfirmPasswordValidation(
-  watch: (field: keyof SignupFormData) => string,
-) {
-  return {
-    required: '비밀번호 확인은 필수입니다.',
-    validate: (value: string) =>
-      value === watch('password') || '비밀번호가 일치하지 않습니다',
-  }
 }
