@@ -26,6 +26,7 @@ export default function SignupForm() {
       confirmPassword: '',
     },
   })
+
   const [checked, setChecked] = useState(false)
   const password = getValues('password')
   const { submit } = useSignupSubmit()
