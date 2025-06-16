@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import api from '../lib/axios'
 import { DashboardListResponse } from '../types/dashboard'
@@ -12,10 +12,14 @@ export function useDashboard() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const fetchDashboards = async () => {
+  const fetchDashboards = useCallback(async () => {
     try {
       setIsLoading(true)
       setError(null)
+
+      if (!process.env.NEXT_PUBLIC_TEAM_ID) {
+        throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.')
+      }
 
       const response = await api.get<DashboardListResponse>(
         `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards?navigationMethod=infiniteScroll`,
@@ -27,11 +31,11 @@ export function useDashboard() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
 
   useEffect(() => {
     fetchDashboards()
-  }, [])
+  }, [fetchDashboards])
 
   return { dashboards, isLoading, error, refetch: fetchDashboards }
 }
