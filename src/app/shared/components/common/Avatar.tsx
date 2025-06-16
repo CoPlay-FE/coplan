@@ -22,6 +22,14 @@ const customColors = [
   '#e292e0',
 ]
 
+/**
+ * Extracts the initial character from a nickname for avatar display.
+ *
+ * Returns the uppercase letter if the first character is an English alphabet letter, the character itself if it is a Korean Hangul syllable, or a question mark if neither condition is met.
+ *
+ * @param nickname - The user's nickname.
+ * @returns The initial character to display in the avatar.
+ */
 function getInitial(nickname: string): string {
   const firstChar = nickname.trim().charAt(0)
   if (/[a-zA-Z]/.test(firstChar)) return firstChar.toUpperCase()
@@ -29,6 +37,15 @@ function getInitial(nickname: string): string {
   return '?'
 }
 
+/**
+ * Displays a user avatar as a circular image or a colored initial based on the provided nickname and optional image URL.
+ *
+ * If an image URL is given, the avatar shows the image. Otherwise, it displays the initial character of the nickname on a colored background.
+ *
+ * @param nickname - The user's nickname, used to determine the initial and background color.
+ * @param imageUrl - Optional URL of the user's avatar image.
+ * @param size - Optional size in pixels for the avatar's width and height. Defaults to 36.
+ */
 export function Avatar({ nickname, imageUrl, size = 36 }: AvatarProps) {
   const initial = getInitial(nickname)
   const bgColor = getColor(nickname, customColors)

@@ -10,6 +10,15 @@ import Column from './Column/Column'
 import { useDragStore } from './store/useDragStore'
 import type { Card } from './type/Card'
 
+/**
+ * Renders a kanban-style dashboard with touch-based drag-and-drop functionality for cards.
+ *
+ * Enables users to move cards between columns using a long-press gesture on touch devices. Handles card movement visually by cloning the dragged card, updating its position during drag, and highlighting columns as potential drop targets. On drop, updates the card's column via mutation.
+ *
+ * @returns The dashboard UI with columns, cards, and an option to add new columns.
+ *
+ * @remark Drag-and-drop is activated by a 300ms long press on a card. Only touch events are supported for dragging.
+ */
 export default function DashboardID() {
   const dashboard = 15120
   const { data: columns, isLoading, error } = useColumns(dashboard)

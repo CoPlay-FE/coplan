@@ -6,6 +6,14 @@ import { Avatar } from '@/app/shared/components/common/Avatar'
 import { useDragStore } from '../store/useDragStore'
 import Tags from './Tags'
 
+/**
+ * Renders a draggable card displaying its image, title, tags, due date, and assignee information.
+ *
+ * The card supports drag-and-drop interactions and prevents the default context menu from appearing on right-click.
+ *
+ * @param card - The card data to display.
+ * @param columnId - The identifier of the column containing this card.
+ */
 export default function Card({
   card,
   columnId,

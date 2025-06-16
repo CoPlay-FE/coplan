@@ -1,5 +1,12 @@
 import { getColor } from '@/app/shared/lib/getColor'
 
+/**
+ * Displays a list of tags with each tag assigned a consistent background and text color.
+ *
+ * Each tag's color is determined by a deterministic function based on its text, ensuring the same tag always receives the same color combination.
+ *
+ * @param tags - Array of tag strings to display.
+ */
 export default function Tags({ tags }: { tags: string[] }) {
   //태그 컬러 - 랜덤 배정
   //카드 생성 시 - 동일 태그 입력 불가하도록

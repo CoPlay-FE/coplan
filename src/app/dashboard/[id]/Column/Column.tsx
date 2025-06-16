@@ -9,6 +9,13 @@ import { cn } from '@/app/shared/lib/cn'
 import { useCardMutation } from '../api/useCardMutation'
 import Card from '../Card/Card'
 import { useDragStore } from '../store/useDragStore'
+/**
+ * Renders a column containing cards with drag-and-drop support for moving cards between columns.
+ *
+ * Displays the column title, card count, and provides UI controls for creating cards and configuring the column. Handles drag-and-drop events to allow cards to be moved into the column, updating their assignment accordingly.
+ *
+ * @param column - The column data, including its unique identifier and title.
+ */
 export default function Column({ column }: { column: ColumnType }) {
   const { id, title }: { id: number; title: string } = column
   const { data, isLoading, error } = useCards(id)
