@@ -1,7 +1,7 @@
+import { showError, showSuccess } from '@lib/toast'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
 
 import { login } from '../api/authApi'
 import { LoginRequest, LoginResponse } from '../types/auth.type'
@@ -15,16 +15,16 @@ export function useLoginMutation() {
     mutationFn: login,
     onSuccess: async (response) => {
       updateAuthState(response)
-      toast.success('로그인 성공')
+      showSuccess('로그인에 성공하셨습니다!')
       await new Promise((resolve) => setTimeout(resolve, 400))
       router.push('/mydashboard')
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
         const message = error.response?.data?.message
-        toast.error(message ?? '로그인 실패')
+        showError(message ?? '로그인에 실패하셨습니다.')
       } else {
-        toast.error('알 수 없는 에러 발생')
+        showError('알 수 없는 에러 발생')
       }
     },
   })
