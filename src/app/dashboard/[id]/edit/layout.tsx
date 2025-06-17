@@ -8,10 +8,12 @@ export default function AboutLayout({
   children: React.ReactNode
 }) {
   return (
-    <div>
+    <>
       <Sidebar />
-      <Header />
-      <div>{children}</div> {/* 여기에 page.tsx 내용이 들어옴 */}
-    </div>
+      <div className="pl-300">
+        <Header />
+        <main>{children}</main>
+      </div>
+    </>
   )
 }
