@@ -99,7 +99,7 @@ export default function SignupForm() {
         )}
         disabled={isPending || !isValid || !isChecked}
       >
-        회원가입
+        {isPending ? '처리 중..' : '회원가입'}
       </button>
     </form>
   )
