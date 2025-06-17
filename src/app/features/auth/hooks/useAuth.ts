@@ -1,8 +1,6 @@
 import { User } from '@/app/shared/types/user.type'
 
-import { signup as signupApi } from '../api/authApi'
 import { useAuthStore } from '../store/useAuthStore'
-import { SignupRequest } from '../types/auth.type'
 
 export function useAuth() {
   const { setAccessToken, setUser, clearAuthState } = useAuthStore()
@@ -18,10 +16,6 @@ export function useAuth() {
     setUser(user)
   }
 
-  async function signup(data: SignupRequest) {
-    await signupApi(data)
-  }
-
   function logout() {
     clearAuthState()
     useAuthStore.persist.clearStorage()
@@ -29,7 +23,6 @@ export function useAuth() {
 
   return {
     updateAuthState,
-    signup,
     logout,
   }
 }
