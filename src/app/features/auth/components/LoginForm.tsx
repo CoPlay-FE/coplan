@@ -4,7 +4,7 @@ import Input from '@components/Input'
 import { cn } from '@lib/cn'
 import { useForm } from 'react-hook-form'
 
-import { useLoginSubmit } from '../hooks/useLoginSubmit'
+import { useLoginMutaion } from '../hooks/useLoginMutaion'
 import { loginValidation } from '../schemas/loginValidation'
 import { LoginRequest } from '../types/auth.type'
 
@@ -21,12 +21,15 @@ export default function LoginForm() {
     },
   })
 
-  const { submit } = useLoginSubmit()
+  const { mutate: loginMutate, isPending } = useLoginMutaion()
   const showEmailError = !!errors.email
   const showPasswordError = !!errors.password
 
   return (
-    <form className="flex flex-col gap-16" onSubmit={handleSubmit(submit)}>
+    <form
+      className="flex w-full flex-col gap-16"
+      onSubmit={handleSubmit((data) => loginMutate(data))}
+    >
       <Input
         labelName="이메일"
         type="email"
@@ -53,7 +56,7 @@ export default function LoginForm() {
         )}
         disabled={!isValid || isSubmitting}
       >
-        로그인
+        {isPending ? '로그인 중..' : '로그인'}
       </button>
     </form>
   )
