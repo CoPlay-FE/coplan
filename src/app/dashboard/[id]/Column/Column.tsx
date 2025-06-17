@@ -15,6 +15,10 @@ export default function Column({ column }: { column: ColumnType }) {
   const [isDraggingover, setDraggingover] = useState(false)
   const { clearDraggingCard } = useDragStore()
   const cardMutation = useCardMutation()
+  const [openCard, setOpenCard] = useState(false) //card.tsx
+  const [openCreateCard, setOpenCreateCard] = useState(false)
+  const [openCreateColumn, setOpenCreateColumn] = useState(false) //page.tsx
+  const [oepnConfigColumn, setConfigColumn] = useState(false)
 
   if (isLoading) return <p>loading...</p>
   if (error) return <p>error...{error.message}</p>
@@ -33,20 +37,23 @@ export default function Column({ column }: { column: ColumnType }) {
         e.preventDefault()
         if (isDraggingover) setDraggingover(false)
         const draggingCard = useDragStore.getState().draggingCard
-
         if (!draggingCard) {
           console.log('no dragging card') //TODO - toast 처리 🍞
           return
         }
-        // 동일 컬럼이면 무시
-        if (draggingCard.columnId === id) {
+
+        if (draggingCard.cardData.columnId === id) {
           clearDraggingCard()
           return
         }
-        cardMutation.mutate({ cardId: draggingCard.cardId, columnId: id })
+        cardMutation.mutate({
+          columnId: id,
+          cardData: draggingCard.cardData,
+        })
       }}
+      data-column-id={id}
       className={cn(
-        'BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20',
+        'BG-gray Border-column tablet:w-584 flex w-354 shrink-0 flex-col gap-16 p-20',
         {
           '!border-blue-500': isDraggingover,
         },
@@ -54,8 +61,8 @@ export default function Column({ column }: { column: ColumnType }) {
     >
       <div className="mb-24 flex items-center justify-between">
         <div className="flex items-center">
-          <div className="mb-7 mr-8 size-8 rounded-25 bg-blue-500"></div>
-          <h2 className="mr-12 text-18 font-bold leading-none">{title}</h2>
+          <div className="BG-blue mb-7 mr-8 size-8 rounded-25"></div>
+          <h2 className="mb-3 mr-12 h-21 text-18 font-bold">{title}</h2>
           <span className="Text-gray block size-20 rounded-4 bg-[#EEEEEE] pt-3 text-center text-12 font-medium leading-tight dark:bg-[#2E2E2E]">
             {data?.totalCount}
           </span>
@@ -65,9 +72,13 @@ export default function Column({ column }: { column: ColumnType }) {
           alt="컬럼 설정"
           width={20}
           height={20}
+          onClick={() => setConfigColumn(true)}
         />
       </div>
-      <button className="BG-white Border-btn rounded-6 px-146 py-9">
+      <button
+        className="BG-white Border-btn flex justify-center rounded-6 py-9"
+        onClick={() => setOpenCreateCard(true)}
+      >
         <div className="flex h-22 w-22 items-center justify-center rounded-4 bg-blue-100">
           <Image
             src={'/images/plus.svg'}

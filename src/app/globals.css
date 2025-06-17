@@ -67,3 +67,7 @@ body {
 .BG-ThemeToggleButton {
   @apply bg-[#FFFFFF] dark:bg-[#D3D3D3];
 }
+
+.BG-drag-hovered {
+  @apply bg-blue-100;
+}
