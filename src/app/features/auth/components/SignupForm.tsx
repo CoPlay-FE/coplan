@@ -38,7 +38,9 @@ export default function SignupForm() {
   return (
     <form
       className="flex w-full flex-col gap-16"
-      onSubmit={handleSubmit((data) => signupMtate(data))}
+      onSubmit={handleSubmit(({ email, nickname, password }) =>
+        signupMtate({ email, nickname, password }),
+      )}
     >
       <Input
         labelName="이메일"
