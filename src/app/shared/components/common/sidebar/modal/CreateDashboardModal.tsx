@@ -42,7 +42,11 @@ export default function CreateDashboardModal() {
     try {
       setIsSubmitting(true)
 
-      const response = await api.post(`/dashboards`, formData)
+      if (!process.env.NEXT_PUBLIC_TEAM_ID) {
+        throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.')
+      }
+
+      const response = await api.post(`/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards`, formData)
 
       const data = response.data
 

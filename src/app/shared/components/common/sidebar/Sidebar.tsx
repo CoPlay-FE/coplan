@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
+import { useDashboard } from '@/app/shared/hooks/useDashboard'
 import { useModalStore } from '@/app/shared/store/useModalStore'
 
 import CreateDashboardButton from './CreateDashboardButton'
@@ -13,55 +14,7 @@ export default function Sidebar(): JSX.Element {
   const pathname = usePathname()
   const router = useRouter()
   const { openCreateDashboardModal } = useModalStore()
-
-  // TODO: 목데이터 - API 연동시 삭제예정
-  const mockDashboards = [
-    {
-      id: 1,
-      title: '비브러리',
-      color: '#10B981',
-      createdByMe: true,
-      createdAt: '',
-      updatedAt: '',
-      userId: 1,
-    },
-    {
-      id: 2,
-      title: '코드잇',
-      color: '#8B5CF6',
-      createdByMe: true,
-      createdAt: '',
-      updatedAt: '',
-      userId: 1,
-    },
-    {
-      id: 3,
-      title: '3분기 계획',
-      color: '#F59E0B',
-      createdByMe: false,
-      createdAt: '',
-      updatedAt: '',
-      userId: 2,
-    },
-    {
-      id: 4,
-      title: '회의록',
-      color: '#3B82F6',
-      createdByMe: false,
-      createdAt: '',
-      updatedAt: '',
-      userId: 3,
-    },
-    {
-      id: 5,
-      title: '중요 문서함',
-      color: '#EC4899',
-      createdByMe: false,
-      createdAt: '',
-      updatedAt: '',
-      userId: 4,
-    },
-  ]
+  const { dashboards, isLoading, error } = useDashboard()
 
   const handleDashboardClick = (dashboardId: number) => {
     router.push(`/dashboard/${dashboardId}`)
@@ -97,14 +50,28 @@ export default function Sidebar(): JSX.Element {
 
         {/* 대시보드 목록 */}
         <div className="space-y-8">
-          {mockDashboards.map((dashboard) => (
-            <DashboardItem
-              key={dashboard.id}
-              dashboard={dashboard}
-              isActive={pathname === `/dashboard/${dashboard.id}`}
-              onClick={handleDashboardClick}
-            />
-          ))}
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="Text-gray text-14">로딩중...</div>
+            </div>
+          ) : error ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="Text-red text-14">{error}</div>
+            </div>
+          ) : dashboards.length === 0 ? (
+            <div className="flex items-center justify-start py-20">
+              <div className="Text-gray text-14">대시보드가 없습니다.</div>
+            </div>
+          ) : (
+            dashboards.map((dashboard) => (
+              <DashboardItem
+                key={dashboard.id}
+                dashboard={dashboard}
+                isActive={pathname === `/dashboard/${dashboard.id}`}
+                onClick={handleDashboardClick}
+              />
+            ))
+          )}
         </div>
       </div>
     </aside>
