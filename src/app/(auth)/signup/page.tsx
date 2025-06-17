@@ -1,10 +1,15 @@
 'use client'
 
+import { useMounted } from '@hooks/useMounted'
 import Link from 'next/link'
 
 import AuthLogo from '@/app/features/auth/components/AuthLogo'
 import SignupForm from '@/app/features/auth/components/SignupForm'
+
 export default function Signup() {
+  const mounted = useMounted()
+  if (!mounted) return null
+
   return (
     <>
       <AuthLogo text="환영합니다!" />
