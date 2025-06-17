@@ -16,7 +16,7 @@ export default function SignupForm() {
     handleSubmit,
     trigger,
     getValues,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isValid },
   } = useForm<SignupFormData>({
     mode: 'onChange',
     defaultValues: {

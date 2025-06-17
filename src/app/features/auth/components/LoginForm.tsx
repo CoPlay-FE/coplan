@@ -26,7 +26,7 @@ export default function LoginForm() {
   return (
     <form
       className="flex w-full flex-col gap-16"
-      onSubmit={handleSubmit(async (data) => await loginMutate(data))}
+      onSubmit={handleSubmit((data) => loginMutate(data))}
     >
       <Input
         labelName="이메일"
