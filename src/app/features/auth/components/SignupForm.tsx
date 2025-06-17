@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useConfirmPasswordValidation } from '../hooks/useConfirmPasswordValidation'
-import { useSignupSubmit } from '../hooks/useSignupSubmit'
+import { useSignupMutation } from '../hooks/useSignupMutation'
 import { signupValidation } from '../schemas/signupValidation'
 import { SignupFormData } from '../types/auth.type'
 
@@ -28,7 +28,7 @@ export default function SignupForm() {
   })
 
   const [isChecked, setIsChecked] = useState(false)
-  const { submit } = useSignupSubmit()
+  const { mutate: signupMtate, isPending } = useSignupMutation()
   const validation = useConfirmPasswordValidation(getValues)
 
   function handleAgree() {
@@ -36,7 +36,10 @@ export default function SignupForm() {
   }
 
   return (
-    <form className="flex flex-col gap-16" onSubmit={handleSubmit(submit)}>
+    <form
+      className="flex w-full flex-col gap-16"
+      onSubmit={handleSubmit((data) => signupMtate(data))}
+    >
       <Input
         labelName="이메일"
         type="email"
@@ -92,11 +95,9 @@ export default function SignupForm() {
         type="submit"
         className={cn(
           'mt-8 h-50 w-full rounded-8 text-lg font-medium text-white',
-          isValid && isChecked && !isSubmitting
-            ? 'BG-blue'
-            : 'BG-blue-disabled',
+          isValid && isChecked && !isPending ? 'BG-blue' : 'BG-blue-disabled',
         )}
-        disabled={isSubmitting || !isValid || !isChecked}
+        disabled={isPending || !isValid || !isChecked}
       >
         회원가입
       </button>
