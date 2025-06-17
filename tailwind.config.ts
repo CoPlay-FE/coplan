@@ -16,6 +16,11 @@ const config: Config = {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
       },
+      screens: {
+        mobile: { max: '375px' },
+        tablet: { max: '744px' },
+        desktop: { max: '1920px' },
+      },
     },
   },
   plugins: [],
