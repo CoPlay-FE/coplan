@@ -14,7 +14,7 @@ export default function Header() {
 
   return (
     <header className="BG-white Border-bottom Text-black w-full overflow-x-hidden border-b px-48 py-12">
-      <div className="flex w-full items-center justify-between pl-300 pr-16">
+      <div className="flex w-full items-center justify-between pr-16">
         {/* 좌측 대시보드명 */}
         <div className="flex shrink-0 items-center gap-8 pr-16">
           <div className="whitespace-nowrap font-bold">대시보드 명</div>

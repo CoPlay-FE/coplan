@@ -1,9 +1,9 @@
 import './globals.css'
 
 import type { Metadata } from 'next'
+import { Toaster } from 'sonner'
 
 import { Providers } from './providers'
-import ThemeToggle from './shared/components/ThemeToggle'
 
 export const metadata: Metadata = {
   title: 'Coplan',
@@ -21,7 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <Toaster position="top-right" richColors closeButton />
+        </Providers>
       </body>
     </html>
   )
