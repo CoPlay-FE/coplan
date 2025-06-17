@@ -1,12 +1,16 @@
-import { login as loginApi, signup as signupApi } from '../api/authApi'
+import { User } from '@/app/shared/types/user.type'
+
+import { signup as signupApi } from '../api/authApi'
 import { useAuthStore } from '../store/useAuthStore'
-import { LoginRequest, SignupRequest } from '../types/auth.type'
+import { SignupRequest } from '../types/auth.type'
 
 export function useAuth() {
   const { setAccessToken, setUser, clearAuthState } = useAuthStore()
 
-  async function login(data: LoginRequest) {
-    const response = await loginApi(data)
+  async function updateAuthState(response: {
+    accessToken: string
+    user: User
+  }) {
     const { accessToken, user } = response
 
     if (!accessToken || !user) {
@@ -27,7 +31,7 @@ export function useAuth() {
   }
 
   return {
-    login,
+    updateAuthState,
     signup,
     logout,
   }
