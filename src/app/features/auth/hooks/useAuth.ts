@@ -7,10 +7,7 @@ import { SignupRequest } from '../types/auth.type'
 export function useAuth() {
   const { setAccessToken, setUser, clearAuthState } = useAuthStore()
 
-  async function updateAuthState(response: {
-    accessToken: string
-    user: User
-  }) {
+  function updateAuthState(response: { accessToken: string; user: User }) {
     const { accessToken, user } = response
 
     if (!accessToken || !user) {
