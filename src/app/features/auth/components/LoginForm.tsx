@@ -22,8 +22,6 @@ export default function LoginForm() {
   })
 
   const { mutate: loginMutate, isPending } = useLoginMutaion()
-  const showEmailError = !!errors.email
-  const showPasswordError = !!errors.password
 
   return (
     <form
@@ -36,7 +34,7 @@ export default function LoginForm() {
         placeholder="이메일 입력"
         autoComplete="email"
         {...register('email', loginValidation.email)}
-        hasError={showEmailError}
+        hasError={!!errors.email}
         errorMessage={errors.email?.message}
       />
       <Input
@@ -45,7 +43,7 @@ export default function LoginForm() {
         placeholder="비밀번호 입력"
         autoComplete="off"
         {...register('password', loginValidation.password)}
-        hasError={showPasswordError}
+        hasError={!!errors.password}
         errorMessage={errors.password?.message}
       />
       <button
