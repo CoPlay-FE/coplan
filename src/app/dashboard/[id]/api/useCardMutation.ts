@@ -12,17 +12,22 @@ export const useCardMutation = () => {
   return useMutation({
     // 1. 서버 API 호출
     // cardId: 드래그한 카드 아이디, columnId: dragOver된 타겟 컬럼 아이디
-    mutationFn: ({ cardId, columnId }: { cardId: number; columnId: number }) =>
-      updateCardColumn(cardId, columnId),
+    mutationFn: ({
+      columnId,
+      cardData,
+    }: {
+      columnId: number
+      cardData: Card
+    }) => updateCardColumn(cardData.id, columnId),
 
     // 2. 낙관적 UI 처리 (서버 요청 전에 실행됨)
-    onMutate: async ({ cardId, columnId }) => {
+    onMutate: async ({ columnId, cardData }) => {
       const currentCard = useDragStore.getState().draggingCard
 
       await Promise.all([
         queryClient.cancelQueries({ queryKey: ['columnId', columnId] }),
         queryClient.cancelQueries({
-          queryKey: ['columnId', currentCard?.columnId],
+          queryKey: ['columnId', currentCard?.cardData.columnId],
         }),
       ])
 
@@ -35,47 +40,42 @@ export const useCardMutation = () => {
       // Guard return
       if (
         !currentCard ||
-        currentCard.cardId !== cardId ||
-        currentCard.columnId === columnId
+        currentCard.cardData.id !== cardData.id ||
+        currentCard.cardData.columnId === columnId
       ) {
         console.log('no dragging card || is not a dragging card || same column')
         clearDraggingCard()
         return
       }
 
-      let extractedCard: Card | undefined // B. 에서 사용할 예정(추가할 카드 데이터는 Card여야 해서)
       // A. 이전 컬럼에서 카드 제거 & 카드 추출
       // setQueryData의 콜백함수의 리턴값이 쿼리키 캐시에 저장됨(캐시 업데이트)
       queryClient.setQueryData<CardResponse>(
-        ['columnId', currentCard.columnId],
+        ['columnId', currentCard.cardData.columnId],
         (oldData) => {
           if (!oldData) return
 
           const filtered = oldData.cards.filter((card) => {
-            if (card.id === cardId) extractedCard = card
-            return card.id !== cardId
+            return card.id !== cardData.id
           })
 
           return { ...oldData, cards: filtered }
         },
       )
       // B. 새 컬럼에 카드 추가
-      if (extractedCard) {
-        queryClient.setQueryData<CardResponse>(
-          ['columnId', columnId],
-          (oldData) => {
-            if (!oldData) return
+      queryClient.setQueryData<CardResponse>(
+        ['columnId', columnId],
+        (oldData) => {
+          if (!oldData) return
 
-            const movedCard = { ...extractedCard!, columnId }
-            return {
-              ...oldData,
-              cards: [...oldData.cards, movedCard],
-            }
-          },
-        )
-      } else {
-        console.log('카드가 제거 중에 undefined가 됨')
-      }
+          const movedCard = { ...cardData, columnId: columnId }
+          console.log('Cardcolumn changed', { movedCard })
+          return {
+            ...oldData,
+            cards: [...oldData.cards, movedCard],
+          }
+        },
+      )
 
       clearDraggingCard()
       return { previousData }

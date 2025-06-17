@@ -1,0 +1,105 @@
+'use client'
+
+import Input from '@components/Input'
+import { cn } from '@lib/cn'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+
+import { useConfirmPasswordValidation } from '../hooks/useConfirmPasswordValidation'
+import { useSignupSubmit } from '../hooks/useSignupSubmit'
+import { signupValidation } from '../schemas/signupValidation'
+import { SignupFormData } from '../types/auth.type'
+
+export default function SignupForm() {
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    getValues,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<SignupFormData>({
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      nickname: '',
+      password: '',
+      confirmPassword: '',
+    },
+  })
+
+  const [isChecked, setIsChecked] = useState(false)
+  const { submit } = useSignupSubmit()
+  const validation = useConfirmPasswordValidation(getValues)
+
+  function handleAgree() {
+    setIsChecked((prev) => !prev)
+  }
+
+  return (
+    <form className="flex flex-col gap-16" onSubmit={handleSubmit(submit)}>
+      <Input
+        labelName="이메일"
+        type="email"
+        placeholder="이메일을 입력해 주세요"
+        autoComplete="email"
+        {...register('email', signupValidation.email)}
+        hasError={!!errors.email}
+        errorMessage={errors.email?.message}
+      />
+      <Input
+        labelName="닉네임"
+        type="text"
+        placeholder="닉네임을 입력해 주세요"
+        autoComplete="off"
+        {...register('nickname', signupValidation.nickname)}
+        hasError={!!errors.nickname}
+        errorMessage={errors.nickname?.message}
+      />
+      <Input
+        labelName="비밀번호"
+        type="password"
+        placeholder="8자 이상 입력해 주세요"
+        autoComplete="new-password"
+        {...register('password', {
+          ...signupValidation.password,
+          onChange: () => trigger('confirmPassword'),
+        })}
+        hasError={!!errors.password}
+        errorMessage={errors.password?.message}
+      />
+      <Input
+        labelName="비밀번호 확인"
+        type="password"
+        placeholder="비밀번호를 한번 더 입력해주세요"
+        autoComplete="new-password"
+        {...register('confirmPassword', validation)}
+        hasError={!!errors.confirmPassword}
+        errorMessage={errors.confirmPassword?.message}
+      />
+      <div className="flex items-center gap-8">
+        <input
+          type="checkbox"
+          id="terms"
+          className="size-16 rounded-4"
+          onChange={handleAgree}
+          checked={isChecked}
+        />
+        <label className="text-base" htmlFor="terms">
+          이용약관에 동의합니다.
+        </label>
+      </div>
+      <button
+        type="submit"
+        className={cn(
+          'mt-8 h-50 w-full rounded-8 text-lg font-medium text-white',
+          isValid && isChecked && !isSubmitting
+            ? 'BG-blue'
+            : 'BG-blue-disabled',
+        )}
+        disabled={isSubmitting || !isValid || !isChecked}
+      >
+        회원가입
+      </button>
+    </form>
+  )
+}

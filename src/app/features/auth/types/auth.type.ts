@@ -16,6 +16,10 @@ export interface SignupRequest {
   password: string
 }
 
+export interface SignupFormData extends SignupRequest {
+  confirmPassword: string
+}
+
 export interface AuthState {
   accessToken: string | null
   user: User | null
