@@ -1,16 +1,15 @@
 'use client'
+
+import { useMounted } from '@hooks/useMounted'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 
 import AuthLogo from '@/app/features/auth/components/AuthLogo'
 import LoginForm from '@/app/features/auth/components/LoginForm'
 
 export default function Login() {
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
-  if (!mounted) {
-    return null
-  }
+  const mounted = useMounted()
+  if (!mounted) return null
+
   return (
     <>
       <AuthLogo text="오늘도 만나서 반가워요!" />
