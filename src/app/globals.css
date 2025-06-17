@@ -70,3 +70,6 @@ body {
 .Text-violet {
   @apply text-[#228DFF];
 }
+.BG-drag-hovered {
+  @apply bg-blue-100;
+}

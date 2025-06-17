@@ -2,9 +2,11 @@
 
 import Image from 'next/image'
 
+import { getColor } from '@/app/shared/lib/getColor'
+
 type AvatarProps = {
   nickname: string
-  imageUrl?: string
+  imageUrl?: string | null
   size?: number
 }
 
@@ -27,16 +29,9 @@ function getInitial(nickname: string): string {
   return '?'
 }
 
-function getColor(nickname: string): string {
-  const hash = nickname
-    .split('')
-    .reduce((acc, char) => acc + char.charCodeAt(0), 0)
-  return customColors[hash % customColors.length]
-}
-
 export function Avatar({ nickname, imageUrl, size = 36 }: AvatarProps) {
   const initial = getInitial(nickname)
-  const bgColor = getColor(nickname)
+  const bgColor = getColor(nickname, customColors)
 
   return imageUrl ? (
     <div
@@ -57,7 +52,7 @@ export function Avatar({ nickname, imageUrl, size = 36 }: AvatarProps) {
         width: size,
         height: size,
         fontSize: size * 0.4,
-        backgroundColor: bgColor,
+        backgroundColor: customColors[bgColor],
       }}
     >
       {initial}
