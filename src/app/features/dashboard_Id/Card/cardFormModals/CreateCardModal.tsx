@@ -1,12 +1,10 @@
 import { createPortal } from 'react-dom'
 
-import { useIsMounted } from '@/app/shared/hooks/useIsMounted'
-
 interface ModalProps {
   children: React.ReactNode
   onClose: () => void
 }
-export default function CreateCardModal({ children, onClose }: ModalProps) {
+export default function CreateCardModal({ children }: ModalProps) {
   const modalRoot = document.getElementById('modal-root')
   if (!modalRoot) return null
 
