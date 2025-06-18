@@ -11,7 +11,8 @@ import { CreateDashboardRequest } from '@/types/dashboard'
 
 export default function CreateDashboardModal() {
   const router = useRouter()
-  const { isModalOpen, closeModal } = useModalStore()
+  const { modalType, closeModal } = useModalStore()
+  const isModalOpen = modalType === 'createDashboard'
 
   const [formData, setFormData] = useState<CreateDashboardRequest>({
     title: '',

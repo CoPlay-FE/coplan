@@ -4,7 +4,7 @@ import { useModalStore } from '@store/useModalStore'
 import { useState } from 'react'
 
 export default function CreateInvitationModal() {
-  const { isModalOpen, closeModal } = useModalStore()
+  const { modalType, closeModal } = useModalStore()
   const [email, setEmail] = useState('')
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -22,7 +22,7 @@ export default function CreateInvitationModal() {
     closeModal()
   }
 
-  if (!isModalOpen) return null
+  if (!modalType) return null
 
   return (
     <div
