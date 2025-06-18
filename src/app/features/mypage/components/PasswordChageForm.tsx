@@ -66,7 +66,7 @@ export default function PasswordChangeForm() {
           type="password"
           placeholder="비밀번호 입력"
           autoComplete="current-password"
-          {...register('password', mypageValidation.password)}
+          {...register('password')}
         />
 
         <Input
@@ -92,7 +92,7 @@ export default function PasswordChangeForm() {
           {...register('confirmPassword', {
             ...confirmPasswordValidation,
             onBlur: () => {
-              trigger('confirmPassword')
+              trigger('newPassword')
             },
           })}
           hasError={!!errors.confirmPassword}
