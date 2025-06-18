@@ -1,14 +1,13 @@
 'use client'
 
+import { DASHBOARD_COLORS } from '@constants/colors'
+import api from '@lib/axios'
+import { useModalStore } from '@store/useModalStore'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
-import api from '@/app/shared/lib/axios'
-import { useModalStore } from '@/app/shared/store/useModalStore'
-import { CreateDashboardRequest } from '@/app/shared/types/dashboard'
-
-const DASHBOARD_COLORS = ['#10B981', '#8B5CF6', '#F59E0B', '#3B82F6', '#EC4899']
+import { CreateDashboardRequest } from '@/types/dashboard'
 
 export default function CreateDashboardModal() {
   const router = useRouter()
@@ -46,7 +45,10 @@ export default function CreateDashboardModal() {
         throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.')
       }
 
-      const response = await api.post(`/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards`, formData)
+      const response = await api.post(
+        `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards`,
+        formData,
+      )
 
       const data = response.data
 
