@@ -5,8 +5,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import { getColor } from '@/app/shared/lib/getColor'
-
 import ThemeToggle from '../../ThemeToggle'
 import CollaboratorList from './Collaborator/CollaboratorList'
 import UserDropdown from './UserDropdown'
