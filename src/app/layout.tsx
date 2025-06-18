@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
 
 import { Providers } from './providers'
+import GlobalModalRenderer from './shared/components/common/GlobalModalRender'
 
 export const metadata: Metadata = {
   title: 'Coplan',
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body>
         <Providers>
           {children}
+          <GlobalModalRenderer />
           <Toaster position="top-right" richColors closeButton />
         </Providers>
       </body>
