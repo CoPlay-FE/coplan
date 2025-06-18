@@ -43,7 +43,9 @@ export default function ProfileImageUpload({
 
   // 이미지 삭제 처리
   const handleDelete = () => {
-    if (preview) URL.revokeObjectURL(preview) // 메모리 누수 방지
+    if (preview && preview.startsWith('blob:')) {
+      URL.revokeObjectURL(preview) // 메모리 누수 방지
+    }
     setPreview(null)
     onChange(null) // RHF 상태 초기화
     if (inputRef.current) inputRef.current.value = ''
