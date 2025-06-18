@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 
-import api from '../lib/axios'
+import authHttpClient from '../lib/axios'
 import { DashboardListResponse } from '../types/dashboard'
 
 export function useDashboard() {
@@ -21,7 +21,7 @@ export function useDashboard() {
         throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.')
       }
 
-      const response = await api.get<DashboardListResponse>(
+      const response = await authHttpClient.get<DashboardListResponse>(
         `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards?navigationMethod=infiniteScroll`,
       )
       setDashboards(response.data.dashboards)
