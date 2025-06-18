@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-import { AUTH_ENDPOINT } from '@/app/features/auth/api/authEndpoint'
 import { useAuthStore } from '@/app/features/auth/store/useAuthStore'
 
 const api = axios.create({
@@ -10,12 +9,10 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = useAuthStore.getState().accessToken
-    const publicPaths = [AUTH_ENDPOINT.LOGIN, AUTH_ENDPOINT.SIGNUP]
-    const isPulicPath = publicPaths.some((path) => config.url?.includes(path))
-
-    if (!isPulicPath && token) {
+    if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
+
     return config
   },
   (error) => {
