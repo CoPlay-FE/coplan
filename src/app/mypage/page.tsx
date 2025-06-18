@@ -3,7 +3,7 @@
 import Header from '@/app/shared/components/common/header/Header'
 import Sidebar from '@/app/shared/components/common/sidebar/Sidebar'
 
-import PasswordChageForm from '../features/mypage/components/PasswordChageForm'
+import PasswordChangeForm from '../features/mypage/components/PasswordChangeForm'
 import ProfileEditForm from '../features/mypage/components/ProfileEditForm'
 export default function Mypage() {
   return (
@@ -40,7 +40,7 @@ export default function Mypage() {
             {/* 닉네임 프로필 변경 */}
             <ProfileEditForm />
             {/* 비밀번호 변경 */}
-            <PasswordChageForm />
+            <PasswordChangeForm />
           </div>
         </div>
       </div>

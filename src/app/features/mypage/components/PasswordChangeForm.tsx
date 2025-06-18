@@ -7,7 +7,6 @@ import { showSuccess } from '@/app/shared/lib/toast'
 
 import { useChangePasswordMutation } from '../hook/useChangePasswordMutation'
 import { useNewPasswordValidation } from '../hook/useNewPasswordValidation'
-import { mypageValidation } from '../schemas/mypageValidation'
 import { PasswordChangeRequest } from '../types/mypage.type'
 
 interface PasswordChangeFormData extends PasswordChangeRequest {
