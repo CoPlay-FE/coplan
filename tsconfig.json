@@ -28,7 +28,8 @@
       "@hooks/*": ["./src/app/shared/hooks/*"],
       "@lib/*": ["./src/app/shared/lib/*"],
       "@/types/*": ["./src/app/shared/types/*"],
-      "@constants/*": ["./src/app/shared/constants/*"]
+      "@constants/*": ["./src/app/shared/constants/*"],
+      "@dashboard/*": ["./src/app/features/dashboard/*"]
     }
   },
   "include": [
