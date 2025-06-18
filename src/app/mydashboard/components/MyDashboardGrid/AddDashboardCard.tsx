@@ -1,0 +1,32 @@
+'use client'
+
+import Image from 'next/image'
+
+import { useModalStore } from '@/app/shared/store/useModalStore'
+
+export default function AddDashboardCard() {
+  // store에서 모달 열기 함수 가져오기
+  const { openCreateDashboardModal } = useModalStore()
+
+  const handleClick = () => {
+    openCreateDashboardModal()
+  }
+
+  return (
+    <button
+      onClick={handleClick}
+      className="Border-section BG-white group flex h-70 w-332 items-center justify-center gap-12 rounded-8 border-2 border-dashed transition-all duration-200 hover:border-gray-400 hover:bg-gray-50"
+    >
+      <span className="Text-black text-16 font-medium">새로운 대시보드</span>
+
+      <div className="relative h-22 w-22">
+        <Image
+          src="/images/chip.svg"
+          alt="새로운 대시보드 추가"
+          fill
+          className="object-contain"
+        />
+      </div>
+    </button>
+  )
+}

@@ -39,6 +39,9 @@ body {
 .Text-gray {
   @apply text-[#787486] dark:text-[#BCBCBC];
 }
+.Text-gray-light {
+  @apply text-[#9FA6B2];
+}
 .Text-white {
   @apply text-[#FFFFFF] dark:text-[#333236];
 }
