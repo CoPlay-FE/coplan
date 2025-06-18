@@ -13,7 +13,7 @@ export default function Header() {
   const pathname = usePathname()
 
   return (
-    <header className="BG-white Border-bottom Text-black w-full overflow-x-hidden border-b px-48 py-12">
+    <header className="BG-white Border-bottom Text-black w-full overflow-x-hidden border-b px-48 py-10">
       <div className="flex w-full items-center justify-between pr-16">
         {/* 좌측 대시보드명 */}
         <div className="flex shrink-0 items-center gap-8 pr-16">
@@ -41,7 +41,7 @@ export default function Header() {
             <Link
               href="/modal"
               className={cn(
-                'Border-btn mr-16 flex items-center gap-6 rounded-md border px-12 py-6',
+                'Border-btn mr-16 flex items-center gap-6 rounded-md px-12 py-6',
                 pathname === '/modal' && 'font-semibold',
               )}
             >
@@ -52,8 +52,8 @@ export default function Header() {
             </Link>
           </nav>
           {/* 협업자 목록 */}
-          <CollaboratorList />|
-          <div className="flex items-center gap-32">
+          <CollaboratorList />
+          <div className="flex items-center gap-32 border-l pl-16">
             {/* 사용자 정보 드롭다운 */}
             <UserDropdown />
             {/* 다크모드 토글 */}
