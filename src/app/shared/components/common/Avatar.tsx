@@ -2,11 +2,10 @@
 
 import Image from 'next/image'
 
+import { useAuthStore } from '@/app/features/auth/store/useAuthStore'
 import { getColor } from '@/app/shared/lib/getColor'
 
 type AvatarProps = {
-  nickname: string
-  imageUrl?: string | null
   size?: number
 }
 
@@ -29,19 +28,21 @@ function getInitial(nickname: string): string {
   return '?'
 }
 
-export function Avatar({ nickname, imageUrl, size = 36 }: AvatarProps) {
-  const initial = getInitial(nickname)
-  const bgColor = getColor(nickname, customColors)
+export function Avatar({ size = 36 }: AvatarProps) {
+  const user = useAuthStore((state) => state.user)
 
-  return imageUrl ? (
+  const initial = getInitial(user!.nickname)
+  const bgColor = getColor(user!.nickname, customColors)
+
+  return user?.profileImageUrl ? (
     <div
       className="relative overflow-hidden rounded-full"
       style={{ width: size, height: size }}
     >
       <Image
-        src={imageUrl}
+        src={user?.profileImageUrl}
         fill
-        alt={`${nickname} 프로필 이미지`}
+        alt={`${user!.nickname} 프로필 이미지`}
         className="object-cover"
       />
     </div>
