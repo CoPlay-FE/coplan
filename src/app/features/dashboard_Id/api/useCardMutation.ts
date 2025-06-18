@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import type { Card, CardResponse } from '@/app/api/useCards'
-
 import { useDragStore } from '../store/useDragStore'
+import { Card, CardResponse } from '../type/Card.type'
 import { updateCardColumn } from './updateCardColumn'
 
 export const useCardMutation = () => {
