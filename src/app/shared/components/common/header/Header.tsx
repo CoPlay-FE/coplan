@@ -1,7 +1,7 @@
 'use client'
 
 import ThemeToggle from '../../ThemeToggle'
-import CreateInvitationModal from '../sidebar/modal/CreateInvitationModal'
+import CreateInvitationModal from '../modal/CreateInvitationModal'
 import CollaboratorList from './Collaborator/CollaboratorList'
 import LeftHeaderContent from './LeftHeaderContent'
 import RightHeaderNav from './RightHeaderNav'

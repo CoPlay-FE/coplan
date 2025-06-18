@@ -46,7 +46,7 @@ export default function Sidebar(): JSX.Element {
       <div className="px-20 py-24">
         <div className="mb-24 flex items-center justify-between">
           <h2 className="Text-gray text-12 font-semibold">Dash Boards</h2>
-          <CreateDashboardButton onClick={openModal} />
+          <CreateDashboardButton onClick={() => openModal('createDashboard')} />
         </div>
 
         <div className="space-y-8">

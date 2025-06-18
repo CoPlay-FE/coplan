@@ -1,14 +1,17 @@
 import { UserInfo } from '@components/common/UserInfo'
 import { cn } from '@lib/cn'
 import Image from 'next/image'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
+
+import { useModalStore } from '@/app/shared/store/useModalStore'
 
 import { mockMembers } from './mockMember'
 
 export default function EditInvitation() {
   const pathname = usePathname()
+  const { openModal } = useModalStore()
+
   return (
     <div>
       {/* 컨테이너 */}
@@ -20,8 +23,8 @@ export default function EditInvitation() {
             <p className="Text-gray mr-16 text-12">1 페이지 중 1</p>
             <Image src="/images/prev.png" alt="이전" width={36} height={36} />
             <Image src="/images/next.png " alt="다음" width={36} height={36} />
-            <Link
-              href="/modal"
+            <button
+              onClick={() => openModal('invite')}
               className={cn(
                 'BG-violet ml-16 flex items-center gap-8 rounded-5 px-12 py-6',
                 pathname === '/modal' && 'font-semibold',
@@ -35,7 +38,7 @@ export default function EditInvitation() {
                 />
               </div>
               <p className="text-14 text-white">초대하기</p>
-            </Link>
+            </button>
           </div>
         </div>
 

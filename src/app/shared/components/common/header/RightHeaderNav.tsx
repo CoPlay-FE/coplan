@@ -8,10 +8,11 @@ import { usePathname } from 'next/navigation'
 
 export default function RightHeaderNav() {
   const pathname = usePathname()
-  const { isModalOpen, openModal } = useModalStore()
+  const { modalType, openModal } = useModalStore()
 
   return (
     <nav className="Text-gray hidden gap-8 text-sm md:flex">
+      {/* 추후 /dashboard/${id}/edit 페이지로 이동 예정 */}
       <Link
         href="/dashboard"
         className={cn(
@@ -25,10 +26,10 @@ export default function RightHeaderNav() {
         관리
       </Link>
       <button
-        onClick={openModal}
+        onClick={() => openModal('invite')}
         className={cn(
           'Border-btn mr-16 flex items-center gap-6 rounded-md px-12 py-6',
-          isModalOpen && 'font-semibold',
+          modalType === 'invite' && 'font-semibold',
         )}
       >
         <div className="relative flex size-12">
