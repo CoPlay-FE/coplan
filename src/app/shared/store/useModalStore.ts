@@ -4,8 +4,7 @@ import { create } from 'zustand'
 import { ModalState } from '@/types/modal'
 
 export const useModalStore = create<ModalState>((set) => ({
-  isModalOpen: false,
-
-  openModal: () => set({ isModalOpen: true }),
-  closeModal: () => set({ isModalOpen: false }),
+  modalType: null,
+  openModal: (type) => set({ modalType: type }),
+  closeModal: () => set({ modalType: null }),
 }))

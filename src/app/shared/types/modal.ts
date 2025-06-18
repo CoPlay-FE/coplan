@@ -1,6 +1,7 @@
-// 모달 생성
+type ModalType = 'invite' | 'createDashboard' | null
+
 export type ModalState = {
-  isModalOpen: boolean
-  openModal: () => void
+  modalType: ModalType
+  openModal: (type: ModalType) => void
   closeModal: () => void
 }
