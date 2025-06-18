@@ -26,7 +26,9 @@
       "@components/*": ["./src/app/shared/components/*"],
       "@store/*": ["./src/app/shared/store/*"],
       "@hooks/*": ["./src/app/shared/hooks/*"],
-      "@lib/*": ["./src/app/shared/lib/*"]
+      "@lib/*": ["./src/app/shared/lib/*"],
+      "@/types/*": ["./src/app/shared/types/*"],
+      "@constants/*": ["./src/app/shared/constants/*"]
     }
   },
   "include": [
