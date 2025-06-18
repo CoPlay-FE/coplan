@@ -3,8 +3,7 @@ export interface CardFormData {
   description: string
   dueDate: Date | null
   tags: string[]
-  imgaeUrl: string
-
+  imageUrl: string | null
   assigneeUserId: number
   dashboardId: number
   columnId: number

@@ -9,7 +9,7 @@ export default function AboutLayout({
 }) {
   return (
     <div>
-      <Sidebar />
+      {/* <Sidebar /> */}
       <Header />
       <div>{children}</div> {/* 여기에 page.tsx 내용이 들어옴 */}
     </div>

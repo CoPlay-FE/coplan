@@ -12,8 +12,10 @@ import { Card } from '@/app/features/dashboard_Id/type/Card.type'
 
 export default function DashboardID() {
   const params = useParams()
-  const id = Number(params.id)
-  const { data: columns, isLoading, error } = useColumns(id)
+  const dashboardId = Number(params.id)
+  const { data: columns, isLoading, error } = useColumns(dashboardId)
+  // const { data: columns, isLoading, error } = useColumns(id)
+
   const { draggingCard, setDraggingCard } = useDragStore()
   const cardMutation = useCardMutation()
   const touchPos = useRef({ x: 0, y: 0 })
