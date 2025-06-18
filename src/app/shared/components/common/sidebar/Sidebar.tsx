@@ -1,11 +1,14 @@
+// components/common/sidebar/Sidebar.tsx
 'use client'
 
+import { useDashboard } from '@hooks/useDashboard'
+import { useModalStore } from '@store/useModalStore'
+import { useSelectedDashboardStore } from '@store/useSelectedDashboardStore'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
-import { useDashboard } from '@/app/shared/hooks/useDashboard'
-import { useModalStore } from '@/app/shared/store/useModalStore'
+import { Dashboard } from '@/types/dashboard'
 
 import CreateDashboardButton from './CreateDashboardButton'
 import DashboardItem from './DashboardItem'
@@ -13,16 +16,15 @@ import DashboardItem from './DashboardItem'
 export default function Sidebar(): JSX.Element {
   const pathname = usePathname()
   const router = useRouter()
-  const { openCreateDashboardModal } = useModalStore()
+  const { openModal } = useModalStore()
   const { dashboards, isLoading, error } = useDashboard()
+  const { setSelectedDashboard } = useSelectedDashboardStore()
 
-  const handleDashboardClick = (dashboardId: number) => {
-    router.push(`/dashboard/${dashboardId}`)
+  const handleDashboardClick = (dashboard: Dashboard) => {
+    setSelectedDashboard(dashboard) // 선택한 대시보드를 전역 상태에 저장
+    router.push(`/dashboard/${dashboard.id}`)
   }
 
-  const handleCreateDashboard = () => {
-    openCreateDashboardModal()
-  }
   return (
     <aside className="BG-white Border-section fixed left-0 top-0 h-screen w-300 overflow-y-auto">
       {/* 로고 섹션 */}
@@ -42,13 +44,11 @@ export default function Sidebar(): JSX.Element {
 
       {/* 대시보드 섹션 */}
       <div className="px-20 py-24">
-        {/* 섹션 헤더 */}
         <div className="mb-24 flex items-center justify-between">
           <h2 className="Text-gray text-12 font-semibold">Dash Boards</h2>
-          <CreateDashboardButton onClick={handleCreateDashboard} />
+          <CreateDashboardButton onClick={openModal} />
         </div>
 
-        {/* 대시보드 목록 */}
         <div className="space-y-8">
           {isLoading ? (
             <div className="flex items-center justify-center py-20">
@@ -68,7 +68,7 @@ export default function Sidebar(): JSX.Element {
                 key={dashboard.id}
                 dashboard={dashboard}
                 isActive={pathname === `/dashboard/${dashboard.id}`}
-                onClick={handleDashboardClick}
+                onClick={() => handleDashboardClick(dashboard)}
               />
             ))
           )}
