@@ -3,12 +3,11 @@
 import Image from 'next/image'
 import { useRef } from 'react'
 
-import useColumns from '@/app/api/useColumns'
-
-import { useCardMutation } from './api/useCardMutation'
-import Column from './Column/Column'
-import { useDragStore } from './store/useDragStore'
-import type { Card } from './type/Card'
+import { useCardMutation } from '@/app/features/dashboard_Id/api/useCardMutation'
+import useColumns from '@/app/features/dashboard_Id/api/useColumns'
+import Column from '@/app/features/dashboard_Id/Column/Column'
+import { useDragStore } from '@/app/features/dashboard_Id/store/useDragStore'
+import { Card } from '@/app/features/dashboard_Id/type/Card.type'
 
 export default function DashboardID() {
   const dashboard = 15120
@@ -127,7 +126,7 @@ export default function DashboardID() {
       <div className="fixed left-0 h-1080 w-300 bg-gray-100">사이드바</div>
       <div className="ml-300 select-none">
         <div
-          className="tablet:flex-col flex"
+          className="flex tablet:flex-col"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}

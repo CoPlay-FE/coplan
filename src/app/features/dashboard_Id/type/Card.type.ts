@@ -17,3 +17,9 @@ export interface Card {
   createdAt: string
   updatedAt: string
 }
+
+export interface CardResponse {
+  cards: Card[]
+  totalCount: number
+  cursorId: number
+}

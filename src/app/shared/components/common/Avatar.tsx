@@ -31,7 +31,7 @@ function getInitial(nickname: string): string {
 
 export function Avatar({ nickname, imageUrl, size = 36 }: AvatarProps) {
   const initial = getInitial(nickname)
-  const bgColor = getColor(nickname, customColors)
+  const bgColor = getColor(nickname, customColors.length)
 
   return imageUrl ? (
     <div
