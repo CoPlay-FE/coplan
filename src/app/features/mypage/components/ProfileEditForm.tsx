@@ -78,11 +78,11 @@ export default function ProfileEditForm() {
     } catch (error) {
       if (isAxiosError(error)) {
         // 서버 에러 메시지 우선 처리, 없으면 기본 메시지
-        const severMessage = (
+        const serverMessage = (
           error.response?.data as { message?: string } | undefined
         )?.message
         const fallback = error.message || '프로필 변경에 실패하였습니다.'
-        showError(severMessage ?? fallback)
+        showError(serverMessage ?? fallback)
       } else {
         showError('알 수 없는 에러 발생')
       }
