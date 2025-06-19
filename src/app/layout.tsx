@@ -25,6 +25,7 @@ export default function RootLayout({
           {children}
           <Toaster position="top-right" richColors closeButton />
         </Providers>
+        <div id="modal-root" />
       </body>
     </html>
   )
