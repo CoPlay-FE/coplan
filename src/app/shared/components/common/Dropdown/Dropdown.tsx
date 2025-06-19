@@ -25,10 +25,12 @@ export default function Dropdown({
   }) // 드롭다운 메뉴 위치 좌표 상태
 
   // 드롭다운 열기/닫기 토글
-  const toggleOpen = () => setOpen((prev) => !prev)
+  function toggleOpen() {
+    setOpen((prev) => !prev)
+  }
 
   // Tailwind width 클래스 값을 실제 CSS 너비 값으로 변환
-  const getWidthValue = (width: string) => {
+  function getWidthValue(width: string): string | undefined {
     switch (width) {
       case 'w-5': // 할 일 카드 모달에서 사용
         return '5rem'
