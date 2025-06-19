@@ -78,3 +78,6 @@ body {
 .BG-drag-hovered {
   @apply bg-blue-100;
 }
+.Text-blue {
+  @apply text-[#83C8FA] dark:text-[#228DFF];
+}

@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
-import api from '@/app/shared/lib/axios'
+import authHttpClient from '@/app/shared/lib/axios'
 import { useModalStore } from '@/app/shared/store/useModalStore'
 import { CreateDashboardRequest } from '@/app/shared/types/dashboard'
 
@@ -46,7 +46,10 @@ export default function CreateDashboardModal() {
         throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.')
       }
 
-      const response = await api.post(`/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards`, formData)
+      const response = await authHttpClient.post(
+        `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards`,
+        formData,
+      )
 
       const data = response.data
 
