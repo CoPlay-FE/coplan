@@ -20,28 +20,30 @@ export default function Mypage() {
           {/* 헤더 영역 */}
           <div className="flex flex-col gap-16">
             {/* 임시 버튼 (교체 예정) */}
-            <button
-              type="button"
-              onClick={() => router.back()}
-              className="text-xm flex items-center justify-start gap-8 self-start"
-            >
-              <svg
-                width={20}
-                height={20}
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            <div>
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className="text-xm flex items-center justify-start gap-8"
               >
-                <path
-                  d="M15 18L9 12L15 6"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              돌아가기
-            </button>
+                <svg
+                  width={20}
+                  height={20}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15 18L9 12L15 6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                돌아가기
+              </button>
+            </div>
             {/* 닉네임 프로필 변경 */}
             <ProfileEditForm />
             {/* 비밀번호 변경 */}
