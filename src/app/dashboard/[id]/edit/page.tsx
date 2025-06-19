@@ -6,11 +6,13 @@ import EditMember from '@dashboard/components/edit/EditMember'
 import { showError, showSuccess } from '@lib/toast'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 import DeleteDashboardButton from '@/app/features/dashboard/components/edit/DeleteDashboardButton'
 
 export default function DashBoardEditPage() {
   const { id } = useParams()
+  const router = useRouter()
 
   const handleSuccess = () => {
     showSuccess('대시보드가 성공적으로 수정되었습니다.')
@@ -22,13 +24,14 @@ export default function DashBoardEditPage() {
 
   return (
     <div className="BG-gray pb-16">
-      <div
+      <button
         className="flex cursor-pointer items-center gap-12 p-16"
-        onClick={() => window.history.back()}
+        type="button"
+        onClick={() => router.back()}
       >
         <Image src="/images/back.png" alt="돌아가기" width={8} height={4} />
         <p>돌아가기</p>
-      </div>
+      </button>
       <div className="flex w-500 flex-col gap-16 p-16">
         <EditInfo />
         <EditMember />
