@@ -12,7 +12,7 @@ export default function RightHeaderNav() {
   const { selectedDashboard } = useSelectedDashboardStore()
 
   return (
-    <nav className="Text-gray hidden gap-8 text-sm md:flex">
+    <nav className="hidden gap-6 whitespace-nowrap text-sm text-gray-700 md:flex">
       <NavItem
         as="link"
         href={`/dashboard/${selectedDashboard?.id}/edit`}
