@@ -1,11 +1,10 @@
 'use client'
 
-import Image from 'next/image'
-
 import Header from '@/app/shared/components/common/header/Header'
 import CreateDashboardModal from '@/app/shared/components/common/sidebar/modal/CreateDashboardModal'
 import Sidebar from '@/app/shared/components/common/sidebar/Sidebar'
 
+import InvitedDashboardTable from './components/InvitedDashboardTable/InvitedDashboardTable'
 import MyDashboardGrid from './components/MyDashboardGrid/MyDashboardGrid'
 
 export default function MyDashboardPage() {
@@ -20,7 +19,7 @@ export default function MyDashboardPage() {
         <Header />
 
         {/* 페이지 콘텐츠 */}
-        <main className="px-40 py-32">
+        <main className="p-40">
           <MyDashboardGrid />
 
           {/* 초대받은 대시보드 섹션 */}
@@ -29,17 +28,7 @@ export default function MyDashboardPage() {
               초대받은 대시보드
             </h2>
 
-            {/* 빈 상태 */}
-            <div className="flex flex-col items-center justify-center">
-              <div className="relative mb-24 h-100 w-100">
-                <Image
-                  src="/images/unsubscribe.svg"
-                  alt="초대받은 대시보드 없음"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            </div>
+            <InvitedDashboardTable />
           </section>
         </main>
       </div>

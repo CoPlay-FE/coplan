@@ -51,6 +51,9 @@ body {
 .Text-btn {
   @apply text-[#5FBBFF] dark:text-[#228DFF];
 }
+.Text-blue {
+  @apply text-[#83C8FA] dark:text-[#228DFF];
+}
 .Border-error {
   @apply border border-[#D6173A];
 }
@@ -65,6 +68,9 @@ body {
 }
 .Border-bottom {
   @apply border-b border-[#D9D9D9] dark:border-[#707070];
+}
+.Border-blue {
+  @apply border border-[#83C8FA] dark:border-[#228DFF];
 }
 .BG-addPhoto {
   @apply bg-[#F5F5F5] dark:bg-[#2E2E2E];
