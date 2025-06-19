@@ -1,11 +1,14 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+
 import Header from '@/app/shared/components/common/header/Header'
 import Sidebar from '@/app/shared/components/common/sidebar/Sidebar'
 
 import PasswordChangeForm from '../features/mypage/components/PasswordChangeForm'
 import ProfileEditForm from '../features/mypage/components/ProfileEditForm'
 export default function Mypage() {
+  const router = useRouter()
   return (
     <>
       <Header />
@@ -16,8 +19,12 @@ export default function Mypage() {
         <div className="ml-300 p-20 tablet:ml-67">
           {/* 헤더 영역 */}
           <div className="flex flex-col gap-16">
-            <div className="flex items-center justify-start gap-8">
-              {/* 사진으로 대체 예정 */}
+            {/* 임시 버튼 (교체 예정) */}
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="text-xm flex items-center justify-start gap-8 self-start"
+            >
               <svg
                 width={20}
                 height={20}
@@ -33,10 +40,8 @@ export default function Mypage() {
                   strokeLinejoin="round"
                 />
               </svg>
-              <button type="button" className="text-xm self-start">
-                돌아가기
-              </button>
-            </div>
+              돌아가기
+            </button>
             {/* 닉네임 프로필 변경 */}
             <ProfileEditForm />
             {/* 비밀번호 변경 */}
