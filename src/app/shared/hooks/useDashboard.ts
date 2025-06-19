@@ -1,41 +1,25 @@
+// hooks/useDashboard.ts
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
-import api from '../lib/axios'
-import { DashboardListResponse } from '../types/dashboard'
+import api from '@/app/shared/lib/axios'
+import { DashboardListResponse } from '@/app/shared/types/dashboard'
 
-export function useDashboard() {
-  const [dashboards, setDashboards] = useState<
-    DashboardListResponse['dashboards']
-  >([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  const fetchDashboards = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      setError(null)
-
+export const useDashboard = () => {
+  return useQuery({
+    queryKey: ['dashboards'], // 대시보드 목록에 대한 고유 캐시 키
+    queryFn: async () => {
       if (!process.env.NEXT_PUBLIC_TEAM_ID) {
         throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.')
       }
 
-      const response = await api.get<DashboardListResponse>(
+      const res = await api.get<DashboardListResponse>(
         `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards?navigationMethod=infiniteScroll`,
       )
-      setDashboards(response.data.dashboards)
-    } catch (err) {
-      console.error('대시보드 목록 조회 실패:', err)
-      setError('대시보드 목록을 불러오는데 실패했습니다.')
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
 
-  useEffect(() => {
-    fetchDashboards()
-  }, [fetchDashboards])
-
-  return { dashboards, isLoading, error, refetch: fetchDashboards }
+      return res.data.dashboards
+    },
+    staleTime: 1000 * 60, // 1분간은 stale 처리 안함
+  })
 }
