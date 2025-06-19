@@ -1,6 +1,7 @@
 'use client'
 
 import api from '@lib/axios'
+import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
@@ -36,8 +37,17 @@ export default function DeleteDashboardButton({
 
       // 삭제 후 대시보드 목록 페이지로 이동
       router.push('/dashboard')
-    } catch (error) {
-      console.error('대시보드 삭제 오류:', error)
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const message =
+          error.response?.data?.message ||
+          '대시보드 삭제 중 오류가 발생했습니다.'
+        console.error('대시보드 삭제 오류:', message)
+        alert(message) // 또는 showError(message) 등으로 사용자에게 표시
+      } else {
+        console.error('대시보드 삭제 오류:', error)
+        alert('알 수 없는 오류가 발생했습니다.')
+      }
     } finally {
       setIsDeleting(false)
     }
