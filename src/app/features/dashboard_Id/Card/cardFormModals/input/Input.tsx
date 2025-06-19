@@ -1,9 +1,11 @@
+// 인풋 껍데기
 interface Input {
   children: React.ReactNode
   labelName: string
   labelFor: string
   accent?: boolean
 }
+
 export default function Input({
   children,
   labelName,

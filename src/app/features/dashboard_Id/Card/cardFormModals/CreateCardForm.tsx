@@ -100,7 +100,6 @@ export default function CreateCardForm({
       <h2 className="Text-black text-24 font-bold">할 일 생성</h2>
 
       {/* 담당자 입력 */}
-      {/* React Hook Form에선 register와 state를 동시에 쓰면 controlled/uncontrolled 충돌 날 수 있어요. */}
       <Controller
         name="assigneeUserId"
         control={control}
@@ -202,6 +201,7 @@ export default function CreateCardForm({
           />
 
           {/* 추가한 태그 */}
+          {/* * 태그 클릭하면 해당 태그 삭제 가능하게 변형해야함 */}
           {tags && (
             <div className="mt-10">
               <Tags tags={tags} />
