@@ -36,7 +36,7 @@ export default function DashBoardEditPage() {
       </div>
 
       {/* 삭제 버튼 영역 */}
-      <div className="BG-white align-center Text-btn Border-btn ml-16 flex w-292 justify-center rounded-md px-64 py-6">
+      <div className="BG-white align-center Text-btn i8 ml-16 flex w-292 justify-center rounded-md px-64 py-6">
         <DeleteDashboardButton dashboardId={String(id)} />
       </div>
     </div>
