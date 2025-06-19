@@ -1,11 +1,17 @@
 'use client'
 
+import { inviteUser } from '@dashboard/api/invitation'
 import { useModalStore } from '@store/useModalStore'
+import { AxiosError } from 'axios'
+import { useParams } from 'next/navigation'
 import { useState } from 'react'
+
+import { showError, showSuccess } from '@/app/shared/lib/toast'
 
 export default function CreateInvitationModal() {
   const { modalType, closeModal } = useModalStore()
   const [email, setEmail] = useState('')
+  const { id: dashboardId } = useParams()
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -13,13 +19,22 @@ export default function CreateInvitationModal() {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!email) return
 
-    // TODO: 이메일 초대 API 연동
-    console.log('초대 이메일:', email)
-    closeModal()
+    try {
+      if (!dashboardId) {
+        throw new Error('대시보드 ID가 없습니다.')
+      }
+      await inviteUser({ email, dashboardId: Number(dashboardId) })
+      showSuccess('초대가 완료되었습니다.')
+      closeModal()
+    } catch (err: unknown) {
+      // 에러 타입 안정성을 위해 axios 에러 타입으로 캐스팅
+      const error = err as AxiosError<{ message: string }>
+      showError(error?.response?.data?.message || '초대에 실패하였습니다.')
+    }
   }
 
   if (!modalType) return null
