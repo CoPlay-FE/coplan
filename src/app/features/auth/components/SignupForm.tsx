@@ -1,11 +1,11 @@
 'use client'
 
 import Input from '@components/Input'
+import { useConfirmPasswordValidation } from '@hooks/useConfirmPasswordValidation'
 import { cn } from '@lib/cn'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { useConfirmPasswordValidation } from '../hooks/useConfirmPasswordValidation'
 import { useSignupMutation } from '../hooks/useSignupMutation'
 import { signupValidation } from '../schemas/signupValidation'
 import { SignupFormData } from '../types/auth.type'
@@ -29,7 +29,7 @@ export default function SignupForm() {
 
   const [isChecked, setIsChecked] = useState(false)
   const { mutate: signupMtate, isPending } = useSignupMutation()
-  const validation = useConfirmPasswordValidation(getValues)
+  const validation = useConfirmPasswordValidation(() => getValues('password'))
 
   function handleAgree() {
     setIsChecked((prev) => !prev)

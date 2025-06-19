@@ -21,4 +21,8 @@ export const mockMembers = [
     nickname: 'Emily',
     imageUrl: null,
   },
+  {
+    nickname: 'Jenny',
+    imageUrl: null,
+  },
 ]
