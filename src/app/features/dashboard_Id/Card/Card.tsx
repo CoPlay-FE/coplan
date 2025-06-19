@@ -1,9 +1,9 @@
 import Image from 'next/image'
 
-import type { Card as CardType } from '@/app/api/useCards'
 import { Avatar } from '@/app/shared/components/common/Avatar'
 
 import { useDragStore } from '../store/useDragStore'
+import type { Card as CardType } from '../type/Card.type'
 import Tags from './Tags'
 
 export default function Card({
@@ -17,7 +17,7 @@ export default function Card({
   const { setDraggingCard } = useDragStore()
   return (
     <div
-      data-card-id={card.id}
+      data-card-id={id}
       data-card-data={JSON.stringify(card)}
       draggable="true"
       onDragStart={() => setDraggingCard({ cardData: card })}
@@ -35,29 +35,42 @@ export default function Card({
           draggable="false"
         />
       )}
+
+      {/* 할 일 제목 */}
       <h3 className="Text-black mb-10 text-16 font-medium leading-relaxed">
         {title}
       </h3>
+
+      {/* 태그 */}
       <Tags tags={tags} />
+
+      {/* 마감일 & 담당자 */}
       <div className="mt-8 flex content-around items-center">
-        <div className="flex size-full items-center gap-6">
-          <Image
-            src={'/images/calendar.svg'}
-            alt="마감일"
-            width={18}
-            height={18}
-          />
-          <div className="Text-gray mt-4 text-12 font-medium leading-none">
-            {dueDate}
+        {/* :마감일 */}
+        {dueDate && (
+          <div className="flex size-full items-center gap-6">
+            <Image
+              src={'/images/calendar.svg'}
+              alt="마감일"
+              width={18}
+              height={18}
+            />
+            <div className="Text-gray mt-4 text-12 font-medium leading-none">
+              {dueDate}
+            </div>
           </div>
-        </div>
-        <div className="shrink-0">
-          <Avatar
-            nickname={assignee.nickname}
-            imageUrl={assignee.profileImageUrl}
-            size={24}
-          />
-        </div>
+        )}
+
+        {/* :담당자 */}
+        {assignee && (
+          <div className="shrink-0">
+            <Avatar
+              nickname={assignee.nickname}
+              imageUrl={assignee.profileImageUrl}
+              size={24}
+            />
+          </div>
+        )}
       </div>
     </div>
   )

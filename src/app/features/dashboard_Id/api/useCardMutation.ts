@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import type { Card, CardResponse } from '@/app/api/useCards'
-
 import { useDragStore } from '../store/useDragStore'
+import { Card, CardResponse } from '../type/Card.type'
 import { updateCardColumn } from './updateCardColumn'
 
 export const useCardMutation = () => {
@@ -58,7 +57,6 @@ export const useCardMutation = () => {
           const filtered = oldData.cards.filter((card) => {
             return card.id !== cardData.id
           })
-
           return { ...oldData, cards: filtered }
         },
       )
@@ -78,6 +76,7 @@ export const useCardMutation = () => {
       )
 
       clearDraggingCard()
+
       return { previousData }
     },
 
