@@ -45,6 +45,7 @@ const Input = forwardRef<HTMLInputElement, CustomInputProps>(
               className={cn(
                 'Text-black h-50 w-full rounded-8 px-16 py-12 text-base font-normal',
                 hasError ? 'Border-error' : 'Border-btn',
+                props.readOnly && 'Text-gray cursor-default',
               )}
               type={inputType}
               placeholder={placeholder}
@@ -72,6 +73,7 @@ const Input = forwardRef<HTMLInputElement, CustomInputProps>(
             className={cn(
               'Text-black h-50 w-full rounded-8 px-16 py-12 text-base font-normal',
               hasError ? 'Border-error' : 'Border-btn',
+              props.readOnly && 'Text-gray cursor-default',
             )}
             type={inputType}
             placeholder={placeholder}

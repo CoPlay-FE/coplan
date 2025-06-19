@@ -27,6 +27,7 @@ export default function RootLayout({
           <GlobalModalRenderer />
           <Toaster position="top-right" richColors closeButton />
         </Providers>
+        <div id="modal-root" />
       </body>
     </html>
   )

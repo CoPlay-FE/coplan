@@ -33,7 +33,7 @@ export function Avatar({ size = 36 }: AvatarProps) {
 
   if (!user) return null // user가 없으면 렌더링하지 않음
   const initial = getInitial(user.nickname)
-  const bgColor = getColor(user.nickname, customColors)
+  const bgColor = getColor(user.nickname, customColors.length)
 
   return user?.profileImageUrl ? (
     <div

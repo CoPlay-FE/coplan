@@ -1,7 +1,7 @@
 'use client'
 
 import { DASHBOARD_COLORS } from '@constants/colors'
-import api from '@lib/axios'
+import authHttpClient from '@lib/axios'
 import { useModalStore } from '@store/useModalStore'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -45,7 +45,7 @@ export default function CreateDashboardModal() {
         throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.')
       }
 
-      const response = await api.post(
+      const response = await authHttpClient.post(
         `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards`,
         formData,
       )
