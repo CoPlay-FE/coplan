@@ -7,8 +7,8 @@ const DateInput = forwardRef<
 >((props, ref) => {
   return (
     <input
-      ref={ref}
       {...props}
+      ref={ref}
       inputMode="none"
       readOnly
       className="Input-readOnly"

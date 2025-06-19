@@ -1,20 +1,26 @@
 import Image from 'next/image'
+import { useState } from 'react'
 
 import { Avatar } from '@/app/shared/components/common/Avatar'
 
 import { useDragStore } from '../store/useDragStore'
 import type { Card as CardType } from '../type/Card.type'
+import type { Column as ColumnType } from '../type/Column.type'
+import CardContent from './cardModal/CardContent'
+import CardModal from './cardModal/CardModal'
 import Tags from './Tags'
 
 export default function Card({
   card,
-  columnId,
+  column,
 }: {
   card: CardType
-  columnId: number
+  column: ColumnType
 }) {
   const { id, imageUrl, title, tags, dueDate, assignee } = card
   const { setDraggingCard } = useDragStore()
+  const [openCard, setOpenCard] = useState(false) //card.tsx
+
   return (
     <div
       data-card-id={id}
@@ -23,6 +29,7 @@ export default function Card({
       onDragStart={() => setDraggingCard({ cardData: card })}
       onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
       className="BG-white Border-section relative rounded-6 border-solid px-20 py-16"
+      onClick={() => setOpenCard(true)}
     >
       {imageUrl && (
         <Image
@@ -72,6 +79,16 @@ export default function Card({
           </div>
         )}
       </div>
+      {/* 카드 모달 */}
+      {openCard && (
+        <CardModal>
+          <CardContent
+            onClose={() => setOpenCard(false)}
+            card={card}
+            column={column}
+          />
+        </CardModal>
+      )}
     </div>
   )
 }
