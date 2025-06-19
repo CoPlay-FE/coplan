@@ -45,6 +45,9 @@ body {
 .Text-error {
   @apply text-[#D6173A];
 }
+.Text-btn {
+  @apply text-[#5FBBFF] dark:text-[#228DFF];
+}
 .Border-error {
   @apply border border-[#D6173A];
 }

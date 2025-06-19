@@ -4,7 +4,7 @@ import { Avatar } from './Avatar'
 
 type UserInfoProps = {
   nickname: string
-  imageUrl?: string
+  imageUrl?: string | null
   size?: number
 }
 

@@ -1,19 +1,13 @@
-'use client'
-
-import { DASHBOARD_COLORS } from '@constants/colors'
-import authHttpClient from '@lib/axios'
-import { useModalStore } from '@store/useModalStore'
+import api from '@lib/axios'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
-import { CreateDashboardRequest } from '@/types/dashboard'
+import { DASHBOARD_COLORS } from '@/app/shared/constants/colors'
+import { CreateDashboardRequest } from '@/app/shared/types/dashboard'
 
-export default function CreateDashboardModal() {
+export default function EditInfo() {
   const router = useRouter()
-  const { createDashboardModalOpen, closeCreateDashboardModal } =
-    useModalStore()
-
   const [formData, setFormData] = useState<CreateDashboardRequest>({
     title: '',
     color: DASHBOARD_COLORS[0],
@@ -21,17 +15,18 @@ export default function CreateDashboardModal() {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  useEffect(() => {
-    if (!createDashboardModalOpen) {
-      setFormData({ title: '', color: DASHBOARD_COLORS[0] })
-      setIsSubmitting(false)
-    }
-  }, [createDashboardModalOpen])
-
-  if (!createDashboardModalOpen) {
-    return null
+  /// 입력값 변경 처리
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
   }
-
+  // 색상 선택 처리
+  const handleColorSelect = (color: string) => {
+    setFormData((prev) => ({ ...prev, color }))
+  }
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -45,7 +40,7 @@ export default function CreateDashboardModal() {
         throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.')
       }
 
-      const response = await authHttpClient.post(
+      const response = await api.post(
         `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards`,
         formData,
       )
@@ -54,7 +49,6 @@ export default function CreateDashboardModal() {
 
       // 성공 시 대시보드 상세 페이지로 이동
       router.push(`/dashboard/${data.id}`)
-      closeCreateDashboardModal()
     } catch (error) {
       console.error('대시보드 생성 오류:', error)
     } finally {
@@ -62,41 +56,16 @@ export default function CreateDashboardModal() {
     }
   }
 
-  // 입력값 변경 처리
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
-
-  // 색상 선택 처리
-  const handleColorSelect = (color: string) => {
-    setFormData((prev) => ({ ...prev, color }))
-  }
-
-  // 모달 외부 클릭 시 닫기
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      closeCreateDashboardModal()
-    }
-  }
-
   return (
-    // 모달 백드롭
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-      onClick={handleBackdropClick}
-    >
-      {/* 모달 컨테이너 */}
-      <div className="BG-white h-344 w-584 rounded-16 p-32">
-        <h2 className="Text-black mb-24 text-24 font-bold">새로운 대시보드</h2>
+    <div>
+      {/* 컨테이너 */}
+      <div className="BG-white h-300 w-584 rounded-16 px-32 py-24">
+        <h2 className="Text-black mb-24 text-18 font-bold">새로운 대시보드</h2>
 
         <form onSubmit={handleSubmit}>
           {/* 제목 입력 */}
-          <div className="mb-24">
-            <label htmlFor="title" className="Text-black mb-8 block text-18">
+          <div className="mb-16">
+            <label htmlFor="title" className="Text-black mb-8 block text-16">
               대시보드 이름
             </label>
             <input
@@ -106,13 +75,13 @@ export default function CreateDashboardModal() {
               value={formData.title}
               onChange={handleChange}
               placeholder="대시보드 이름을 입력해주세요."
-              className="Border-section w-full rounded-8 px-12 py-10 text-16 outline-none"
+              className="Border-section w-512 rounded-8 px-12 py-10 text-16 outline-none"
               required
             />
           </div>
 
           {/* 색상 선택 */}
-          <div className="mb-32">
+          <div className="mb-30">
             <div className="flex gap-8">
               {DASHBOARD_COLORS.map((color) => (
                 <button
@@ -140,24 +109,17 @@ export default function CreateDashboardModal() {
           </div>
 
           {/* 하단 버튼 */}
-          <div className="flex justify-end gap-10">
-            <button
-              type="button"
-              onClick={closeCreateDashboardModal}
-              className="Border-btn Text-black h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold"
-            >
-              취소
-            </button>
+          <div>
             <button
               type="submit"
               disabled={!formData.title || !formData.color || isSubmitting}
-              className={`BG-violet h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold text-white transition-opacity ${
+              className={`BG-violet h-48 w-512 rounded-8 px-16 py-10 text-16 font-semibold text-white transition-opacity ${
                 !formData.title || !formData.color || isSubmitting
                   ? 'cursor-not-allowed opacity-50'
                   : 'hover:opacity-90'
               }`}
             >
-              생성
+              변경
             </button>
           </div>
         </form>
