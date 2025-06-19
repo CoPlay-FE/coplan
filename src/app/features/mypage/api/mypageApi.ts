@@ -2,6 +2,7 @@ import authHttpClient from '@lib/axios'
 
 import { User as UserDataResponse } from '@/app/shared/types/user.type'
 
+import { PasswordChangeRequest } from '../types/mypage.type'
 import {
   UpdateProfileRequest,
   UploadProfileImageResponse,
@@ -33,4 +34,10 @@ export async function uploadProfileImage(
     formData,
   )
   return response.data
+}
+
+export async function changePassword(
+  data: PasswordChangeRequest,
+): Promise<void> {
+  await authHttpClient.put(MYPAGE_ENDPOINT.CHANGE_PASSWORD, data)
 }

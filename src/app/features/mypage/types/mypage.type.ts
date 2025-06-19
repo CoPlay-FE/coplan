@@ -6,3 +6,8 @@ export interface UpdateProfileRequest {
 export interface UploadProfileImageResponse {
   profileImageUrl: string
 }
+
+export interface PasswordChangeRequest {
+  password: string
+  newPassword: string
+}

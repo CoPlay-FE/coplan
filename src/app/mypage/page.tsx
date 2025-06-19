@@ -3,6 +3,7 @@
 import Header from '@/app/shared/components/common/header/Header'
 import Sidebar from '@/app/shared/components/common/sidebar/Sidebar'
 
+import PasswordChangeForm from '../features/mypage/components/PasswordChangeForm'
 import ProfileEditForm from '../features/mypage/components/ProfileEditForm'
 export default function Mypage() {
   return (
@@ -39,17 +40,7 @@ export default function Mypage() {
             {/* 닉네임 프로필 변경 */}
             <ProfileEditForm />
             {/* 비밀번호 변경 */}
-            {/* <div className="BG-white flex h-auto w-full max-w-672 flex-col gap-24 rounded-8 p-24">
-              <h2 className="text-2xl font-bold">테스트</h2>
-              <form className="flex flex-col justify-between gap-16">
-                <Input labelName="현재 비밀번호" name="password" />
-                <Input labelName="새 비밀번호" name="password" />
-                <Input labelName="새 비밀번호 확인" name="password" />
-                <button className="w-pull BG-blue h-50 rounded-8 text-white">
-                  변경
-                </button>
-              </form>
-            </div> */}
+            <PasswordChangeForm />
           </div>
         </div>
       </div>
