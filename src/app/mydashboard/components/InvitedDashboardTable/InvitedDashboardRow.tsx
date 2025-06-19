@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { Invitation } from '@/app/shared/types/dashboard'
 
 import { useRespondToInvitation } from '../../hooks/useMyDashboards'
+import { showError, showSuccess } from '@/app/shared/lib/toast'
 
 interface InvitedDashboardRowProps {
   invitation: Invitation
@@ -25,9 +26,10 @@ export default function InvitedDashboardRow({
         invitationId: invitation.id,
         accept: true,
       })
-      console.log('초대 수락 성공!')
+      showSuccess('초대를 수락했습니다!')
     } catch (error) {
       console.error('초대 수락 실패:', error)
+      showError('초대 수락 중 오류가 발생했습니다.')
     } finally {
       setIsProcessing(false)
     }
@@ -42,9 +44,10 @@ export default function InvitedDashboardRow({
         invitationId: invitation.id,
         accept: false,
       })
-      console.log('초대 거절 성공!')
+      showSuccess('초대를 거절했습니다.')
     } catch (error) {
       console.error('초대 거절 실패:', error)
+      showError('초대 거절 중 오류가 발생했습니다.')
     } finally {
       setIsProcessing(false)
     }
