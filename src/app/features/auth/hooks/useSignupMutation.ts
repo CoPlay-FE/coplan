@@ -21,11 +21,11 @@ export function useSignupMutation() {
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        const severMessage = (
+        const serverMessage = (
           error.response?.data as { message?: string } | undefined
         )?.message
         const fallback = error.message || '로그인 실패'
-        showError(severMessage ?? fallback)
+        showError(serverMessage ?? fallback)
       } else {
         showError('알 수 없는 에러 발생')
       }
