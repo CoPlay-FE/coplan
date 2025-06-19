@@ -31,8 +31,9 @@ function getInitial(nickname: string): string {
 export function Avatar({ size = 36 }: AvatarProps) {
   const user = useAuthStore((state) => state.user)
 
-  const initial = getInitial(user!.nickname)
-  const bgColor = getColor(user!.nickname, customColors)
+  if (!user) return null // user가 없으면 렌더링하지 않음
+  const initial = getInitial(user.nickname)
+  const bgColor = getColor(user.nickname, customColors)
 
   return user?.profileImageUrl ? (
     <div
@@ -42,7 +43,7 @@ export function Avatar({ size = 36 }: AvatarProps) {
       <Image
         src={user?.profileImageUrl}
         fill
-        alt={`${user!.nickname} 프로필 이미지`}
+        alt={`${user.nickname} 프로필 이미지`}
         className="object-cover"
       />
     </div>
