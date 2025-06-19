@@ -1,5 +1,6 @@
 import 'react-datepicker/dist/react-datepicker.css'
 
+import { format } from 'date-fns'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -8,16 +9,24 @@ import { Controller, useForm } from 'react-hook-form'
 
 import useMembers from '../../api/useMembers'
 import { usePostCard } from '../../api/usePostCard'
+import { useUploadCardImage } from '../../api/useUploadCardImage'
 import type { CardFormData } from '../../type/CardFormData.type'
 import Tags from '../Tags'
 import AssigneeList, { Assignee } from './AssigneeList'
 import DateInput from './input/DateInput'
 import Input from './input/Input'
 
-export default function CreateCardForm({ onClose }: { onClose: () => void }) {
+export default function CreateCardForm({
+  onClose,
+  columnId,
+}: {
+  onClose: () => void
+  columnId: number
+}) {
   const [preview, setPreview] = useState<string | null>(null) // 이미지 URl 임시 저장
   const [tags, setTags] = useState<string[]>([]) // 태그 목록 임시 저장
-  const [tagInput, setTagInput] = useState('') // 입력된 태그
+  const [tagInput, setTagInput] = useState('') // 작성중인 태그
+  const { mutate: uploadImage, isPending: isUploading } = useUploadCardImage()
 
   // 대시보드 멤버(담당자 선택)
   const params = useParams()
@@ -31,30 +40,17 @@ export default function CreateCardForm({ onClose }: { onClose: () => void }) {
     control,
     handleSubmit,
     setValue,
-    formState: { errors, isValid, isSubmitting, touchedFields, dirtyFields },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<CardFormData>({
-    // mode: 'onChange', // 기본 모드는 onSubmit
     defaultValues: {
-      dueDate: null,
+      imageUrl: '', // 이미지 첨부 안하면 기본값은 빈 문자열
     },
   })
-
-  // 폼 제출 핸들러 함수
-  const { mutate: createCard, isPending } = usePostCard()
-  function onSubmit(data: CardFormData) {
-    const payload = {
-      ...data,
-      dueDate: data.dueDate ? data.dueDate.toString() : '', // 제출 시 dueDate를 string으로 형변환
-    }
-    createCard(payload)
-    console.log('submitted', payload)
-  }
 
   // React Hook Form 과 tags 값 연결
   useEffect(() => {
     setValue('tags', tags)
-    setValue('imageUrl', preview)
-  }, [tags, setValue, preview])
+  }, [tags, setValue])
 
   // assignee 선택 시 드롭다운 닫기
   useEffect(() => {
@@ -64,26 +60,50 @@ export default function CreateCardForm({ onClose }: { onClose: () => void }) {
   }, [selectedAssignee])
 
   // 이미지 파일 처리
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
-    if (file) {
-      const fileUrl = URL.createObjectURL(file)
-      console.log(fileUrl)
-      setPreview(URL.createObjectURL(file))
-    }
+    if (!file) return
+
+    uploadImage(
+      { columnId, file },
+      {
+        onSuccess: ({ imageUrl }) => {
+          setValue('imageUrl', imageUrl)
+          setPreview(imageUrl)
+        },
+      },
+    )
   }
 
+  // 폼 제출 핸들러 함수
+  const { mutate: createCard, isPending } = usePostCard()
+  function onSubmit(data: CardFormData) {
+    const payload: CardFormData = {
+      ...data,
+      dashboardId: dashboardId,
+      columnId: columnId,
+      // tags: data.tags ?? [],
+      // imageUrl: data.imageUrl,
+    }
+
+    if (!data.dueDate) delete payload.dueDate
+    if (!data.imageUrl || !preview) delete payload.imageUrl // delete로 아예 필드의 해당 key를 지워야, 서버가 "없음"으로 인식함..
+    console.log('🌀', data.imageUrl)
+    console.log('submitted', payload)
+    createCard(payload)
+    onClose()
+  }
+
+  // ✅ JSX
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-32">
       <h2 className="Text-black text-24 font-bold">할 일 생성</h2>
 
       {/* 담당자 입력 */}
-
       {/* React Hook Form에선 register와 state를 동시에 쓰면 controlled/uncontrolled 충돌 날 수 있어요. */}
       <Controller
         name="assigneeUserId"
         control={control}
-        rules={{ required: '담당자를 선택해 주세요' }}
         render={({ field }) => (
           <Input labelName="담당자" labelFor="assigneeUserId">
             <div className="relative">
@@ -139,11 +159,15 @@ export default function CreateCardForm({ onClose }: { onClose: () => void }) {
         <Controller
           name="dueDate"
           control={control}
-          rules={{ required: '날짜를 입력해 주세요' }}
           render={({ field }) => (
             <DatePicker
-              selected={field.value}
-              onChange={field.onChange}
+              selected={field.value ? new Date(field.value) : null} //field.value가 string이라서, Date로 변환해서 selected에 넘김
+              onChange={(date) => {
+                if (date) {
+                  const formatted = format(date, 'yyyy-MM-dd HH:mm')
+                  field.onChange(formatted)
+                }
+              }}
               showTimeSelect
               timeFormat="HH:mm"
               timeIntervals={15}
@@ -186,11 +210,12 @@ export default function CreateCardForm({ onClose }: { onClose: () => void }) {
         </div>
       </Input>
 
-      {/* 이미지 파일 선택  */}
+      {/* 이미지 업로드 */}
       <div>
         <h3 className="mb-8">이미지</h3>
+        {/* 이미지 미리보기 or 업로드 버튼 */}
         <label
-          htmlFor={'imageUrl'}
+          htmlFor="imageUrl"
           className="flex size-76 items-center justify-center rounded-6 bg-[#F5F5F5]"
         >
           {preview ? (
@@ -210,16 +235,28 @@ export default function CreateCardForm({ onClose }: { onClose: () => void }) {
             />
           )}
         </label>
+
+        {/* ❌ 이미지 제거 버튼 (이미지가 있을 경우만 표시) */}
+        {preview && (
+          <button
+            type="button"
+            className="mt-2 size-20 rounded-20 bg-blue-300 text-15 font-bold"
+            onClick={() => {
+              setPreview(null)
+              setValue('imageUrl', '') // 또는 null
+            }}
+          >
+            X
+          </button>
+        )}
+
+        {/* 파일 입력 필드 (실제 input은 숨겨져 있음) */}
         <input
-          {...register('imageUrl', {
-            required: '이미지를 선택해 주세요',
-          })}
           id="imageUrl"
           type="file"
-          alt="submit"
           accept="image/*"
-          onChange={handleFileChange}
           style={{ display: 'none' }}
+          onChange={handleFileChange}
         />
       </div>
 
@@ -232,9 +269,9 @@ export default function CreateCardForm({ onClose }: { onClose: () => void }) {
           취소
         </button>
         <button
-          className="BG-blue Text-white w-full rounded-8 border-solid py-14 text-16 font-medium"
+          className="BG-blue w-full rounded-8 border-solid py-14 text-16 font-medium text-[#FFFFFF]"
           type="submit"
-          disabled={!isValid || isPending}
+          disabled={!isValid || isPending || isSubmitting}
         >
           생성
         </button>

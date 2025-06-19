@@ -6,8 +6,11 @@ export async function updateCardColumn(
   cardId: number,
   columnId: number,
 ): Promise<{ success: boolean }> {
-  const res = await api.put<{ success: boolean }>(`/cards/${cardId}`, {
-    columnId: columnId,
-  })
+  const res = await api.put<{ success: boolean }>(
+    `/${process.env.NEXT_PUBLIC_TEAM_ID}/cards/${cardId}`,
+    {
+      columnId: columnId,
+    },
+  )
   return res.data
 }

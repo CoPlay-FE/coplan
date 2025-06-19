@@ -57,7 +57,6 @@ export const useCardMutation = () => {
           const filtered = oldData.cards.filter((card) => {
             return card.id !== cardData.id
           })
-
           return { ...oldData, cards: filtered }
         },
       )
@@ -77,6 +76,7 @@ export const useCardMutation = () => {
       )
 
       clearDraggingCard()
+
       return { previousData }
     },
 

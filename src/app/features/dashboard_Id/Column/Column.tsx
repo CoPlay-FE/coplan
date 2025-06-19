@@ -96,6 +96,7 @@ export default function Column({ column }: { column: ColumnType }) {
         <CreateCardModal onClose={() => setOpenCreateCard(false)}>
           <CreateCardForm
             onClose={() => setOpenCreateCard(false)}
+            columnId={id}
           ></CreateCardForm>
         </CreateCardModal>
       )}

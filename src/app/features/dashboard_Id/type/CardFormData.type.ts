@@ -1,10 +1,21 @@
 export interface CardFormData {
-  title: string
-  description: string
-  dueDate: Date | null
-  tags: string[]
-  imageUrl: string | null
   assigneeUserId: number
   dashboardId: number
   columnId: number
+  title: string
+  description: string
+  dueDate?: string
+  tags: string[]
+  // imageUrl?: string
+  imageUrl?: string
+}
+export interface SubmitCardFormData {
+  assigneeUserId: number
+  dashboardId: number
+  columnId: number
+  title: string
+  description: string
+  dueDate: string
+  tags: string[]
+  imageUrl: string | null
 }
