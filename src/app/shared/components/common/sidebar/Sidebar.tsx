@@ -17,13 +17,17 @@ export default function Sidebar(): JSX.Element {
   const pathname = usePathname()
   const router = useRouter()
   const { openModal } = useModalStore()
-  const { dashboards, isLoading, error } = useDashboard()
+  const { data: dashboards = [], isLoading, error } = useDashboard()
   const { setSelectedDashboard } = useSelectedDashboardStore()
 
   const handleDashboardClick = (dashboard: Dashboard) => {
     setSelectedDashboard(dashboard) // 선택한 대시보드를 전역 상태에 저장
     router.push(`/dashboard/${dashboard.id}`)
   }
+
+  // 에러 타입 타입 불일치(jsx로 렌더링할 수 없음) 방지를 위한 string 처리
+  const errorMessage =
+    error instanceof Error ? error.message : '대시보드 목록 불러오기 실패'
 
   return (
     <aside className="BG-white Border-section fixed left-0 top-0 h-screen w-300 overflow-y-auto">
@@ -56,7 +60,7 @@ export default function Sidebar(): JSX.Element {
             </div>
           ) : error ? (
             <div className="flex items-center justify-center py-20">
-              <div className="Text-red text-14">{error}</div>
+              <div className="Text-red text-14">{errorMessage}</div>
             </div>
           ) : dashboards.length === 0 ? (
             <div className="flex items-center justify-start py-20">
