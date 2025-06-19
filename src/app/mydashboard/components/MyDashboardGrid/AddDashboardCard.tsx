@@ -5,11 +5,10 @@ import Image from 'next/image'
 import { useModalStore } from '@/app/shared/store/useModalStore'
 
 export default function AddDashboardCard() {
-  // store에서 모달 열기 함수 가져오기
-  const { openCreateDashboardModal } = useModalStore()
+  const { openModal } = useModalStore()
 
   const handleClick = () => {
-    openCreateDashboardModal()
+    openModal('createDashboard')
   }
 
   return (

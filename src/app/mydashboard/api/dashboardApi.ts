@@ -1,4 +1,4 @@
-import api from '@/app/shared/lib/axios'
+import authHttpClient from '@/app/shared/lib/axios'
 import {
   DashboardListResponse,
   InvitationListResponse,
@@ -21,7 +21,7 @@ export const getMyDashboards = async (
     size: size.toString(),
   })
 
-  const response = await api.get(`/${TEAM_ID}/dashboards?${params}`)
+  const response = await authHttpClient.get(`/${TEAM_ID}/dashboards?${params}`)
   return response.data
 }
 
@@ -43,7 +43,7 @@ export const getInvitedDashboards = async (
     params.append('cursorId', cursorId.toString())
   }
 
-  const response = await api.get(`/${TEAM_ID}/invitations?${params}`)
+  const response = await authHttpClient.get(`/${TEAM_ID}/invitations?${params}`)
   return response.data
 }
 
@@ -56,7 +56,7 @@ export const respondToInvitation = async (
   invitationId: number,
   accept: boolean,
 ): Promise<void> => {
-  await api.put(`/${TEAM_ID}/invitations/${invitationId}`, {
+  await authHttpClient.put(`/${TEAM_ID}/invitations/${invitationId}`, {
     inviteAccepted: accept,
   })
 }

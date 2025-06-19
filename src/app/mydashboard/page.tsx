@@ -1,7 +1,6 @@
 'use client'
 
 import Header from '@/app/shared/components/common/header/Header'
-import CreateDashboardModal from '@/app/shared/components/common/sidebar/modal/CreateDashboardModal'
 import Sidebar from '@/app/shared/components/common/sidebar/Sidebar'
 
 import InvitedDashboardTable from './components/InvitedDashboardTable/InvitedDashboardTable'
@@ -32,9 +31,6 @@ export default function MyDashboardPage() {
           </section>
         </main>
       </div>
-
-      {/* 모달 */}
-      <CreateDashboardModal />
     </div>
   )
 }
