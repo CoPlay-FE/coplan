@@ -11,7 +11,7 @@ export default function AboutLayout({
     <>
       <Sidebar />
       <div className="pl-300">
-        <Header title="대시보드 명" />
+        <Header />
         <main>{children}</main>
       </div>
     </>

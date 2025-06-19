@@ -7,17 +7,12 @@ import LeftHeaderContent from './LeftHeaderContent'
 import RightHeaderNav from './RightHeaderNav'
 import UserDropdown from './UserDropdown'
 
-interface HeaderProps {
-  title: string
-  showCrown?: boolean
-}
-
-export default function Header({ title, showCrown = true }: HeaderProps) {
+export default function Header() {
   return (
     <header className="BG-white Border-bottom Text-black w-full overflow-x-hidden border-b px-48 py-10">
       <div className="flex w-full items-center justify-between pr-16">
         {/* 좌측 대시보드명 */}
-        <LeftHeaderContent title={title} showCrown={showCrown} />
+        <LeftHeaderContent />
 
         {/* 우측 사용자 정보/다크모드 */}
         <div className="flex gap-16">
