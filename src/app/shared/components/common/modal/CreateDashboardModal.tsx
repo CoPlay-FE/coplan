@@ -11,8 +11,8 @@ import { CreateDashboardRequest } from '@/types/dashboard'
 
 export default function CreateDashboardModal() {
   const router = useRouter()
-  const { createDashboardModalOpen, closeCreateDashboardModal } =
-    useModalStore()
+  const { modalType, closeModal } = useModalStore()
+  const isModalOpen = modalType === 'createDashboard'
 
   const [formData, setFormData] = useState<CreateDashboardRequest>({
     title: '',
@@ -22,13 +22,13 @@ export default function CreateDashboardModal() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
-    if (!createDashboardModalOpen) {
+    if (!isModalOpen) {
       setFormData({ title: '', color: DASHBOARD_COLORS[0] })
       setIsSubmitting(false)
     }
-  }, [createDashboardModalOpen])
+  }, [isModalOpen])
 
-  if (!createDashboardModalOpen) {
+  if (!isModalOpen) {
     return null
   }
 
@@ -54,7 +54,7 @@ export default function CreateDashboardModal() {
 
       // 성공 시 대시보드 상세 페이지로 이동
       router.push(`/dashboard/${data.id}`)
-      closeCreateDashboardModal()
+      closeModal()
     } catch (error) {
       console.error('대시보드 생성 오류:', error)
     } finally {
@@ -79,7 +79,7 @@ export default function CreateDashboardModal() {
   // 모달 외부 클릭 시 닫기
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
-      closeCreateDashboardModal()
+      closeModal()
     }
   }
 
@@ -143,7 +143,7 @@ export default function CreateDashboardModal() {
           <div className="flex justify-end gap-10">
             <button
               type="button"
-              onClick={closeCreateDashboardModal}
+              onClick={closeModal}
               className="Border-btn Text-black h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold"
             >
               취소

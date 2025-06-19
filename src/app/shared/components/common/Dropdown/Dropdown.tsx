@@ -7,6 +7,7 @@ type DropdownProps = {
   children: React.ReactNode // 드롭다운 내부 콘텐츠 (메뉴 아이템 등)
   width?: string // Tailwind 클래스 기반의 너비 설정 (예: 'w-5', 'w-6')
   align?: 'left' | 'center' | 'right' // 드롭다운 정렬 방향
+  className?: string // 사용자 정의 클래스
 }
 
 // 드롭다운 컴포넌트 정의
@@ -25,10 +26,12 @@ export default function Dropdown({
   }) // 드롭다운 메뉴 위치 좌표 상태
 
   // 드롭다운 열기/닫기 토글
-  const toggleOpen = () => setOpen((prev) => !prev)
+  function toggleOpen() {
+    setOpen((prev) => !prev)
+  }
 
   // Tailwind width 클래스 값을 실제 CSS 너비 값으로 변환
-  const getWidthValue = (width: string) => {
+  function getWidthValue(width: string): string | undefined {
     switch (width) {
       case 'w-5': // 할 일 카드 모달에서 사용
         return '5rem'
