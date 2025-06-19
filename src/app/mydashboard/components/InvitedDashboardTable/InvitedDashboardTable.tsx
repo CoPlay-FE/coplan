@@ -1,11 +1,12 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll'
 import { useInvitedDashboards } from '../../hooks/useMyDashboards'
 import InvitedDashboardRow from './InvitedDashboardRow'
+import SearchInput from './SearchInput'
 
 export default function InvitedDashboardTable() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -21,6 +22,28 @@ export default function InvitedDashboardTable() {
   } = useInvitedDashboards(6)
 
   useInfiniteScroll(fetchNextPage, hasNextPage, isFetchingNextPage)
+
+  const allInvitations = useMemo(() => {
+    return (
+      data?.pages
+        .flatMap((page) => page.invitations)
+        .filter((invitation) => invitation != null) || []
+    )
+  }, [data])
+
+  // 검색 필터링
+  const filteredInvitations = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return allInvitations
+    }
+
+    const query = searchQuery.toLowerCase().trim()
+    return allInvitations.filter((invitation) => {
+      const dashboardTitle = invitation.dashboard.title.toLowerCase()
+      const inviterName = invitation.inviter.nickname.toLowerCase()
+      return dashboardTitle.includes(query) || inviterName.includes(query)
+    })
+  }, [allInvitations, searchQuery])
 
   // 로딩 상태
   if (isLoading) {
@@ -69,11 +92,6 @@ export default function InvitedDashboardTable() {
     )
   }
 
-  const allInvitations =
-    data?.pages
-      .flatMap((page) => page.invitations)
-      .filter((invitation) => invitation != null) || []
-
   // 빈 상태
   if (allInvitations.length === 0) {
     return (
@@ -97,24 +115,7 @@ export default function InvitedDashboardTable() {
   return (
     <div className="space-y-24">
       {/* 검색창 */}
-      <div className="relative h-40 w-960">
-        <input
-          type="text"
-          placeholder="검색"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="Border-btn h-40 w-full rounded-8 border pl-40 pr-12 text-14 placeholder-gray-400 focus:border-blue-500 focus:outline-none"
-        />
-        <div className="absolute left-16 top-1/2 -translate-y-1/2 transform">
-          <Image
-            src="/images/search.svg"
-            alt="검색"
-            width={24}
-            height={24}
-            className="dark:invert"
-          />
-        </div>
-      </div>
+      <SearchInput value={searchQuery} onChange={setSearchQuery} />
 
       {/* 테이블 헤더 */}
       <div className="grid grid-cols-3 items-center gap-20 pl-36 pr-32">
@@ -129,13 +130,23 @@ export default function InvitedDashboardTable() {
 
       {/* 테이블 바디 */}
       <div className="space-y-0">
-        {allInvitations.map((invitation) => (
-          <InvitedDashboardRow key={invitation.id} invitation={invitation} />
-        ))}
+        {searchQuery.trim() && filteredInvitations.length === 0 ? (
+          // 검색 결과 없음
+          <div className="flex flex-col items-center justify-center py-60">
+            <p className="Text-gray-light text-16 font-medium">
+              `{searchQuery}`에 대한 검색 결과가 없습니다.
+            </p>
+          </div>
+        ) : (
+          // 검색 결과 표시
+          filteredInvitations.map((invitation) => (
+            <InvitedDashboardRow key={invitation.id} invitation={invitation} />
+          ))
+        )}
       </div>
 
-      {/* 무한 스크롤 로딩 인디케이터 */}
-      {isFetchingNextPage && (
+      {/* 무한 스크롤 로딩 인디케이터 - 검색 중에는 표시 안함 */}
+      {!searchQuery.trim() && isFetchingNextPage && (
         <div className="flex justify-center py-20">
           <div className="size-32 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
         </div>
