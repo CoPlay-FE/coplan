@@ -2,6 +2,7 @@
 
 import { cn } from '@lib/cn'
 import { useModalStore } from '@store/useModalStore'
+import { useSelectedDashboardStore } from '@store/useSelectedDashboardStore'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -9,12 +10,12 @@ import { usePathname } from 'next/navigation'
 export default function RightHeaderNav() {
   const pathname = usePathname()
   const { modalType, openModal } = useModalStore()
+  const { selectedDashboard } = useSelectedDashboardStore()
 
   return (
     <nav className="Text-gray hidden gap-8 text-sm md:flex">
-      {/* 추후 /dashboard/${id}/edit 페이지로 이동 예정 */}
       <Link
-        href="/dashboard"
+        href={`/dashboard/${selectedDashboard?.id}/edit`}
         className={cn(
           'Border-btn flex items-center gap-6 rounded-md border px-12 py-6',
           pathname === '/dashboard' && 'font-semibold',
