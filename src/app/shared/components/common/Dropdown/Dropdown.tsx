@@ -7,6 +7,7 @@ type DropdownProps = {
   children: React.ReactNode // 드롭다운 내부 콘텐츠 (메뉴 아이템 등)
   width?: string // Tailwind 클래스 기반의 너비 설정 (예: 'w-5', 'w-6')
   align?: 'left' | 'center' | 'right' // 드롭다운 정렬 방향
+  className?: string // 사용자 정의 클래스
 }
 
 // 드롭다운 컴포넌트 정의
