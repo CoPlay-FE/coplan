@@ -4,7 +4,11 @@ import {
   InvitationListResponse,
 } from '@/app/shared/types/dashboard'
 
-const TEAM_ID = process.env.NEXT_PUBLIC_TEAM_ID!
+const TEAM_ID = process.env.NEXT_PUBLIC_TEAM_ID
+
+if (!TEAM_ID) {
+  throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.')
+}
 
 /**
  * 내 대시보드 목록 조회 (페이지네이션)
