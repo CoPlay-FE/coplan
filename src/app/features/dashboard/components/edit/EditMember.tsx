@@ -1,82 +1,98 @@
-'use client'
-
-import { inviteUser } from '@dashboard/api/invitation'
-import { useModalStore } from '@store/useModalStore'
-import { AxiosError } from 'axios'
-import { useParams } from 'next/navigation'
+import Image from 'next/image'
+import React from 'react'
 import { useState } from 'react'
 
-import { showError, showSuccess } from '@/app/shared/lib/toast'
+import { UserInfo } from '@/app/shared/components/common/UserInfo'
 
-export default function CreateInvitationModal() {
-  const { modalType, closeModal } = useModalStore()
-  const [email, setEmail] = useState('')
-  const { id: dashboardId } = useParams()
+import { mockMembers } from './mockMember'
 
-  function handleBackdropClick(e: React.MouseEvent<HTMLDivElement>) {
-    if (e.target === e.currentTarget) {
-      closeModal()
+const PAGE_SIZE = 4 // 페이지당 표시할 구성원 수
+
+export default function EditMember() {
+  const [currentPage, setCurrentPage] = useState(1)
+  const totalPages = Math.ceil(mockMembers.length / PAGE_SIZE)
+
+  const startIndex = (currentPage - 1) * PAGE_SIZE
+  const paginationMembers = mockMembers.slice(
+    startIndex,
+    startIndex + PAGE_SIZE,
+  )
+
+  function handlePrev() {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1)
     }
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    if (!email) return
-
-    try {
-      if (!dashboardId) {
-        throw new Error('대시보드 ID가 없습니다.')
-      }
-      await inviteUser({ email, dashboardId: Number(dashboardId) })
-      showSuccess('초대가 완료되었습니다.')
-      closeModal()
-    } catch (err: unknown) {
-      const error = err as AxiosError<{ message: string }>
-      showError(error?.response?.data?.message || '초대에 실패하였습니다.')
+  function handleNext() {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1)
     }
   }
-
-  if (!modalType) return null
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-      onClick={handleBackdropClick}
-    >
-      <div className="BG-white h-auto w-584 rounded-16 p-32">
-        <h2 className="Text-black mb-24 text-24 font-bold">초대하기</h2>
+    <div>
+      {/* 컨테이너 */}
+      <div className="BG-white h-360 w-584 rounded-16 px-32 py-24">
+        <div className="mb-24 flex items-center justify-between">
+          <h2 className="Text-black text-18 font-bold">구성원</h2>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-32">
-            <label htmlFor="email" className="Text-black mb-8 block text-18">
-              이메일
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="초대 이메일을 입력해주세요."
-              className="Border-section w-full rounded-8 px-12 py-10 text-16 outline-none"
-              required
-            />
+          <div className="flex items-center">
+            <p className="Text-gray mr-16 text-12">
+              {totalPages} 페이지 중 {currentPage}
+            </p>
+            <button onClick={handlePrev} disabled={currentPage === 1}>
+              <Image
+                src={
+                  currentPage === 1
+                    ? '/images/prev-disabled.png'
+                    : '/images/prev.png'
+                }
+                alt="이전"
+                width={36}
+                height={36}
+              />
+            </button>
+            <button onClick={handleNext} disabled={currentPage === totalPages}>
+              <Image
+                src={
+                  currentPage === totalPages
+                    ? '/images/next-disabled.png'
+                    : '/images/next.png'
+                }
+                alt="다음"
+                width={36}
+                height={36}
+              />
+            </button>
           </div>
+        </div>
 
-          <div className="flex justify-end gap-10">
-            <button
-              type="button"
-              onClick={closeModal}
-              className="Border-btn Text-black h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold"
-            >
-              취소
-            </button>
-            <button
-              type="submit"
-              className="BG-violet h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold text-white hover:opacity-90"
-            >
-              초대
-            </button>
+        <form>
+          <label htmlFor="title" className="Text-black mb-8 block text-16">
+            이름
+          </label>
+          <div className="flex flex-col">
+            {paginationMembers.map((member, index) => {
+              // 해당 페이지 중 마지막 요소인 경우 border-bottom 미적용
+              const isLast = index === paginationMembers.length - 1
+              return (
+                <div
+                  key={index}
+                  className={`flex items-center justify-between py-12 ${
+                    !isLast ? 'Border-bottom' : ''
+                  }`}
+                >
+                  <UserInfo
+                    nickname={member.nickname}
+                    imageUrl={member.imageUrl}
+                  />
+                  <button className="Text-btn Border-btn rounded-md px-16 py-2">
+                    삭제
+                  </button>
+                </div>
+              )
+            })}
           </div>
         </form>
       </div>
