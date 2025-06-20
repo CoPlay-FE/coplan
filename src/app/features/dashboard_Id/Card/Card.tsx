@@ -54,35 +54,31 @@ export default function Card({
       {/* 마감일 & 담당자 */}
       <div className="mt-8 flex content-around items-center">
         {/* :마감일 */}
-        {dueDate && (
-          <div className="flex size-full items-center gap-6">
-            <Image
-              src={'/images/calendar.svg'}
-              alt="마감일"
-              width={18}
-              height={18}
-            />
+        <div className="flex size-full items-center gap-6">
+          <Image
+            src={'/images/calendar.svg'}
+            alt="마감일"
+            width={18}
+            height={18}
+          />
+          {dueDate && (
             <div className="Text-gray mt-4 text-12 font-medium leading-none">
-              {dueDate}
+              {dueDate.split(' ')[0]}
             </div>
-          </div>
-        )}
-
+          )}
+        </div>
         {/* :담당자 */}
         {assignee && (
           <div className="shrink-0">
-            {/* <Avatar
-               nickname={assignee.nickname}
-               imageUrl={assignee.profileImageUrl}
+            <Avatar
               size={24}
-            /> */}
-            {/* <Avatar size={24} /> */}
-            <div className="size-24 overflow-hidden rounded-50 bg-blue-200 text-center">
-              {assignee.nickname}
-            </div>
+              name={assignee.nickname}
+              imageUrl={assignee.profileImageUrl}
+            />
           </div>
         )}
       </div>
+
       {/* 카드 모달 */}
       {openCard && (
         <CardModal>

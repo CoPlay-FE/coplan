@@ -4,6 +4,7 @@ import { cn } from '@/app/shared/lib/cn'
 
 import { SimpleColumn, useColumnsStore } from '../../store/useColumnsStore'
 import { CardFormData } from '../../type/CardFormData.type'
+import ColumnTitle from '../ColumnTitle'
 
 interface ColumnListProps {
   setColumn: (selectedColumn: SimpleColumn) => void
@@ -22,7 +23,7 @@ export default function ColumnList({
   const { ColumnsInDashboard } = useColumnsStore() // 컬럼 목록 데이터는 store에서 불러옴
 
   return (
-    <div className="BG-white Border-btn Text-gray absolute left-0 top-full z-10 mt-4 w-full rounded-6 text-14">
+    <div className="BG-white Border-btn absolute left-0 top-full z-10 mt-4 w-full rounded-6">
       {ColumnsInDashboard.map((column, index) => (
         <div
           className={cn(
@@ -35,7 +36,7 @@ export default function ColumnList({
             controlField.onChange(column.columnId) // controlField: 폼의 'columnId' 필드와 연결되어 있음. .columnId 값으로 업데이트
           }}
         >
-          {column.columnTitle}
+          <ColumnTitle title={column.columnTitle} />
         </div>
       ))}
     </div>

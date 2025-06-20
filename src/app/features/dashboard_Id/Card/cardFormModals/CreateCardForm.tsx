@@ -12,9 +12,11 @@ import { cn } from '@/app/shared/lib/cn'
 import useMembers from '../../api/useMembers'
 import { usePostCard } from '../../api/usePostCard'
 import { useUploadCardImage } from '../../api/useUploadCardImage'
+import { Assignee } from '../../type/Card.type'
 import type { CardFormData } from '../../type/CardFormData.type'
 import TagsCanDelete from '../TagsCanDelete'
-import AssigneeList, { Assignee } from './AssigneeList'
+// import AssigneeList, { Assignee } from './AssigneeList'
+import AssigneeList from './AssigneeList'
 import DateInput from './input/DateInput'
 import Input from './input/Input'
 
@@ -113,7 +115,7 @@ export default function CreateCardForm({
                 onClick={() => setIsOpen((prev) => !prev)}
                 value={selectedAssignee?.nickname ?? ''}
                 readOnly
-                className="Input-readOnly"
+                className="Input-readOnly w-520"
                 id="assigneeUserId"
                 type="text"
                 placeholder="담당자를 선택해 주세요"

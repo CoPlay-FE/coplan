@@ -11,7 +11,7 @@ const DateInput = forwardRef<
       ref={ref}
       inputMode="none"
       readOnly
-      className="Input-readOnly"
+      className="Input-readOnly w-520"
       id="dueDate"
       placeholder="날짜와 시간을 선택하세요"
     />

@@ -10,16 +10,18 @@ import { Controller, useForm } from 'react-hook-form'
 import { cn } from '@/app/shared/lib/cn'
 
 import useMembers from '../../api/useMembers'
-import { usePutCardMutation } from '../../api/useputCardMutation'
+import { usePutCardMutation } from '../../api/usePutCardMutation'
 import { useUploadCardImage } from '../../api/useUploadCardImage'
 import { SimpleColumn } from '../../store/useColumnsStore'
-import { Card } from '../../type/Card.type'
+import { Assignee, Card } from '../../type/Card.type'
 import type {
   CardFormData,
   CardModifyFormData,
 } from '../../type/CardFormData.type'
+import ColumnTitle from '../ColumnTitle'
+import MyAssignee from '../MyAssignee'
 import TagsCanDelete from '../TagsCanDelete'
-import AssigneeList, { Assignee } from './AssigneeList'
+import AssigneeList from './AssigneeList'
 import ColumnList from './ColumnList'
 import DateInput from './input/DateInput'
 import Input from './input/Input'
@@ -43,7 +45,9 @@ export default function ModifyCardForm({
   const dashboardId = Number(params.id)
   const { data } = useMembers(dashboardId)
   const [isOpen, setIsOpen] = useState(false) // 담당자 드롭다운
-  const [selectedAssignee, setSelectedAssignee] = useState<Assignee>() // 선택한 담당자
+  const [selectedAssignee, setSelectedAssignee] = useState<Assignee>(
+    card.assignee,
+  ) // 선택한 담당자
   const { columnId } = card
 
   // 컬럼 목록
@@ -124,82 +128,91 @@ export default function ModifyCardForm({
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-32">
       <h2 className="Text-black text-24 font-bold">할 일 수정</h2>
 
-      {/* 컬럼 선택 */}
-      <Controller
-        name="columnId"
-        control={control}
-        render={({ field }) => (
-          <Input labelName="상태" labelFor="columnId">
-            <div className="relative">
-              <input
-                {...field}
-                onClick={() => setIsOpenColumn((prev) => !prev)}
-                value={selectedColumn?.columnTitle ?? ''}
-                readOnly
-                className="Input-readOnly w-217"
-                id="columnId"
-                type="text"
-                placeholder={currentColumn.columnTitle}
-              />
-              <Image
-                src="/images/arrow-dropdown.svg"
-                alt="화살표"
-                width={26}
-                height={24}
-                className={cn(
-                  'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300',
-                  isOpenColumn && 'rotate-180',
-                )}
-              />
-              {isOpenColumn && (
-                <ColumnList
-                  setColumn={setSelectedColumn}
-                  controlField={field}
+      <div className="flex gap-32">
+        {/* 컬럼 선택 */}
+        <Controller
+          name="columnId"
+          control={control}
+          render={({ field }) => (
+            <Input labelName="상태" labelFor="columnId">
+              <div className="relative w-207">
+                <input
+                  {...field}
+                  onClick={() => setIsOpenColumn((prev) => !prev)}
+                  value={selectedColumn?.columnTitle ?? ''}
+                  readOnly
+                  className="Input-readOnly w-217"
+                  id="columnId"
+                  type="text"
+                  placeholder={currentColumn.columnTitle}
                 />
-              )}
-            </div>
-          </Input>
-        )}
-      />
+                {/* 인풋에 보이는 선택된 컬럼 & 오른쪽 화살표 */}
+                <div className="absolute left-16 top-1/2 -translate-y-1/2">
+                  <ColumnTitle title={selectedColumn.columnTitle} />
+                </div>
+                <Image
+                  src="/images/arrow-dropdown.svg"
+                  alt="화살표"
+                  width={26}
+                  height={24}
+                  className={cn(
+                    'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300',
+                    isOpenColumn && 'rotate-180',
+                  )}
+                />
+                {/* 컬럼 선택지 */}
+                {isOpenColumn && (
+                  <ColumnList
+                    setColumn={setSelectedColumn}
+                    controlField={field}
+                  />
+                )}
+              </div>
+            </Input>
+          )}
+        />
 
-      {/* 담당자 입력 */}
-      <Controller
-        name="assigneeUserId"
-        control={control}
-        render={({ field }) => (
-          <Input labelName="담당자" labelFor="assigneeUserId">
-            <div className="relative">
-              <input
-                {...field}
-                onClick={() => setIsOpen((prev) => !prev)}
-                value={selectedAssignee?.nickname ?? ''}
-                readOnly
-                className="Input-readOnly w-217"
-                id="assigneeUserId"
-                type="text"
-                placeholder={card.assignee.nickname}
-              />
-              <Image
-                src="/images/arrow-dropdown.svg"
-                alt="화살표"
-                width={26}
-                height={24}
-                className={cn(
-                  'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300',
-                  isOpen && 'rotate-180',
-                )}
-              />
-              {isOpen && (
-                <AssigneeList
-                  members={data}
-                  setAssignee={setSelectedAssignee}
-                  controlField={field}
+        {/* 담당자 입력 */}
+        <Controller
+          name="assigneeUserId"
+          control={control}
+          render={({ field }) => (
+            <Input labelName="담당자" labelFor="assigneeUserId">
+              <div className="relative w-207">
+                <input
+                  {...field}
+                  onClick={() => setIsOpen((prev) => !prev)}
+                  // value={selectedAssignee?.nickname ?? ''}
+                  readOnly
+                  className="Input-readOnly w-217"
+                  id="assigneeUserId"
+                  type="text"
                 />
-              )}
-            </div>
-          </Input>
-        )}
-      />
+                <div className="BG-white absolute left-16 top-1/2 -translate-y-1/2">
+                  <MyAssignee assignee={selectedAssignee} />
+                </div>
+                <Image
+                  src="/images/arrow-dropdown.svg"
+                  alt="화살표"
+                  width={26}
+                  height={24}
+                  className={cn(
+                    'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300',
+                    isOpen && 'rotate-180',
+                  )}
+                />
+                {isOpen && (
+                  <AssigneeList
+                    members={data}
+                    setAssignee={setSelectedAssignee}
+                    controlField={field}
+                  />
+                )}
+              </div>
+            </Input>
+          )}
+        />
+      </div>
 
       {/* 제목 입력 */}
       <Input labelName="제목" labelFor="title" accent={true}>

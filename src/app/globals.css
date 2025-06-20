@@ -54,6 +54,9 @@ body {
 .Text-btn {
   @apply text-[#5FBBFF] dark:text-[#228DFF];
 }
+.Text-deepblue {
+  @apply text-[#228DFF] dark:text-[#5FBBFF];
+}
 .Border-error {
   @apply border border-[#D6173A];
 }
@@ -95,7 +98,7 @@ body {
   @apply w-520 rounded-6 border border-[#D9D9D9] px-16 py-11 pt-14 text-14 text-[#333236] placeholder-gray-400 focus:border-[#44aeff] focus:outline-none dark:border-[#747474] dark:text-[#FFFFFF] dark:focus:border-[#3474a5];
 }
 .Input-readOnly {
-  @apply w-520 cursor-pointer rounded-6 border border-[#D9D9D9] px-16 py-11 pt-14 text-14 text-[#333236] placeholder-gray-400 caret-transparent focus:border-[#44aeff] focus:outline-none dark:border-[#747474] dark:text-[#FFFFFF] dark:focus:border-[#3474a5];
+  @apply cursor-pointer rounded-6 border border-[#D9D9D9] px-16 py-11 pt-14 text-14 text-[#333236] placeholder-gray-400 caret-transparent focus:border-[#44aeff] focus:outline-none dark:border-[#747474] dark:text-[#FFFFFF] dark:focus:border-[#3474a5];
 }
 .Text-blue {
   @apply text-[#83C8FA] dark:text-[#228DFF];
