@@ -5,6 +5,8 @@ import React from 'react'
 
 import { DASHBOARD_COLORS } from '@/app/shared/constants/colors'
 
+import Input from '../Input'
+
 type DashboardFormProps = {
   formData: { title: string; color: string }
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -32,20 +34,12 @@ export default function DashboardForm({
     <form onSubmit={onSubmit}>
       {/* 제목 */}
       <div className="mb-24">
-        <label
-          htmlFor="title"
-          className="Text-black mb-8 block text-16 font-semibold"
-        >
-          대시보드 이름
-        </label>
-        <input
-          type="text"
-          id="title"
+        <Input
+          labelName="대시보드 이름"
           name="title"
           value={formData.title}
           onChange={onChange}
           placeholder="대시보드 이름을 입력해주세요."
-          className="Border-section w-full rounded-8 px-12 py-10 text-16 outline-none"
           required
         />
       </div>
