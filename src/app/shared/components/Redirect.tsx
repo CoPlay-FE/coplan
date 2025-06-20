@@ -41,9 +41,12 @@ export default function Redirect({ children }: { children: React.ReactNode }) {
 
     // 🔐 로그인 상태에서 루트 접근 시 → /dashboard/{id}
     if (isLoggedIn && pathname === '/') {
-      if (!isSuccess || !firstDashboardId) return
       setRedirecting(true)
-      router.replace(`/dashboard/${firstDashboardId}`)
+      if (isSuccess && firstDashboardId) {
+        router.replace(`/dashboard/${firstDashboardId}`)
+      } else if (isSuccess && !firstDashboardId) {
+        router.replace('/mydashboard')
+      }
       return
     }
 

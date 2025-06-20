@@ -22,7 +22,7 @@ export function useFirstDashboardIdQuery() {
       return response.data
     },
     // 첫 번째 ID 값만 호출
-    select: (data) => data.dashboards?.[0].id ?? null,
+    select: (data) => data.dashboards?.[0]?.id ?? null,
     staleTime: 1000 * 60 * 5, // 5분 캐싱
   })
 }
