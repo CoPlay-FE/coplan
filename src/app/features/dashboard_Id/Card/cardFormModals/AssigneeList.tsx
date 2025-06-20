@@ -1,15 +1,14 @@
 import { ControllerRenderProps } from 'react-hook-form'
 
+import { Avatar } from '@/app/shared/components/common/Avatar'
 import { cn } from '@/app/shared/lib/cn'
 
 import getDashboardMembers from '../../lib/getDashboardMembers'
+import { Assignee } from '../../type/Card.type'
 import { CardFormData } from '../../type/CardFormData.type'
 import { Member } from '../../type/Member.type'
+import MyAssignee from '../MyAssignee'
 
-export interface Assignee {
-  userId: number
-  nickname: string
-}
 interface AssigneeListProps {
   members: Member[] | undefined
   setAssignee: (assignee: Assignee) => void
@@ -36,13 +35,13 @@ export default function AssigneeList({
             'BG-Input-hovered w-full cursor-pointer px-16 py-11 pt-14 placeholder-gray-400 caret-transparent',
             index !== 0 && 'border-t',
           )}
-          key={assignee.userId}
+          key={assignee.id}
           onClick={() => {
             setAssignee(assignee) // 담당자 업데이트
-            controlField.onChange(assignee.userId) // 리액트 훅에는 .userId 값 연결
+            controlField.onChange(assignee.id) // 리액트 훅에는 .userId 값 연결
           }}
         >
-          {assignee.nickname}
+          <MyAssignee assignee={assignee} />
         </div>
       ))}
     </div>
