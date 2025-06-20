@@ -1,3 +1,5 @@
+import { useTheme } from 'next-themes'
+
 import { getColor } from '@/app/shared/lib/getColor'
 
 export default function TagsCanDelete({
@@ -12,6 +14,9 @@ export default function TagsCanDelete({
   const bgColors = ['#F9EEE3', '#E7F7DB', '#F7DBF0', '#DBE6F7']
   const textColors = ['#D58D49', '#86D549', '#D549B6', '#4981D5']
 
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
+
   return (
     <div className="flex flex-wrap gap-6">
       {tags.map((tag) => {
@@ -20,13 +25,18 @@ export default function TagsCanDelete({
           .reduce((acc, char) => acc + char.charCodeAt(0), 0)
         const colorIndex = hash % 4
 
+        const backgroundColor = isDark
+          ? textColors[colorIndex]
+          : bgColors[colorIndex]
+        const textColor = isDark ? bgColors[colorIndex] : textColors[colorIndex]
+
         return (
           <span
             key={tag}
             className="inline-block whitespace-nowrap rounded-4 px-9 pb-3 pt-5"
             style={{
-              backgroundColor: bgColors[colorIndex],
-              color: textColors[colorIndex],
+              backgroundColor: backgroundColor,
+              color: textColor,
             }}
             onClick={() => setTags(tags.filter((t) => t !== tag))}
           >

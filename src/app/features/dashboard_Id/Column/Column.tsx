@@ -78,7 +78,8 @@ export default function Column({ column }: { column: ColumnType }) {
         className="BG-white Border-section flex justify-center rounded-6 py-9"
         onClick={() => setOpenCreateCard(true)}
       >
-        <div className="flex h-22 w-22 items-center justify-center rounded-4 bg-blue-100">
+        {/* <div className="flex h-22 w-22 items-center justify-center rounded-4 bg-blue-100 dark:bg-[#363636]"> */}
+        <div className="BG-lightblue flex h-22 w-22 items-center justify-center rounded-4">
           <Image
             src={'/images/plus.svg'}
             alt="추가하기"
