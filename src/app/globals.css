@@ -84,3 +84,10 @@ body {
 .Text-blue {
   @apply text-[#83C8FA] dark:text-[#228DFF];
 }
+.BG-section {
+  @apply bg-[#F5F5F5] dark:bg-[#2A2A2A];
+}
+
+.BG-card {
+  @apply bg-[#83C8FA] dark:bg-[#000000];
+}
