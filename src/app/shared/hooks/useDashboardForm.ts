@@ -1,5 +1,6 @@
 // hooks/useDashboardForm.ts
 import api from '@lib/axios'
+import { useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -12,6 +13,7 @@ type Mode = 'create' | 'edit'
 
 export function useDashboardForm(mode: Mode) {
   const router = useRouter()
+  const queryClient = useQueryClient()
   const { selectedDashboard, setSelectedDashboard } =
     useSelectedDashboardStore()
 
@@ -78,6 +80,11 @@ export function useDashboardForm(mode: Mode) {
         )
         const data = response.data
         setSelectedDashboard(data)
+
+        // 캐시 무효화 및 페이지 강제 갱신
+        await queryClient.invalidateQueries({ queryKey: ['dashboards'] })
+        router.refresh()
+
         router.push(`/dashboard/${data.id}/edit`)
       }
     } catch (error) {
