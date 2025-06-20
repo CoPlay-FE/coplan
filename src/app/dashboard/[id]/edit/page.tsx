@@ -3,7 +3,6 @@
 import EditInfo from '@dashboard/components/edit/EditInfo'
 import EditInvitation from '@dashboard/components/edit/EditInvitation'
 import EditMember from '@dashboard/components/edit/EditMember'
-import { showError, showSuccess } from '@lib/toast'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
@@ -13,14 +12,6 @@ import DeleteDashboardButton from '@/app/features/dashboard/components/edit/Dele
 export default function DashBoardEditPage() {
   const { id } = useParams()
   const router = useRouter()
-
-  const handleSuccess = () => {
-    showSuccess('대시보드가 성공적으로 수정되었습니다.')
-  }
-
-  const handleError = () => {
-    showError('수정 중 오류가 발생했습니다.')
-  }
 
   return (
     <div className="BG-gray pb-16">
