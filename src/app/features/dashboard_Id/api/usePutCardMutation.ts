@@ -18,7 +18,7 @@ export function usePutCardMutation() {
       payload: CardModifyFormData
     }) => putCard(payload, cardId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cardId'] }) //'columnId' 쿼리 invalidate - 카드가 stale 상태임을 알리고 다시 fetch 하도록 유도함
+      queryClient.invalidateQueries({ queryKey: ['columnId'] }) //'columnId' 쿼리 invalidate - 카드가 stale 상태임을 알리고 다시 fetch 하도록 유도함
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
