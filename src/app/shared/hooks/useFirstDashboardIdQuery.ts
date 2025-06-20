@@ -5,7 +5,7 @@ import authHttpClient from '@/app/shared/lib/axios'
 import { DashboardListResponse } from '../types/dashboard'
 
 export function useFirstDashboardIdQuery() {
-  return useQuery<DashboardListResponse, Error, string | number>({
+  return useQuery<DashboardListResponse, Error, number>({
     queryKey: ['firstDashboardId'],
     // 임시로 작성
     queryFn: async (): Promise<DashboardListResponse> => {
