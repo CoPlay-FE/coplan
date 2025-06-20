@@ -28,7 +28,7 @@ export default function Redirect({ children }: { children: React.ReactNode }) {
   }, [pathname])
 
   useEffect(() => {
-    if (!mounted || redirecting) return
+    if (!mounted || redirecting) return // 마운트가 되지 않았거나 리다이렉션 중이 아니면 return
 
     const isPublic = PUBLIC_ROUTES.includes(pathname)
 

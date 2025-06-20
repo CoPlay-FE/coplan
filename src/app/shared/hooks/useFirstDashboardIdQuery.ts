@@ -2,11 +2,13 @@ import { useQuery } from '@tanstack/react-query'
 
 import authHttpClient from '@/app/shared/lib/axios'
 
+import { DashboardListResponse } from '../types/dashboard'
+
 export function useFirstDashboardIdQuery() {
-  return useQuery({
+  return useQuery<DashboardListResponse, Error, string | number>({
     queryKey: ['firstDashboardId'],
     // 임시로 작성
-    queryFn: async () => {
+    queryFn: async (): Promise<DashboardListResponse> => {
       const response = await authHttpClient.get(
         `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards`,
         {
