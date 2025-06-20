@@ -1,5 +1,6 @@
 'use client'
 
+import Redirect from '@components/Redirect'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from 'next-themes'
 import { ReactNode, useState } from 'react'
@@ -14,7 +15,7 @@ export function Providers({ children }: { children: ReactNode }) {
         defaultTheme="system"
         enableSystem={true}
       >
-        {children}
+        <Redirect>{children}</Redirect>
       </ThemeProvider>
     </QueryClientProvider>
   )
