@@ -2,13 +2,11 @@
 
 import { useModalStore } from '@store/useModalStore'
 import { useSelectedDashboardStore } from '@store/useSelectedDashboardStore'
-import { usePathname } from 'next/navigation'
 
 import NavItem from './NavItem'
 
 export default function RightHeaderNav() {
-  const pathname = usePathname()
-  const { modalType, openModal } = useModalStore()
+  const { openModal } = useModalStore()
   const { selectedDashboard } = useSelectedDashboardStore()
 
   return (
@@ -18,14 +16,12 @@ export default function RightHeaderNav() {
         href={`/dashboard/${selectedDashboard?.id}/edit`}
         iconSrc="/images/config.svg"
         label="관리"
-        active={pathname.includes('/edit')}
       />
       <NavItem
         as="button"
         onClick={() => openModal('invite')}
         iconSrc="/images/invitation.png"
         label="초대하기"
-        active={modalType === 'invite'}
       />
     </nav>
   )

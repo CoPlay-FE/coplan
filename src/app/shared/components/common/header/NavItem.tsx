@@ -20,14 +20,12 @@ export default function NavItem({
   onClick,
   iconSrc,
   label,
-  active,
   className,
 }: NavItemProps) {
   const content = (
     <div
       className={cn(
         'inline-flex items-center gap-6 rounded-md border border-gray-300 px-12 py-4 align-middle text-sm transition hover:bg-gray-100',
-        active && 'font-semibold',
         className,
       )}
     >
