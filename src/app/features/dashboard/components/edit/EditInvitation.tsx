@@ -1,85 +1,49 @@
-import { UserInfo } from '@components/common/UserInfo'
+'use client'
+
 import { cn } from '@lib/cn'
 import Image from 'next/image'
 import React from 'react'
 
+import { UserInfo } from '@/app/shared/components/common/UserInfo'
+import { usePagination } from '@/app/shared/hooks/usePagination'
 import { useModalStore } from '@/app/shared/store/useModalStore'
 
 import { mockMembers } from './mockMember'
+import { PaginationHeader } from './PaginationHeader'
 
-const PAGE_SIZE = 5
+const INVITATION_SIZE = 5 // 페이지 당 표시 초대 내역
 
 export default function EditInvitation() {
   const { openModal } = useModalStore()
-  const [currentPage, setCurrentPage] = React.useState(1)
-  const totalPages = Math.ceil(mockMembers.length / PAGE_SIZE)
-  const startIndex = (currentPage - 1) * PAGE_SIZE
-  const paginationMembers = mockMembers.slice(
-    startIndex,
-    startIndex + PAGE_SIZE,
-  )
 
-  function handlePrev() {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1)
-    }
-  }
-
-  function handleNext() {
-    if (currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1)
-    }
-  }
+  const {
+    currentPage,
+    totalPages,
+    currentItems: paginationMembers,
+    handlePrev,
+    handleNext,
+  } = usePagination(mockMembers, INVITATION_SIZE)
 
   return (
     <div>
       <div className="BG-white h-360 w-584 rounded-16 px-32 py-24">
-        <div className="mb-24 flex items-center justify-between">
-          <h2 className="Text-black text-18 font-bold">초대 내역</h2>
-
-          <div className="flex items-center">
-            <p className="Text-gray mr-16 text-12">
-              {totalPages} 페이지 중 {currentPage}
-            </p>
-            <button onClick={handlePrev} disabled={currentPage === 1}>
-              <Image
-                src={
-                  currentPage === 1
-                    ? '/images/prev-disabled.png'
-                    : '/images/prev.png'
-                }
-                alt="이전"
-                width={36}
-                height={36}
-              />
-            </button>
-            <button onClick={handleNext} disabled={currentPage === totalPages}>
-              <Image
-                src={
-                  currentPage === totalPages
-                    ? '/images/next-disabled.png'
-                    : '/images/next.png'
-                }
-                alt="다음"
-                width={36}
-                height={36}
-              />
-            </button>
-            <button
-              onClick={() => openModal('invite')}
-              className="BG-violet ml-16 flex items-center gap-8 rounded-5 px-12 py-6"
-            >
-              <div className="relative flex size-12">
-                <Image
-                  src="/images/invitation-white.png"
-                  fill
-                  alt="초대 버튼"
-                />
-              </div>
-              <p className="text-14 text-white">초대하기</p>
-            </button>
-          </div>
-        </div>
+        <PaginationHeader
+          currentPage={currentPage}
+          totalPages={totalPages}
+          title="초대 내역"
+          onPrev={handlePrev}
+          onNext={handleNext}
+        >
+          <button
+            onClick={() => openModal('invite')}
+            className="BG-violet flex items-center gap-8 rounded-5 px-12 py-6"
+          >
+            <div className="relative flex size-12">
+              <Image src="/images/invitation-white.png" fill alt="초대 버튼" />
+            </div>
+            <p className="text-14 text-white">초대하기</p>
+          </button>
+        </PaginationHeader>
 
         <form>
           <label htmlFor="title" className="Text-black mb-8 block text-16">
@@ -93,7 +57,7 @@ export default function EditInvitation() {
                   key={index}
                   className={cn(
                     'flex items-center justify-between py-4',
-                    !isLast ? 'Border-bottom' : '',
+                    !isLast && 'Border-bottom',
                   )}
                 >
                   <UserInfo
