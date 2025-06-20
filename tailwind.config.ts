@@ -17,9 +17,8 @@ const config: Config = {
         foreground: 'var(--foreground)',
       },
       screens: {
-        mobile: { max: '375px' },
-        tablet: { max: '744px' },
-        desktop: { max: '1920px' },
+        mobile: { max: '375px' }, // 0 ~ 375px
+        tablet: { raw: '(min-width: 376px) and (max-width: 744px)' }, // 376 ~ 1919px
       },
     },
   },

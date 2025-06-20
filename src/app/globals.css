@@ -19,13 +19,16 @@ body {
 
 /* 커스텀 유틸리티 클래스  */
 .BG-white {
-  @apply bg-[#FFFFFF] dark:bg-[#1A1A1A];
+  @apply bg-[#FFFFFF] dark:bg-[#222222];
 }
 .BG-gray {
   @apply bg-[#FAFAFA] dark:bg-[#141414];
 }
 .BG-blue {
   @apply bg-[#83C8FA] hover:bg-[#5FBBFF] dark:bg-[#228DFF] dark:hover:bg-[#2172C9];
+}
+.BG-lightblue {
+  @apply bg-blue-100 dark:bg-[#182f52];
 }
 .BG-blue-disabled {
   @apply cursor-not-allowed bg-[#9FA6B2];
@@ -53,6 +56,9 @@ body {
 }
 .Text-btn {
   @apply text-[#5FBBFF] dark:text-[#228DFF];
+}
+.Text-deepblue {
+  @apply text-[#228DFF] dark:text-[#5FBBFF];
 }
 .Text-blue {
   @apply text-[#83C8FA] dark:text-[#228DFF];

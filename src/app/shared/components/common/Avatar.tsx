@@ -1,12 +1,15 @@
 'use client'
 
 import Image from 'next/image'
+import { useRef } from 'react'
 
 import { useAuthStore } from '@/app/features/auth/store/useAuthStore'
 import { getColor } from '@/app/shared/lib/getColor'
 
 type AvatarProps = {
   size?: number
+  name: string
+  imageUrl: string | null
 }
 
 const customColors = [
@@ -28,22 +31,33 @@ function getInitial(nickname: string): string {
   return '?'
 }
 
-export function Avatar({ size = 36 }: AvatarProps) {
+export function Avatar({ size = 36, name, imageUrl }: AvatarProps) {
   const user = useAuthStore((state) => state.user)
+  const nickname = useRef<string>()
+  const profileImageUrl = useRef<string | null>()
 
   if (!user) return null // user가 없으면 렌더링하지 않음
-  const initial = getInitial(user.nickname)
-  const bgColor = getColor(user.nickname, customColors.length)
 
-  return user?.profileImageUrl ? (
+  if (name) {
+    nickname.current = name
+    profileImageUrl.current = imageUrl
+  } else {
+    nickname.current = user.nickname
+    profileImageUrl.current = user.profileImageUrl
+  }
+
+  const initial = getInitial(nickname.current)
+  const bgColor = getColor(nickname.current, customColors.length)
+
+  return profileImageUrl.current ? (
     <div
       className="relative overflow-hidden rounded-full"
       style={{ width: size, height: size }}
     >
       <Image
-        src={user?.profileImageUrl}
+        src={profileImageUrl.current}
         fill
-        alt={`${user.nickname} 프로필 이미지`}
+        alt={`${nickname.current} 프로필 이미지`}
         className="object-cover"
       />
     </div>
