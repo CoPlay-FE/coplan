@@ -25,9 +25,9 @@ type CollaboratorListProps = {
 export default function CollaboratorList({
   collaborators = mockCollaborators, // 전달된 협업자가 없을 경우 mock 데이터 사용
 }: CollaboratorListProps) {
-  const MAX_VISIBLE = 4 // 최대 표시 협업자 수
-  const visibleCollaborators = collaborators.slice(0, MAX_VISIBLE) // 앞에서부터 4명만 추출
-  const extraCount = collaborators.length - MAX_VISIBLE // 초과 인원 계산
+  const MAX_COLLABS = 4 // 최대 표시 협업자 수
+  const visibleCollaborators = collaborators.slice(0, MAX_COLLABS) // 앞에서부터 4명만 추출
+  const extraCount = collaborators.length - MAX_COLLABS // 초과 인원 계산
 
   return (
     <div className="flex gap-4">
