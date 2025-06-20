@@ -16,12 +16,12 @@ export default function DashBoardEditPage() {
   return (
     <div className="BG-gray pb-16">
       <button
-        className="flex cursor-pointer items-center gap-12 p-16"
+        className="flex cursor-pointer items-center gap-12 px-16 pt-16"
         type="button"
         onClick={() => router.back()}
       >
-        <Image src="/images/back.png" alt="돌아가기" width={8} height={4} />
-        <p>돌아가기</p>
+        <Image src="/images/back.png" alt="돌아가기" width={6} height={4} />
+        <p className="text-14">돌아가기</p>
       </button>
       <div className="flex w-500 flex-col gap-16 p-16">
         <EditInfo />
