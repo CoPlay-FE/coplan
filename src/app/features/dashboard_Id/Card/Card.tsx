@@ -49,7 +49,7 @@ export default function Card({
       </h3>
 
       {/* 태그 */}
-      <Tags tags={tags} />
+      {tags.length !== 0 && <Tags tags={tags} />}
 
       {/* 마감일 & 담당자 */}
       <div className="mt-8 flex content-around items-center">
@@ -71,11 +71,15 @@ export default function Card({
         {/* :담당자 */}
         {assignee && (
           <div className="shrink-0">
-            <Avatar
-              nickname={assignee.nickname}
-              imageUrl={assignee.profileImageUrl}
+            {/* <Avatar
+               nickname={assignee.nickname}
+               imageUrl={assignee.profileImageUrl}
               size={24}
-            />
+            /> */}
+            {/* <Avatar size={24} /> */}
+            <div className="size-24 overflow-hidden rounded-50 bg-blue-200 text-center">
+              {assignee.nickname}
+            </div>
           </div>
         )}
       </div>

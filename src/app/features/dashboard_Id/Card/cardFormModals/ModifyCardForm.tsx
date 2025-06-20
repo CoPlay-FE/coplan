@@ -10,31 +10,35 @@ import { Controller, useForm } from 'react-hook-form'
 import useMembers from '../../api/useMembers'
 import { usePostCard } from '../../api/usePostCard'
 import { useUploadCardImage } from '../../api/useUploadCardImage'
-import { useColumnsStore } from '../../store/useColumnsStore'
+import { SimpleColumn, useColumnsStore } from '../../store/useColumnsStore'
 import { Card } from '../../type/Card.type'
 import type { CardFormData } from '../../type/CardFormData.type'
 import { Column } from '../../type/Column.type'
 import Tags from '../Tags'
+import TagsCanDelete from '../TagsCanDelete'
 import AssigneeList, { Assignee } from './AssigneeList'
+import ColumnList from './ColumnList'
 import DateInput from './input/DateInput'
 import Input from './input/Input'
 
 export default function ModifyCardForm({
   onClose,
   //   columnId,
-  columnTitle,
+  currentColumn,
   card,
 }: {
   onClose: () => void
   //   columnId: number
-  columnTitle: string
+  currentColumn: SimpleColumn
   card: Card
 }) {
   const [preview, setPreview] = useState<string | null>(card.imageUrl) // 이미지 URl 임시 저장
   const [tags, setTags] = useState<string[]>(card.tags) // 태그 목록 임시 저장
   const [tagInput, setTagInput] = useState('') // 작성중인 태그
   const { mutate: uploadImage, isPending: isUploading } = useUploadCardImage()
-  const { ColumnsInDashboard } = useColumnsStore()
+
+  //컬럼 목록
+  //   const { ColumnsInDashboard } = useColumnsStore()
 
   // 대시보드 멤버(담당자 선택)
   const params = useParams()
@@ -44,6 +48,11 @@ export default function ModifyCardForm({
   const [selectedAssignee, setSelectedAssignee] = useState<Assignee>() // 선택한 담당자
   const { columnId } = card
 
+  // 컬럼 목록
+  const [isOpenColumn, setIsOpenColumn] = useState(false)
+  const [selectedColumn, setSelectedColumn] = useState(currentColumn)
+
+  //useForm
   const {
     register,
     control,
@@ -66,14 +75,18 @@ export default function ModifyCardForm({
   // React Hook Form 과 tags 값 연결
   useEffect(() => {
     setValue('tags', tags)
-  }, [tags, setValue])
+    console.log(tags)
+  }, [tags, tags.length, setValue])
 
-  // assignee 선택 시 드롭다운 닫기
+  // 상태(컬럼) 선택 시 / assignee 선택 시 드롭다운 닫기
   useEffect(() => {
     if (selectedAssignee) {
       setIsOpen(false)
     }
-  }, [selectedAssignee])
+    if (selectedColumn) {
+      setIsOpenColumn(false)
+    }
+  }, [selectedAssignee, selectedColumn])
 
   // 이미지 파일 처리
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -96,7 +109,7 @@ export default function ModifyCardForm({
   function onSubmit(data: CardFormData) {
     const payload: CardFormData = {
       ...data,
-      dashboardId: dashboardId,
+      //   dashboardId: dashboardId,
       columnId: columnId,
       // tags: data.tags ?? [],
       // imageUrl: data.imageUrl,
@@ -106,7 +119,7 @@ export default function ModifyCardForm({
     if (!data.imageUrl || !preview) delete payload.imageUrl // delete로 아예 필드의 해당 key를 지워야, 서버가 "없음"으로 인식함..
     console.log('🌀', data.imageUrl)
     console.log('submitted', payload)
-    createCard(payload)
+    createCard(payload) // 파라미터로 카드 아이디도 넘겨야할꺼임
     onClose()
   }
 
@@ -116,6 +129,32 @@ export default function ModifyCardForm({
       <h2 className="Text-black text-24 font-bold">할 일 생성</h2>
       {/* 컬럼 선택 */}
       {/* 전역상태로 저장해둔 ColumnsInDashboard 사용 */}
+      <Controller
+        name="columnId"
+        control={control}
+        render={({ field }) => (
+          <Input labelName="상태" labelFor="columnId">
+            <div className="relative">
+              <input
+                {...field}
+                onClick={() => setIsOpenColumn((prev) => !prev)}
+                value={selectedColumn?.columnTitle ?? ''}
+                readOnly
+                className="Input-readOnly w-217"
+                id="columnId"
+                type="text"
+                placeholder={currentColumn.columnTitle}
+              />
+              {isOpenColumn && (
+                <ColumnList
+                  setColumn={setSelectedColumn}
+                  controlField={field}
+                />
+              )}
+            </div>
+          </Input>
+        )}
+      />
 
       {/* 담당자 입력 */}
       <Controller
@@ -222,7 +261,7 @@ export default function ModifyCardForm({
           {/* * 태그 클릭하면 해당 태그 삭제 가능하게 변형해야함 */}
           {tags && (
             <div className="mt-10">
-              <Tags tags={tags} />
+              <TagsCanDelete tags={tags} setTags={setTags} />
             </div>
           )}
         </div>

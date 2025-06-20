@@ -12,6 +12,7 @@ import { usePostCard } from '../../api/usePostCard'
 import { useUploadCardImage } from '../../api/useUploadCardImage'
 import type { CardFormData } from '../../type/CardFormData.type'
 import Tags from '../Tags'
+import TagsCanDelete from '../TagsCanDelete'
 import AssigneeList, { Assignee } from './AssigneeList'
 import DateInput from './input/DateInput'
 import Input from './input/Input'
@@ -204,7 +205,7 @@ export default function CreateCardForm({
           {/* * 태그 클릭하면 해당 태그 삭제 가능하게 변형해야함 */}
           {tags && (
             <div className="mt-10">
-              <Tags tags={tags} />
+              <TagsCanDelete tags={tags} setTags={setTags} />
             </div>
           )}
         </div>

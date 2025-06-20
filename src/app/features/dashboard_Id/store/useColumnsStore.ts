@@ -1,12 +1,12 @@
 import { create } from 'zustand'
 
-interface ColumnsInDashboard {
+export interface SimpleColumn {
   columnId: number
   columnTitle: string
 }
 interface ColumnsStore {
-  ColumnsInDashboard: ColumnsInDashboard[]
-  setColumns: (data: ColumnsInDashboard[]) => void
+  ColumnsInDashboard: SimpleColumn[]
+  setColumns: (data: SimpleColumn[]) => void
 }
 
 // 카드 수정 모달에서 사용하는 가공된 컬럼 데이터

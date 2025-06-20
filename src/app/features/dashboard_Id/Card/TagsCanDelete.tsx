@@ -1,6 +1,12 @@
 import { getColor } from '@/app/shared/lib/getColor'
 
-export default function Tags({ tags }: { tags: string[] }) {
+export default function TagsCanDelete({
+  tags,
+  setTags,
+}: {
+  tags: string[]
+  setTags: React.Dispatch<React.SetStateAction<string[]>>
+}) {
   //태그 컬러 - 랜덤 배정
   //카드 생성 시 - 동일 태그 입력 불가하도록
   const bgColors = ['#F9EEE3', '#E7F7DB', '#F7DBF0', '#DBE6F7']
@@ -9,8 +15,6 @@ export default function Tags({ tags }: { tags: string[] }) {
   return (
     <div className="flex flex-wrap gap-6">
       {tags.map((tag) => {
-        // const colorIndex = getColor(tag, bgColors.length)
-        // getColors함수 사용하면 NaN값이 떠서 작동을 안함.. 원래 문제 없었는데 이유를 모르겠음.
         const hash = tag
           .split('')
           .reduce((acc, char) => acc + char.charCodeAt(0), 0)
@@ -24,6 +28,7 @@ export default function Tags({ tags }: { tags: string[] }) {
               backgroundColor: bgColors[colorIndex],
               color: textColors[colorIndex],
             }}
+            onClick={() => setTags(tags.filter((t) => t !== tag))}
           >
             {tag}
           </span>

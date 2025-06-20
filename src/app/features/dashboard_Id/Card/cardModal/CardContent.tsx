@@ -20,7 +20,8 @@ export default function CardContent({
 }: CardContentProps) {
   const { id, imageUrl, title, tags, dueDate, assignee } = card
   const [openModifyCard, setOpenModifyCard] = useState(false)
-  const { title: columnTitle } = column
+  const { title: columnTitle, id: columnId } = column
+  const currentColumn = { columnTitle, columnId }
 
   return (
     <>
@@ -80,7 +81,7 @@ export default function CardContent({
           <ModifyCardForm
             onClose={() => setOpenModifyCard(false)}
             // columnId={column.id}
-            columnTitle={columnTitle}
+            currentColumn={currentColumn}
             card={card}
           />
         </CreateCardModal>

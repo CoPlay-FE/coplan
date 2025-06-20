@@ -33,7 +33,7 @@ export default function DashboardID() {
       }))
       setColumns(transformed)
     }
-  }, [])
+  }, [columns, setColumns])
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     // 1. 터치 대상 찾기
@@ -139,9 +139,9 @@ export default function DashboardID() {
   if (error) return <p>error...{error.message}</p>
   return (
     <>
-      <div className="ml-300 select-none">
+      <div className="select-none">
         <div
-          className="flex min-h-[calc(100vh-100px)] tablet:flex-col"
+          className="flex min-h-[calc(100vh-100px)] mobile:flex-row tablet:flex-col"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
