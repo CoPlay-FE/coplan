@@ -30,7 +30,7 @@ export default function Redirect({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!mounted || redirecting) return // 마운트가 되지 않았거나 리다이렉션 중이 아니면 return
 
-    const isPublic = PUBLIC_ROUTES.includes(pathname)
+    const isPublic = PUBLIC_ROUTES.includes(pathname) //로그인 없이 접근 가능한 공개 라우트
 
     // 🔒 비로그인 상태에서 private 경로 접근 시 → /login
     if (!isLoggedIn && !isPublic && pathname !== '/') {
