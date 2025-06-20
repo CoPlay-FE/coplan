@@ -1,91 +1,19 @@
 'use client'
 
-import api from '@lib/axios'
-import { useQueryClient } from '@tanstack/react-query'
-import axios from 'axios'
-import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import DashboardForm from '@/app/shared/components/dashboard/DashboardForm'
-import { DASHBOARD_COLORS } from '@/app/shared/constants/colors'
-import { useSelectedDashboardStore } from '@/app/shared/store/useSelectedDashboardStore'
-import { CreateDashboardRequest } from '@/app/shared/types/dashboard'
+import { useDashboardForm } from '@/app/shared/hooks/useDashboardForm'
 
 export default function EditInfo() {
-  const router = useRouter()
-  const { selectedDashboard, setSelectedDashboard } =
-    useSelectedDashboardStore()
-  const queryClient = useQueryClient()
-
-  const [formData, setFormData] = useState<CreateDashboardRequest>({
-    title: '',
-    color: DASHBOARD_COLORS[0],
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  // selectedDashboard가 있을 때 formData 초기화
-  useEffect(() => {
-    if (selectedDashboard) {
-      setFormData({
-        title: selectedDashboard.title,
-        color: selectedDashboard.color,
-      })
-    }
-  }, [selectedDashboard])
-
-  // 입력값 변경 핸들러
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
-
-  // 색상 선택 핸들러
-  function handleColorSelect(color: string) {
-    setFormData((prev) => ({ ...prev, color }))
-  }
-
-  // 제출 핸들러
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-
-    if (!formData.title || !formData.color) return
-
-    try {
-      setIsSubmitting(true)
-
-      if (!process.env.NEXT_PUBLIC_TEAM_ID || !selectedDashboard?.id) {
-        throw new Error('필수 정보가 누락되었습니다.')
-      }
-
-      const response = await api.put(
-        `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards/${selectedDashboard.id}`,
-        formData,
-      )
-
-      const data = response.data
-
-      setSelectedDashboard(data)
-      await queryClient.invalidateQueries({ queryKey: ['dashboards'] })
-
-      router.push(`/dashboard/${data.id}/edit`)
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const message =
-          error.response?.data?.message ||
-          '대시보드 수정 중 오류가 발생했습니다.'
-        console.error('대시보드 수정 오류:', message)
-        alert(message)
-      } else {
-        console.error('대시보드 수정 오류:', error)
-        alert('알 수 없는 오류가 발생했습니다.')
-      }
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
+  const {
+    formData,
+    isSubmitting,
+    handleChange,
+    handleColorSelect,
+    handleSubmit,
+    selectedDashboard,
+  } = useDashboardForm('edit')
 
   return (
     <div>
@@ -101,7 +29,7 @@ export default function EditInfo() {
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
           submitText="변경"
-          submitButtonWidth="w-512"
+          submitButtonWidth="w-516"
         />
       </div>
     </div>
