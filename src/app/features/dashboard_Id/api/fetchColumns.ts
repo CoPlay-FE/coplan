@@ -1,6 +1,5 @@
-import api from '@/app/shared/lib/testAxios'
+import api from '@/app/shared/lib/axios'
 
-// import api from '@/app/shared/lib/axios'
 import { Column, ColumnsResponse } from '../type/Column.type'
 
 export async function fetchColumns(dashboardId: number): Promise<Column[]> {
