@@ -142,7 +142,7 @@ export default function ModifyCardForm({
                 placeholder={currentColumn.columnTitle}
               />
               <Image
-                src="/images/arrow-dropdown.svg" // 당신의 이미지 경로로 변경
+                src="/images/arrow-dropdown.svg"
                 alt="화살표"
                 width={26}
                 height={24}
@@ -178,6 +178,16 @@ export default function ModifyCardForm({
                 id="assigneeUserId"
                 type="text"
                 placeholder={card.assignee.nickname}
+              />
+              <Image
+                src="/images/arrow-dropdown.svg"
+                alt="화살표"
+                width={26}
+                height={24}
+                className={cn(
+                  'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300',
+                  isOpen && 'rotate-180',
+                )}
               />
               {isOpen && (
                 <AssigneeList

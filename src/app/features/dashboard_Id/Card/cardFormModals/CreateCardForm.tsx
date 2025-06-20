@@ -7,11 +7,12 @@ import { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import { Controller, useForm } from 'react-hook-form'
 
+import { cn } from '@/app/shared/lib/cn'
+
 import useMembers from '../../api/useMembers'
 import { usePostCard } from '../../api/usePostCard'
 import { useUploadCardImage } from '../../api/useUploadCardImage'
 import type { CardFormData } from '../../type/CardFormData.type'
-import Tags from '../Tags'
 import TagsCanDelete from '../TagsCanDelete'
 import AssigneeList, { Assignee } from './AssigneeList'
 import DateInput from './input/DateInput'
@@ -116,6 +117,16 @@ export default function CreateCardForm({
                 id="assigneeUserId"
                 type="text"
                 placeholder="담당자를 선택해 주세요"
+              />
+              <Image
+                src="/images/arrow-dropdown.svg"
+                alt="화살표"
+                width={26}
+                height={24}
+                className={cn(
+                  'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300',
+                  isOpen && 'rotate-180',
+                )}
               />
               {isOpen && (
                 <AssigneeList
