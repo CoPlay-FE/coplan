@@ -58,11 +58,15 @@ export const useRespondToInvitation = () => {
     }) => respondToInvitation(invitationId, accept),
 
     //  성공 시 실행
-    onSuccess: () => {
-      // 관련 쿼리들 무효화하여 최신 데이터 다시 fetch
+    onSuccess: (_, variables) => {
+      // 초대 목록에서 해당 항목 제거
       queryClient.invalidateQueries({ queryKey: ['invitedDashboards'] })
-      // 초대 수락 시 대시보드 목록 업데이트
-      queryClient.invalidateQueries({ queryKey: ['myDashboards'] })
+
+      // 수락 시에만 대시보드 목록 갱신
+      if (variables.accept) {
+        queryClient.invalidateQueries({ queryKey: ['myDashboards'] })
+        queryClient.invalidateQueries({ queryKey: ['dashboards'] })
+      }
     },
     // 실패 시
     onError: (error) => {
