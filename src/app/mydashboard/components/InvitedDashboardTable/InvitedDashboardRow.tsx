@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 
+import { showError, showSuccess } from '@/app/shared/lib/toast'
 import { Invitation } from '@/app/shared/types/dashboard'
 
 import { useRespondToInvitation } from '../../hooks/useMyDashboards'
-import { showError, showSuccess } from '@/app/shared/lib/toast'
 
 interface InvitedDashboardRowProps {
   invitation: Invitation
@@ -17,41 +17,39 @@ export default function InvitedDashboardRow({
   const [isProcessing, setIsProcessing] = useState(false)
   const respondToInvitationMutation = useRespondToInvitation()
 
-  const handleAccept = async () => {
+  // 공통 초대 응답 처리
+  const handleInvitationResponse = async (accept: boolean) => {
     if (isProcessing) return
 
+    const action = accept ? '수락' : '거절'
     setIsProcessing(true)
+
     try {
       await respondToInvitationMutation.mutateAsync({
         invitationId: invitation.id,
-        accept: true,
+        accept,
       })
-      showSuccess('초대를 수락했습니다!')
+
+      const successMessage = accept
+        ? '초대를 수락했습니다!'
+        : '초대를 거절했습니다.'
+      showSuccess(successMessage)
     } catch (error) {
-      console.error('초대 수락 실패:', error)
-      showError('초대 수락 중 오류가 발생했습니다.')
+      console.error(`초대 ${action} 실패:`, error)
+
+      const errorMessage =
+        error instanceof Error
+          ? `초대 ${action} 실패: ${error.message}`
+          : `초대 ${action} 중 오류가 발생했습니다.`
+
+      showError(errorMessage)
     } finally {
       setIsProcessing(false)
     }
   }
 
-  const handleReject = async () => {
-    if (isProcessing) return
-
-    setIsProcessing(true)
-    try {
-      await respondToInvitationMutation.mutateAsync({
-        invitationId: invitation.id,
-        accept: false,
-      })
-      showSuccess('초대를 거절했습니다.')
-    } catch (error) {
-      console.error('초대 거절 실패:', error)
-      showError('초대 거절 중 오류가 발생했습니다.')
-    } finally {
-      setIsProcessing(false)
-    }
-  }
+  const handleAccept = () => handleInvitationResponse(true)
+  const handleReject = () => handleInvitationResponse(false)
 
   return (
     <div className="grid grid-cols-3 items-center gap-20 border-b border-gray-100 py-20 pl-36 pr-32">
