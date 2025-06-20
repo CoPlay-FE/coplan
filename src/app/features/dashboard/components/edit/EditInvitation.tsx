@@ -1,7 +1,6 @@
 import { UserInfo } from '@components/common/UserInfo'
 import { cn } from '@lib/cn'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
 import React from 'react'
 
 import { useModalStore } from '@/app/shared/store/useModalStore'
@@ -11,7 +10,6 @@ import { mockMembers } from './mockMember'
 const PAGE_SIZE = 5
 
 export default function EditInvitation() {
-  const pathname = usePathname()
   const { openModal } = useModalStore()
   const [currentPage, setCurrentPage] = React.useState(1)
   const totalPages = Math.ceil(mockMembers.length / PAGE_SIZE)
@@ -69,10 +67,7 @@ export default function EditInvitation() {
             </button>
             <button
               onClick={() => openModal('invite')}
-              className={cn(
-                'BG-violet ml-16 flex items-center gap-8 rounded-5 px-12 py-6',
-                pathname === '/modal' && 'font-semibold',
-              )}
+              className="BG-violet ml-16 flex items-center gap-8 rounded-5 px-12 py-6"
             >
               <div className="relative flex size-12">
                 <Image
@@ -96,9 +91,10 @@ export default function EditInvitation() {
               return (
                 <div
                   key={index}
-                  className={`flex items-center justify-between py-4 ${
-                    !isLast ? 'Border-bottom' : ''
-                  }`}
+                  className={cn(
+                    'flex items-center justify-between py-4',
+                    !isLast ? 'Border-bottom' : '',
+                  )}
                 >
                   <UserInfo
                     nickname={member.nickname}
