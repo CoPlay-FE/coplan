@@ -8,7 +8,7 @@ import { useModalStore } from '@/app/shared/store/useModalStore'
 
 import { mockMembers } from './mockMember'
 
-const PAGE_SIZE = 5 // 페이지당 표시할 초대 내역 수
+const PAGE_SIZE = 5
 
 export default function EditInvitation() {
   const pathname = usePathname()
@@ -21,13 +21,13 @@ export default function EditInvitation() {
     startIndex + PAGE_SIZE,
   )
 
-  const handlePrev = () => {
+  function handlePrev() {
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1)
     }
   }
 
-  const handleNext = () => {
+  function handleNext() {
     if (currentPage < totalPages) {
       setCurrentPage((prev) => prev + 1)
     }
@@ -35,7 +35,6 @@ export default function EditInvitation() {
 
   return (
     <div>
-      {/* 컨테이너 */}
       <div className="BG-white h-360 w-584 rounded-16 px-32 py-24">
         <div className="mb-24 flex items-center justify-between">
           <h2 className="Text-black text-18 font-bold">초대 내역</h2>
@@ -102,7 +101,6 @@ export default function EditInvitation() {
                   }`}
                 >
                   <UserInfo
-                    key={index}
                     nickname={member.nickname}
                     imageUrl={member.imageUrl}
                   />

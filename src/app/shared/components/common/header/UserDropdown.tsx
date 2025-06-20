@@ -11,11 +11,11 @@ export default function UserDropdown() {
   const router = useRouter()
   const { logout } = useAuth()
 
-  const goToMypage = () => {
+  function goToMypage() {
     router.push('/mypage')
   }
 
-  const handleLogout = () => {
+  function handleLogout() {
     logout()
     router.push('/')
   }

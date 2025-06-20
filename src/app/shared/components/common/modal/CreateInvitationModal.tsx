@@ -13,13 +13,13 @@ export default function CreateInvitationModal() {
   const [email, setEmail] = useState('')
   const { id: dashboardId } = useParams()
 
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  function handleBackdropClick(e: React.MouseEvent<HTMLDivElement>) {
     if (e.target === e.currentTarget) {
       closeModal()
     }
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!email) return
 

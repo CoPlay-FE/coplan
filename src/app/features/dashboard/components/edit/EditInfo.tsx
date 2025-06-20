@@ -34,7 +34,7 @@ export default function EditInfo() {
   }, [selectedDashboard])
 
   // 입력값 변경 핸들러
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
@@ -43,12 +43,12 @@ export default function EditInfo() {
   }
 
   // 색상 선택 핸들러
-  const handleColorSelect = (color: string) => {
+  function handleColorSelect(color: string) {
     setFormData((prev) => ({ ...prev, color }))
   }
 
   // 제출 핸들러
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
     if (!formData.title || !formData.color) return
@@ -67,13 +67,9 @@ export default function EditInfo() {
 
       const data = response.data
 
-      // 1. 상태 업데이트 (헤더, 수정정보 실시간 반영)
       setSelectedDashboard(data)
-
-      // 2. react-query 캐시 무효화 → Sidebar 목록 재요청 유도
       await queryClient.invalidateQueries({ queryKey: ['dashboards'] })
 
-      // 성공 시 상세 페이지 이동
       router.push(`/dashboard/${data.id}/edit`)
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -93,14 +89,12 @@ export default function EditInfo() {
 
   return (
     <div>
-      {/* 컨테이너 */}
       <div className="BG-white h-300 w-584 rounded-16 px-32 py-24">
         <h2 className="Text-black mb-24 text-18 font-bold">
           {selectedDashboard?.title || '대시보드 편집'}
         </h2>
 
         <form onSubmit={handleSubmit}>
-          {/* 제목 입력 */}
           <div className="mb-16">
             <label htmlFor="title" className="Text-black mb-8 block text-16">
               대시보드 이름
@@ -117,7 +111,6 @@ export default function EditInfo() {
             />
           </div>
 
-          {/* 색상 선택 */}
           <div className="mb-30">
             <div className="flex gap-8">
               {DASHBOARD_COLORS.map((color) => (
@@ -129,7 +122,6 @@ export default function EditInfo() {
                   style={{ backgroundColor: color }}
                   aria-label={`색상 ${color}`}
                 >
-                  {/* 선택된 색상에 체크 표시 */}
                   {formData.color === color && (
                     <div className="relative size-24 items-center justify-center">
                       <Image
@@ -145,7 +137,6 @@ export default function EditInfo() {
             </div>
           </div>
 
-          {/* 하단 버튼 */}
           <div>
             <button
               type="submit"

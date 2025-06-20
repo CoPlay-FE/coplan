@@ -15,9 +15,7 @@ export default function DeleteDashboardButton({
   const router = useRouter()
   const [isDeleting, setIsDeleting] = useState(false)
 
-  console.log('DeleteDashboardButton 렌더됨:', dashboardId)
-
-  const handleDelete = async () => {
+  async function handleDelete() {
     const confirmed = confirm(
       '정말로 이 대시보드를 삭제하시겠습니까? 삭제 후 되돌릴 수 없습니다.',
     )
@@ -43,7 +41,7 @@ export default function DeleteDashboardButton({
           error.response?.data?.message ||
           '대시보드 삭제 중 오류가 발생했습니다.'
         console.error('대시보드 삭제 오류:', message)
-        alert(message) // 또는 showError(message) 등으로 사용자에게 표시
+        alert(message)
       } else {
         console.error('대시보드 삭제 오류:', error)
         alert('알 수 없는 오류가 발생했습니다.')
