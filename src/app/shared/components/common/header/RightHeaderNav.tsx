@@ -16,7 +16,7 @@ export default function RightHeaderNav() {
       <NavItem
         as="link"
         href={`/dashboard/${selectedDashboard?.id}/edit`}
-        iconSrc="/images/management.png"
+        iconSrc="/images/config.svg"
         label="관리"
         active={pathname.includes('/edit')}
       />
