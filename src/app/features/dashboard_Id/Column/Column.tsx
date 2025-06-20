@@ -16,8 +16,8 @@ export default function Column({ column }: { column: ColumnType }) {
   const [isDraggingover, setDraggingover] = useState(false)
   const { draggingCard, clearDraggingCard } = useDragStore()
   const cardMutation = useCardMutation()
-  const [openCard, setOpenCard] = useState(false) //card.tsx
   const [openCreateCard, setOpenCreateCard] = useState(false)
+
   const [openCreateColumn, setOpenCreateColumn] = useState(false) //page.tsx
   const [oepnConfigColumn, setConfigColumn] = useState(false)
 
@@ -78,7 +78,8 @@ export default function Column({ column }: { column: ColumnType }) {
         className="BG-white Border-section flex justify-center rounded-6 py-9"
         onClick={() => setOpenCreateCard(true)}
       >
-        <div className="flex h-22 w-22 items-center justify-center rounded-4 bg-blue-100">
+        {/* <div className="flex h-22 w-22 items-center justify-center rounded-4 bg-blue-100 dark:bg-[#363636]"> */}
+        <div className="BG-lightblue flex h-22 w-22 items-center justify-center rounded-4">
           <Image
             src={'/images/plus.svg'}
             alt="추가하기"
@@ -88,16 +89,16 @@ export default function Column({ column }: { column: ColumnType }) {
         </div>
       </button>
       {data?.cards.map((card) => (
-        <Card key={card.id} card={card} columnId={id} />
+        <Card key={card.id} card={card} column={column} />
       ))}
 
-      {/* 모달 */}
+      {/* 카드 생성 모달 */}
       {openCreateCard && (
-        <CreateCardModal onClose={() => setOpenCreateCard(false)}>
+        <CreateCardModal>
           <CreateCardForm
             onClose={() => setOpenCreateCard(false)}
             columnId={id}
-          ></CreateCardForm>
+          />
         </CreateCardModal>
       )}
     </div>
