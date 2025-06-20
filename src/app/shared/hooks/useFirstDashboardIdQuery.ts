@@ -7,7 +7,7 @@ import { DashboardListResponse } from '../types/dashboard'
 export function useFirstDashboardIdQuery() {
   return useQuery<DashboardListResponse, Error, number>({
     queryKey: ['firstDashboardId'],
-    // 임시로 작성
+    // 임시로 작성(대시보드 ID가 필요한데 해당 API 함수가 중복 될 가능성 고려)
     queryFn: async (): Promise<DashboardListResponse> => {
       const response = await authHttpClient.get(
         `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards`,
