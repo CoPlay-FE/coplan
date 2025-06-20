@@ -7,14 +7,17 @@ import { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import { Controller, useForm } from 'react-hook-form'
 
+import { cn } from '@/app/shared/lib/cn'
+
 import useMembers from '../../api/useMembers'
-import { usePostCard } from '../../api/usePostCard'
+import { usePutCardMutation } from '../../api/useputCardMutation'
 import { useUploadCardImage } from '../../api/useUploadCardImage'
-import { SimpleColumn, useColumnsStore } from '../../store/useColumnsStore'
+import { SimpleColumn } from '../../store/useColumnsStore'
 import { Card } from '../../type/Card.type'
-import type { CardFormData } from '../../type/CardFormData.type'
-import { Column } from '../../type/Column.type'
-import Tags from '../Tags'
+import type {
+  CardFormData,
+  CardModifyFormData,
+} from '../../type/CardFormData.type'
 import TagsCanDelete from '../TagsCanDelete'
 import AssigneeList, { Assignee } from './AssigneeList'
 import ColumnList from './ColumnList'
@@ -23,12 +26,10 @@ import Input from './input/Input'
 
 export default function ModifyCardForm({
   onClose,
-  //   columnId,
   currentColumn,
   card,
 }: {
   onClose: () => void
-  //   columnId: number
   currentColumn: SimpleColumn
   card: Card
 }) {
@@ -36,9 +37,6 @@ export default function ModifyCardForm({
   const [tags, setTags] = useState<string[]>(card.tags) // 태그 목록 임시 저장
   const [tagInput, setTagInput] = useState('') // 작성중인 태그
   const { mutate: uploadImage, isPending: isUploading } = useUploadCardImage()
-
-  //컬럼 목록
-  //   const { ColumnsInDashboard } = useColumnsStore()
 
   // 대시보드 멤버(담당자 선택)
   const params = useParams()
@@ -58,7 +56,7 @@ export default function ModifyCardForm({
     control,
     handleSubmit,
     setValue,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isValid, isSubmitting, isDirty },
   } = useForm<CardFormData>({
     defaultValues: {
       assigneeUserId: card.assignee.id,
@@ -70,6 +68,7 @@ export default function ModifyCardForm({
       tags: card.tags,
       imageUrl: card.imageUrl,
     },
+    mode: 'onChange', // isValid와 isDirty가 입력 즉시 반영되도록
   })
 
   // React Hook Form 과 tags 값 연결
@@ -105,30 +104,27 @@ export default function ModifyCardForm({
   }
 
   // 폼 제출 핸들러 함수
-  const { mutate: createCard, isPending } = usePostCard()
-  function onSubmit(data: CardFormData) {
-    const payload: CardFormData = {
+  const { mutate: modifyCard, isPending } = usePutCardMutation()
+  function onSubmit(data: CardModifyFormData) {
+    const payload: CardModifyFormData = {
       ...data,
-      //   dashboardId: dashboardId,
       columnId: columnId,
-      // tags: data.tags ?? [],
-      // imageUrl: data.imageUrl,
     }
 
     if (!data.dueDate) delete payload.dueDate
     if (!data.imageUrl || !preview) delete payload.imageUrl // delete로 아예 필드의 해당 key를 지워야, 서버가 "없음"으로 인식함..
-    console.log('🌀', data.imageUrl)
+
     console.log('submitted', payload)
-    createCard(payload) // 파라미터로 카드 아이디도 넘겨야할꺼임
+    modifyCard({ cardId: card.id, payload: payload })
     onClose()
   }
 
   // ✅ JSX
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-32">
-      <h2 className="Text-black text-24 font-bold">할 일 생성</h2>
+      <h2 className="Text-black text-24 font-bold">할 일 수정</h2>
+
       {/* 컬럼 선택 */}
-      {/* 전역상태로 저장해둔 ColumnsInDashboard 사용 */}
       <Controller
         name="columnId"
         control={control}
@@ -144,6 +140,16 @@ export default function ModifyCardForm({
                 id="columnId"
                 type="text"
                 placeholder={currentColumn.columnTitle}
+              />
+              <Image
+                src="/images/arrow-dropdown.svg" // 당신의 이미지 경로로 변경
+                alt="화살표"
+                width={26}
+                height={24}
+                className={cn(
+                  'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300',
+                  isOpenColumn && 'rotate-180',
+                )}
               />
               {isOpenColumn && (
                 <ColumnList
@@ -217,7 +223,7 @@ export default function ModifyCardForm({
           control={control}
           render={({ field }) => (
             <DatePicker
-              selected={field.value ? new Date(field.value) : null} //field.value가 string이라서, Date로 변환해서 selected에 넘김
+              selected={field.value ? new Date(field.value) : null} // field.value가 string이라서, Date로 변환해서 데이트피커의 selected에 넘김
               onChange={(date) => {
                 if (date) {
                   const formatted = format(date, 'yyyy-MM-dd HH:mm')
@@ -258,7 +264,6 @@ export default function ModifyCardForm({
           />
 
           {/* 추가한 태그 */}
-          {/* * 태그 클릭하면 해당 태그 삭제 가능하게 변형해야함 */}
           {tags && (
             <div className="mt-10">
               <TagsCanDelete tags={tags} setTags={setTags} />
@@ -326,11 +331,11 @@ export default function ModifyCardForm({
           취소
         </button>
         <button
-          className="BG-blue w-full rounded-8 border-solid py-14 text-16 font-medium text-[#FFFFFF]"
+          className="BG-blue w-full rounded-8 border-solid py-14 text-16 font-medium text-[#FFFFFF] disabled:bg-gray-300"
           type="submit"
-          disabled={!isValid || isPending || isSubmitting}
+          disabled={!isValid || !isDirty || isPending || isSubmitting}
         >
-          생성
+          수정
         </button>
       </div>
     </form>
