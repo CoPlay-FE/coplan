@@ -24,11 +24,14 @@ export default function Logo() {
     : '/images/logo-light2.svg'
 
   return (
-    <Link href="/" className="mobileS:w-30 mobileS:h-30 relative h-30 w-120">
+    <Link
+      href="/"
+      className="mobile-wide:w-30 mobile-wide:h-30 relative h-30 w-120"
+    >
       {/* 모바일용 로고 */}
       <Image
         suppressHydrationWarning
-        className="mobileS:block hidden object-contain"
+        className="mobile-wide:block hidden object-contain"
         src={mobileLogoSrc}
         fill
         alt="모바일 로고"
@@ -37,7 +40,7 @@ export default function Logo() {
       {/* 데스크탑/태블릿용 로고 */}
       <Image
         suppressHydrationWarning
-        className="mobileS:hidden block object-contain"
+        className="mobile-wide:hidden block object-contain"
         src={desktopLogoSrc}
         fill
         alt="일반 로고"

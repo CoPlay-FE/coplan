@@ -1,12 +1,12 @@
 import FeatureCard from './FeatureCard'
 export default function FeatureCardSection() {
   return (
-    <section className="tabletS:items-center flex w-full max-w-1200 flex-col justify-center gap-42">
-      <p className="mobileS:text-center text-left text-22 font-bold">
+    <section className="tablet-wide:items-center flex w-full max-w-1200 flex-col justify-center gap-42">
+      <p className="mobile-wide:text-center text-left text-22 font-bold">
         생산성을 높이는 다양한 설정 ⚡
       </p>
 
-      <div className="mobileS:flex-col tabletS:flex-col mobileS:gap-40 tabletS:justify-center flex w-full flex-row items-center justify-between gap-33">
+      <div className="mobile-wide:flex-col tablet-wide:flex-col mobile-wide:gap-40 tablet-wide:justify-center flex w-full flex-row items-center justify-between gap-33">
         <FeatureCard
           image="/images/newdashboard.svg"
           imageAlt="대시보드 설정"
