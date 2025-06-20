@@ -3,11 +3,12 @@
 import { DASHBOARD_COLORS } from '@constants/colors'
 import authHttpClient from '@lib/axios'
 import { useModalStore } from '@store/useModalStore'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 import { CreateDashboardRequest } from '@/types/dashboard'
+
+import DashboardForm from '../../dashboard/DashboardForm'
 
 export default function CreateDashboardModal() {
   const router = useRouter()
@@ -92,75 +93,16 @@ export default function CreateDashboardModal() {
       {/* 모달 컨테이너 */}
       <div className="BG-white h-344 w-584 rounded-16 p-32">
         <h2 className="Text-black mb-24 text-24 font-bold">새로운 대시보드</h2>
-
-        <form onSubmit={handleSubmit}>
-          {/* 제목 입력 */}
-          <div className="mb-24">
-            <label htmlFor="title" className="Text-black mb-8 block text-18">
-              대시보드 이름
-            </label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="대시보드 이름을 입력해주세요."
-              className="Border-section w-full rounded-8 px-12 py-10 text-16 outline-none"
-              required
-            />
-          </div>
-
-          {/* 색상 선택 */}
-          <div className="mb-32">
-            <div className="flex gap-8">
-              {DASHBOARD_COLORS.map((color) => (
-                <button
-                  key={color}
-                  type="button"
-                  onClick={() => handleColorSelect(color)}
-                  className="relative flex size-30 items-center justify-center rounded-full"
-                  style={{ backgroundColor: color }}
-                  aria-label={`색상 ${color}`}
-                >
-                  {/* 선택된 색상 체크 */}
-                  {formData.color === color && (
-                    <div className="relative size-24 items-center justify-center">
-                      <Image
-                        src="/images/check.svg"
-                        alt="check"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* 하단 버튼 */}
-          <div className="flex justify-end gap-10">
-            <button
-              type="button"
-              onClick={closeModal}
-              className="Border-btn Text-black h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold"
-            >
-              취소
-            </button>
-            <button
-              type="submit"
-              disabled={!formData.title || !formData.color || isSubmitting}
-              className={`BG-violet h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold text-white transition-opacity ${
-                !formData.title || !formData.color || isSubmitting
-                  ? 'cursor-not-allowed opacity-50'
-                  : 'hover:opacity-90'
-              }`}
-            >
-              생성
-            </button>
-          </div>
-        </form>
+        <DashboardForm
+          formData={formData}
+          onChange={handleChange}
+          onColorSelect={handleColorSelect}
+          onSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+          submitText="생성"
+          showCancelButton
+          onCancel={closeModal}
+        />
       </div>
     </div>
   )

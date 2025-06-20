@@ -3,10 +3,10 @@
 import api from '@lib/axios'
 import { useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
+import DashboardForm from '@/app/shared/components/dashboard/DashboardForm'
 import { DASHBOARD_COLORS } from '@/app/shared/constants/colors'
 import { useSelectedDashboardStore } from '@/app/shared/store/useSelectedDashboardStore'
 import { CreateDashboardRequest } from '@/app/shared/types/dashboard'
@@ -94,63 +94,15 @@ export default function EditInfo() {
           {selectedDashboard?.title || '대시보드 편집'}
         </h2>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-16">
-            <label htmlFor="title" className="Text-black mb-8 block text-16">
-              대시보드 이름
-            </label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="대시보드 이름을 입력해주세요."
-              className="Border-section w-512 rounded-8 px-12 py-10 text-16 outline-none"
-              required
-            />
-          </div>
-
-          <div className="mb-30">
-            <div className="flex gap-8">
-              {DASHBOARD_COLORS.map((color) => (
-                <button
-                  key={color}
-                  type="button"
-                  onClick={() => handleColorSelect(color)}
-                  className="relative flex size-30 items-center justify-center rounded-full"
-                  style={{ backgroundColor: color }}
-                  aria-label={`색상 ${color}`}
-                >
-                  {formData.color === color && (
-                    <div className="relative size-24 items-center justify-center">
-                      <Image
-                        src="/images/check.svg"
-                        alt="check"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              disabled={!formData.title || !formData.color || isSubmitting}
-              className={`BG-violet h-48 w-512 rounded-8 px-16 py-10 text-16 font-semibold text-white transition-opacity ${
-                !formData.title || !formData.color || isSubmitting
-                  ? 'cursor-not-allowed opacity-50'
-                  : 'hover:opacity-90'
-              }`}
-            >
-              변경
-            </button>
-          </div>
-        </form>
+        <DashboardForm
+          formData={formData}
+          onChange={handleChange}
+          onColorSelect={handleColorSelect}
+          onSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+          submitText="변경"
+          submitButtonWidth="w-512"
+        />
       </div>
     </div>
   )
