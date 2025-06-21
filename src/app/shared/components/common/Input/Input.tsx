@@ -1,9 +1,8 @@
 'use client'
 
+import { cn } from '@lib/cn'
 import Image from 'next/image'
 import { forwardRef, InputHTMLAttributes, useState } from 'react'
-
-import { cn } from '../lib/cn'
 
 interface CustomInputProps extends InputHTMLAttributes<HTMLInputElement> {
   labelName: string
