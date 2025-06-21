@@ -101,7 +101,6 @@ export default function Card({
         <CreateCardModal>
           <ModifyCardForm
             onClose={() => setOpenModifyCard(false)}
-            // columnId={column.id}
             currentColumn={currentColumn}
             card={card}
           />
