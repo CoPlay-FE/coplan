@@ -17,7 +17,11 @@ export default function UserDropdown() {
 
   const handleLogout = () => {
     logout()
-    router.push('/')
+    // ⚠️ 상태 변경(setIsPostLogout)이 반영되기 전에 페이지 이동하면 Redirect가 이상하게 동작함
+    // 따라서 router.push('/')는 이벤트 큐에 넣어 상태가 반영된 후 실행되도록 setTimeout 처리
+    setTimeout(() => {
+      router.push('/')
+    }, 0)
   }
 
   return (

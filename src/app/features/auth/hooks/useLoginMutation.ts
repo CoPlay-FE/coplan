@@ -17,8 +17,11 @@ export function useLoginMutation() {
     onSuccess: async (response) => {
       updateAuthState(response)
       showSuccess('로그인에 성공하셨습니다!')
-      await new Promise((resolve) => setTimeout(resolve, 400))
-      router.push('/mydashboard')
+
+      // ✅ 상태 반영을 위해 이벤트 큐로 넘김
+      setTimeout(() => {
+        router.push('/mydashboard')
+      }, 0)
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
@@ -31,5 +34,6 @@ export function useLoginMutation() {
         showError('알 수 없는 에러 발생')
       }
     },
+    throwOnError: true,
   })
 }
