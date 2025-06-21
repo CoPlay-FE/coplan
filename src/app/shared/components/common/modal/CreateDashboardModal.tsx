@@ -3,6 +3,7 @@
 import { DASHBOARD_COLORS } from '@constants/colors'
 import authHttpClient from '@lib/axios'
 import { useModalStore } from '@store/useModalStore'
+import { useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -11,6 +12,7 @@ import { CreateDashboardRequest } from '@/types/dashboard'
 
 export default function CreateDashboardModal() {
   const router = useRouter()
+  const queryClient = useQueryClient()
   const { modalType, closeModal } = useModalStore()
   const isModalOpen = modalType === 'createDashboard'
 
@@ -51,6 +53,16 @@ export default function CreateDashboardModal() {
       )
 
       const data = response.data
+
+      // 사이드바 무한스크롤 쿼리 무효화 - 새로운 대시보드가 바로 보이도록
+      queryClient.invalidateQueries({
+        queryKey: ['dashboards', 'infinite'],
+      })
+
+      // 내 대시보드 페이지 쿼리도 무효화
+      queryClient.invalidateQueries({
+        queryKey: ['myDashboards'],
+      })
 
       // 성공 시 대시보드 상세 페이지로 이동
       router.push(`/dashboard/${data.id}`)
