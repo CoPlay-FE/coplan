@@ -25,7 +25,7 @@ export default function FeatureCard({
         </div>
       </div>
       <div className="BG-card relative h-124 px-32 py-27 mobile-wide:h-112">
-        <p className="mb-16 text-18 font-bold text-white">{title}</p>
+        <p className="mb-12 text-18 font-bold text-white">{title}</p>
         <p className="text-16 font-normal text-white">{description}</p>
       </div>
     </div>
