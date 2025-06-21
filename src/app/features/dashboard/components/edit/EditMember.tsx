@@ -1,24 +1,59 @@
 'use client'
 
+import authHttpClient from '@lib/axios'
 import { cn } from '@lib/cn'
-import React from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useParams } from 'next/navigation'
+import React, { useState } from 'react'
 
 import { UserInfo } from '@/app/shared/components/common/UserInfo'
-import { usePagination } from '@/app/shared/hooks/usePagination'
+import { fetchMembers, Member } from '@/app/shared/hooks/useMembers'
+import { showError, showSuccess } from '@/app/shared/lib/toast'
 
-import { mockMembers } from './mockMember'
 import { PaginationHeader } from './PaginationHeader'
 
-const MEMBER_SIZE = 4 // 페이지 당 표시 구성원 수
+const PAGE_SIZE = 4
+const teamId = process.env.NEXT_PUBLIC_TEAM_ID
+
+async function deleteMember(memberId: number): Promise<void> {
+  await authHttpClient.delete(`/${teamId}/members/${memberId}`)
+}
 
 export default function EditMember() {
+  const queryClient = useQueryClient()
+  const { id: dashboardId } = useParams()
+  const dashboardIdStr = String(dashboardId)
+
+  const [currentPage, setCurrentPage] = useState(1)
+
   const {
-    currentPage,
-    totalPages,
-    currentItems: paginationMembers,
-    handlePrev,
-    handleNext,
-  } = usePagination(mockMembers, MEMBER_SIZE)
+    data: members = [],
+    isLoading,
+    isError,
+  } = useQuery<Member[]>({
+    queryKey: ['members', dashboardIdStr],
+    queryFn: () => fetchMembers(dashboardIdStr),
+    enabled: !!dashboardIdStr,
+  })
+
+  const totalPages = Math.ceil(members.length / PAGE_SIZE)
+  const startIdx = (currentPage - 1) * PAGE_SIZE
+  const paginationMembers = members.slice(startIdx, startIdx + PAGE_SIZE)
+
+  const handlePrev = () => setCurrentPage((prev) => Math.max(prev - 1, 1))
+  const handleNext = () =>
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+
+  const { mutate: removeMember, isPending: isDeleting } = useMutation({
+    mutationFn: (memberId: number) => deleteMember(memberId),
+    onSuccess: () => {
+      showSuccess('삭제에 성공하였습니다.')
+      queryClient.invalidateQueries({ queryKey: ['members', dashboardIdStr] })
+    },
+    onError: () => {
+      showError('삭제에 실패했습니다.')
+    },
+  })
 
   return (
     <div>
@@ -35,12 +70,25 @@ export default function EditMember() {
           <label htmlFor="title" className="Text-black mb-8 block text-16">
             이름
           </label>
-          <div className="flex flex-col">
-            {paginationMembers.map((member, index) => {
+
+          {isLoading && <div className="py-12 text-gray-500">로딩 중...</div>}
+
+          {isError && (
+            <div className="py-12 text-red-500">
+              멤버 정보를 불러오는 데 실패했습니다.
+            </div>
+          )}
+
+          {!isLoading &&
+            !isError &&
+            paginationMembers.map((member, index) => {
               const isLast = index === paginationMembers.length - 1
+              const isOwner =
+                member.isOwner === true || member.isOwner === 'true'
+
               return (
                 <div
-                  key={index}
+                  key={member.id}
                   className={cn(
                     'flex items-center justify-between py-12',
                     !isLast && 'Border-bottom',
@@ -48,15 +96,24 @@ export default function EditMember() {
                 >
                   <UserInfo
                     nickname={member.nickname}
-                    imageUrl={member.imageUrl}
+                    imageUrl={member.profileImageUrl ?? ''}
                   />
-                  <button className="Text-btn Border-btn rounded-md px-16 py-2">
-                    삭제
-                  </button>
+                  {!isOwner && (
+                    <button
+                      type="button"
+                      disabled={isDeleting}
+                      onClick={() => removeMember(member.id)}
+                      className={cn(
+                        'Text-btn Border-btn rounded-md px-16 py-2',
+                        isDeleting && 'cursor-not-allowed opacity-50',
+                      )}
+                    >
+                      삭제
+                    </button>
+                  )}
                 </div>
               )
             })}
-          </div>
         </form>
       </div>
     </div>
