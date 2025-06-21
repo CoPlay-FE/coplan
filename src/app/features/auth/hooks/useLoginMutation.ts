@@ -15,6 +15,10 @@ export function useLoginMutation() {
   return useMutation<LoginResponse, AxiosError | Error, LoginRequest>({
     mutationFn: login,
     onSuccess: async (response) => {
+      if (!process.env.NEXT_PUBLIC_TEAM_ID) {
+        throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.')
+      }
+
       updateAuthState(response)
       showSuccess('로그인에 성공하셨습니다!')
 

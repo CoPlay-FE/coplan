@@ -1,4 +1,4 @@
 export const AUTH_ENDPOINT = {
-  LOGIN: '/15-2/auth/login',
-  SIGNUP: '/15-2/users',
+  LOGIN: `/${process.env.NEXT_PUBLIC_TEAM_ID}/auth/login`,
+  SIGNUP: `/${process.env.NEXT_PUBLIC_TEAM_ID}/users`,
 }

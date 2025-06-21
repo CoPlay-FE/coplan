@@ -44,6 +44,11 @@ export default function PasswordChangeForm() {
       },
       {
         onSuccess: () => {
+          if (!process.env.NEXT_PUBLIC_TEAM_ID) {
+            throw new Error(
+              'NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.',
+            )
+          }
           reset()
           showSuccess('비밀번호가 성공적으로 변경되었습니다!')
         },

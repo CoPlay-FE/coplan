@@ -15,6 +15,9 @@ export function useSignupMutation() {
   return useMutation<User, AxiosError | Error, SignupRequest>({
     mutationFn: signup,
     onSuccess: async () => {
+      if (!process.env.NEXT_PUBLIC_TEAM_ID) {
+        throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.')
+      }
       showSuccess('회원가입이 완료되었습니다!')
       await new Promise((resolve) => setTimeout(resolve, 400))
       router.push('/login')
