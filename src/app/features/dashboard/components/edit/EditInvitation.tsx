@@ -3,17 +3,20 @@
 import Tooltip from '@components/common/header/Collaborator/Tooltip'
 import api from '@lib/axios'
 import { cn } from '@lib/cn'
+import { showError, showSuccess } from '@lib/toast'
 import { useModalStore } from '@store/useModalStore'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import React, { useState } from 'react'
 
-import { showError, showSuccess } from '@/app/shared/lib/toast'
+import { getTeamId } from '@/app/shared/lib/getTeamId'
 
 import { PaginationHeader } from './PaginationHeader'
 
 const INVITATION_SIZE = 5
+const teamId = getTeamId()
 
 interface Invitation {
   id: number
@@ -27,21 +30,17 @@ export default function EditInvitation() {
   const params = useParams()
   const { openModal } = useModalStore()
 
-  // ✅ dashboardId 안전 처리
-  const rawDashboardId = params.id
-  const dashboardId: string =
-    typeof rawDashboardId === 'string'
-      ? rawDashboardId
-      : (rawDashboardId?.[0] ?? '')
-
-  // ✅ teamId는 환경변수에서 가져오며 string으로 강제 처리
-  const rawTeamId = process.env.NEXT_PUBLIC_TEAM_ID
-  const teamId: string =
-    typeof rawTeamId === 'string' ? rawTeamId : (rawTeamId?.[0] ?? '')
-
+  const dashboardId = params.id as string
   const queryClient = useQueryClient()
 
-  const { data, isLoading, error } = useQuery<Invitation[]>({
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const {
+    data: invitations = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery<Invitation[]>({
     queryKey: ['invitations', teamId, dashboardId],
     queryFn: async () => {
       if (!teamId || !dashboardId) return []
@@ -51,12 +50,14 @@ export default function EditInvitation() {
       return res.data.invitations
     },
     enabled: !!teamId && !!dashboardId,
+    retry: false,
   })
 
-  const invitations = data ?? []
-
-  const [currentPage, setCurrentPage] = useState(1)
-  const totalPages = Math.ceil(invitations.length / INVITATION_SIZE)
+  // length가 0인 경우에도 최소 페이지 1로 보장
+  const totalPages = Math.max(
+    1,
+    Math.ceil(invitations.length / INVITATION_SIZE),
+  )
 
   const currentItems = invitations.slice(
     (currentPage - 1) * INVITATION_SIZE,
@@ -72,7 +73,6 @@ export default function EditInvitation() {
       )
     },
     onSuccess: () => {
-      if (!teamId || !dashboardId) return
       queryClient.invalidateQueries({
         queryKey: ['invitations', teamId, dashboardId],
       })
@@ -83,15 +83,18 @@ export default function EditInvitation() {
     },
   })
 
-  const handlePrev = () => {
-    if (currentPage > 1) setCurrentPage((p) => p - 1)
-  }
-  const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage((p) => p + 1)
-  }
+  const handlePrev = () => setCurrentPage((p) => Math.max(p - 1, 1))
+  const handleNext = () => setCurrentPage((p) => Math.min(p + 1, totalPages))
 
-  if (isLoading) return <p>로딩 중...</p>
-  if (error) return <p>초대 목록을 불러오는데 실패했습니다.</p>
+  // 에러 메시지 정리
+  const errorMessage =
+    isError && axios.isAxiosError(error)
+      ? error.response?.status === 403
+        ? '초대 권한이 없습니다.'
+        : '초대 정보를 불러오는 데 실패했습니다.'
+      : isError
+        ? '초대 정보를 불러오는 데 실패했습니다.'
+        : null
 
   return (
     <div>
@@ -119,11 +122,22 @@ export default function EditInvitation() {
             이메일
           </label>
           <div className="flex flex-col gap-4">
-            {currentItems.length === 0 ? (
-              <p className="py-12 text-center text-gray-500">
+            {isLoading && (
+              <p className="Text-gray py-12 text-center">로딩 중...</p>
+            )}
+
+            {errorMessage && (
+              <p className="Text-blue py-12 text-center">{errorMessage}</p>
+            )}
+
+            {!isLoading && !errorMessage && currentItems.length === 0 && (
+              <p className="Text-gray py-12 text-center">
                 초대된 사용자가 없습니다.
               </p>
-            ) : (
+            )}
+
+            {!isLoading &&
+              !errorMessage &&
               currentItems.map((member, index) => {
                 const isLast = index === currentItems.length - 1
                 return (
@@ -136,7 +150,6 @@ export default function EditInvitation() {
                   >
                     <div className="flex items-center gap-12">
                       <div className="flex flex-col">
-                        {/* 이메일 텍스트 대신 Tooltip으로 감싸기 */}
                         <Tooltip content={member.invitee.nickname}>
                           <p className="Text-black cursor-help text-13">
                             {member.invitee.email}
@@ -148,15 +161,18 @@ export default function EditInvitation() {
                     <button
                       type="button"
                       disabled={cancelMutation.isPending}
-                      className="Text-btn Border-btn rounded-md px-16 py-2"
+                      className={cn(
+                        'Text-btn Border-btn rounded-md px-16 py-2',
+                        cancelMutation.isPending &&
+                          'cursor-not-allowed opacity-50',
+                      )}
                       onClick={() => cancelMutation.mutate(member.id)}
                     >
                       {cancelMutation.isPending ? '취소 중...' : '취소'}
                     </button>
                   </div>
                 )
-              })
-            )}
+              })}
           </div>
         </form>
       </div>
