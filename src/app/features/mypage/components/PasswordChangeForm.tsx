@@ -1,13 +1,11 @@
-import Input from '@components/Input'
-import { useConfirmPasswordValidation } from '@hooks/useConfirmPasswordValidation'
+import PasswordInput from '@components/common/Input/PasswordInput'
 import { cn } from '@lib/cn'
+import { showSuccess } from '@lib/toast'
+import { useChangePasswordMutation } from '@mypage/hook/useChangePasswordMutation'
+import { PasswordChangeRequest } from '@mypage/types/mypage.type'
+import { getNewPasswordValidation } from '@mypage/util/getNewPasswordValidation'
+import { getConfirmPasswordValidation } from '@util/getConfirmPasswordValidation'
 import { useForm } from 'react-hook-form'
-
-import { showSuccess } from '@/app/shared/lib/toast'
-
-import { useChangePasswordMutation } from '../hook/useChangePasswordMutation'
-import { useNewPasswordValidation } from '../hook/useNewPasswordValidation'
-import { PasswordChangeRequest } from '../types/mypage.type'
 
 interface PasswordChangeFormData extends PasswordChangeRequest {
   confirmPassword: string
@@ -31,10 +29,10 @@ export default function PasswordChangeForm() {
   })
 
   const { mutate: changePassword, isPending } = useChangePasswordMutation()
-  const newPasswordValidation = useNewPasswordValidation(() =>
+  const newPasswordValidation = getNewPasswordValidation(() =>
     getValues('password'),
   )
-  const confirmPasswordValidation = useConfirmPasswordValidation(() =>
+  const confirmPasswordValidation = getConfirmPasswordValidation(() =>
     getValues('newPassword'),
   )
 
@@ -60,7 +58,7 @@ export default function PasswordChangeForm() {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col justify-between gap-16"
       >
-        <Input
+        <PasswordInput
           labelName="현재 비밀번호"
           type="password"
           placeholder="비밀번호 입력"
@@ -68,7 +66,7 @@ export default function PasswordChangeForm() {
           {...register('password')}
         />
 
-        <Input
+        <PasswordInput
           labelName="새 비밀번호"
           type="password"
           placeholder="새 비밀번호 입력"
@@ -83,7 +81,7 @@ export default function PasswordChangeForm() {
           errorMessage={errors.newPassword?.message}
         />
 
-        <Input
+        <PasswordInput
           labelName="새 비밀번호 확인"
           type="password"
           placeholder="새 비밀번호 입력"

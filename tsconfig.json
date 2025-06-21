@@ -27,9 +27,11 @@
       "@store/*": ["./src/app/shared/store/*"],
       "@hooks/*": ["./src/app/shared/hooks/*"],
       "@lib/*": ["./src/app/shared/lib/*"],
+      "@util/*": ["./src/app/shared/util/*"],
       "@/types/*": ["./src/app/shared/types/*"],
       "@constants/*": ["./src/app/shared/constants/*"],
-      "@dashboard/*": ["./src/app/features/dashboard/*"]
+      "@dashboard/*": ["./src/app/features/dashboard/*"],
+      "@mypage/*": ["./src/app/features/mypage/*"]
     }
   },
   "include": [

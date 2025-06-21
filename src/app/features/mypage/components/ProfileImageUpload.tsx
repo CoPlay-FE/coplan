@@ -6,7 +6,7 @@ import WhitePenIcon from '@components/common/WhitePenIcon/WhitePenIcon'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
-interface Props {
+interface ProfileImageUploadProps {
   value: string | null // RHF에서 연결된 이미지 URL 상태 (미리보기용)
   onChange: (url: string | null) => void // RHF 필드 상태 변경 함수
   onFileChange?: (file: File) => void // 실제 업로드할 파일을 상위에서 처리할 수 있게 전달
@@ -16,7 +16,7 @@ export default function ProfileImageUpload({
   value,
   onChange,
   onFileChange,
-}: Props) {
+}: ProfileImageUploadProps) {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
 

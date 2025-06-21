@@ -1,6 +1,6 @@
 import { mypageValidation } from '../schemas/mypageValidation'
 
-export function useNewPasswordValidation(getPasswordValue: () => string) {
+export function getNewPasswordValidation(getPasswordValue: () => string) {
   return {
     ...mypageValidation.password,
     validate: (value: string) => {
