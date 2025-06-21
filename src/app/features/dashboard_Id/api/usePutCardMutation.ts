@@ -3,7 +3,6 @@ import axios from 'axios'
 import { toast } from 'sonner'
 
 import { CardModifyFormData } from '../type/CardFormData.type'
-import { postCard } from './postCard'
 import { putCard } from './putCard'
 
 // ✅ 카드 수정 모달에서 사용 (CreateCardForm.tsx)
