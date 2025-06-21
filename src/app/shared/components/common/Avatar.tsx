@@ -1,5 +1,6 @@
 'use client'
 
+import { getColor } from '@lib/getColor' // 경로는 실제 위치에 맞게 조정
 import Image from 'next/image'
 
 type AvatarProps = {
@@ -27,20 +28,12 @@ function getInitial(nickname: string): string {
   return '?'
 }
 
-function getColorIndex(nickname: string) {
-  const sum = Array.from(nickname).reduce(
-    (acc, char) => acc + char.charCodeAt(0),
-    0,
-  )
-  return sum % customColors.length
-}
-
 export function Avatar({
   size = 36,
   nickname = '',
   profileImageUrl,
 }: AvatarProps) {
-  const bgColor = getColorIndex(nickname)
+  const bgColorIndex = getColor(nickname, customColors.length)
 
   if (profileImageUrl) {
     return (
@@ -54,7 +47,6 @@ export function Avatar({
           fill
           className="object-cover"
           sizes={`${size}px`}
-          priority={false}
         />
       </div>
     )
@@ -67,7 +59,7 @@ export function Avatar({
         width: size,
         height: size,
         fontSize: size * 0.4,
-        backgroundColor: customColors[bgColor],
+        backgroundColor: customColors[bgColorIndex],
       }}
     >
       {getInitial(nickname)}
