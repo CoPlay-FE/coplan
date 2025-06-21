@@ -1,10 +1,9 @@
 'use client'
 
+import { fetchMembers, Member } from '@hooks/useMembers'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 import React from 'react'
-
-import { fetchMembers, Member } from '@/app/shared/hooks/useMembers'
 
 import CollaboratorItem from '../../CollaboratorItem'
 import Tooltip from './Tooltip'
@@ -25,8 +24,7 @@ export default function CollaboratorList() {
     enabled: !!dashboardIdStr,
   })
 
-  if (isLoading) return <div>로딩 중...</div>
-  if (isError) return <div>협업자 정보를 불러오는 데 실패했습니다.</div>
+  if (isLoading && isError) return null
 
   // 프로필 이미지 및 닉네임만 필요한 경우
   const visibleCollaborators = members.slice(0, MAX_COLLABS)
@@ -40,7 +38,7 @@ export default function CollaboratorList() {
             <CollaboratorItem
               nickname={collab.nickname}
               imageUrl={collab.profileImageUrl ?? ''}
-              size={40}
+              size={36}
             />
           </div>
         </Tooltip>
