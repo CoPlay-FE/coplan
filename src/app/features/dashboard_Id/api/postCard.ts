@@ -1,6 +1,5 @@
-import api from '@/app/shared/lib/testAxios'
+import authHttpClient from '@/app/shared/lib/axios'
 
-// import api from '@/app/shared/lib/axios'
 import { CardFormData } from '../type/CardFormData.type'
 
 interface ApiResponse {
@@ -8,7 +7,7 @@ interface ApiResponse {
 }
 
 export async function postCard(payload: CardFormData): Promise<ApiResponse> {
-  const res = await api.post(
+  const res = await authHttpClient.post(
     `/${process.env.NEXT_PUBLIC_TEAM_ID}/cards`,
     payload,
   )
