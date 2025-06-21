@@ -2,7 +2,9 @@
 
 import authHttpClient from '@lib/axios'
 import { cn } from '@lib/cn'
+import { getTeamId } from '@lib/getTeamId'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import React, { useState } from 'react'
 
@@ -13,7 +15,7 @@ import { showError, showSuccess } from '@/app/shared/lib/toast'
 import { PaginationHeader } from './PaginationHeader'
 
 const PAGE_SIZE = 4
-const teamId = process.env.NEXT_PUBLIC_TEAM_ID
+const teamId = getTeamId()
 
 async function deleteMember(memberId: number): Promise<void> {
   await authHttpClient.delete(`/${teamId}/members/${memberId}`)
@@ -36,13 +38,18 @@ export default function EditMember() {
     enabled: !!dashboardIdStr,
   })
 
+  // 본인이 구성원으로 들어가기 때문에 0 페이지일 경우 X
   const totalPages = Math.ceil(members.length / PAGE_SIZE)
   const startIdx = (currentPage - 1) * PAGE_SIZE
   const paginationMembers = members.slice(startIdx, startIdx + PAGE_SIZE)
 
-  const handlePrev = () => setCurrentPage((prev) => Math.max(prev - 1, 1))
-  const handleNext = () =>
+  function handlePrev() {
+    setCurrentPage((prev) => Math.max(prev - 1, 1))
+  }
+
+  function handleNext() {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+  }
 
   const { mutate: removeMember, isPending: isDeleting } = useMutation({
     mutationFn: (memberId: number) => deleteMember(memberId),
@@ -71,10 +78,10 @@ export default function EditMember() {
             이름
           </label>
 
-          {isLoading && <div className="py-12 text-gray-500">로딩 중...</div>}
+          {isLoading && <div className="Text-gray py-12">로딩 중...</div>}
 
           {isError && (
-            <div className="py-12 text-red-500">
+            <div className="Text-blue py-12">
               멤버 정보를 불러오는 데 실패했습니다.
             </div>
           )}
@@ -83,8 +90,7 @@ export default function EditMember() {
             !isError &&
             paginationMembers.map((member, index) => {
               const isLast = index === paginationMembers.length - 1
-              const isOwner =
-                member.isOwner === true || member.isOwner === 'true'
+              const isOwner = member.isOwner === true
 
               return (
                 <div
@@ -98,6 +104,15 @@ export default function EditMember() {
                     nickname={member.nickname}
                     imageUrl={member.profileImageUrl ?? ''}
                   />
+                  {isOwner && (
+                    <Image
+                      src="/images/crown.png"
+                      alt="왕관 아이콘"
+                      width={20}
+                      height={20}
+                      className="mr-20"
+                    />
+                  )}
                   {!isOwner && (
                     <button
                       type="button"
