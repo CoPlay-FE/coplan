@@ -9,6 +9,8 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import React, { useState } from 'react'
 
+import { showError, showSuccess } from '@/app/shared/lib/toast'
+
 import { PaginationHeader } from './PaginationHeader'
 
 const INVITATION_SIZE = 5
@@ -74,11 +76,10 @@ export default function EditInvitation() {
       queryClient.invalidateQueries({
         queryKey: ['invitations', teamId, dashboardId],
       })
-      alert('초대가 취소되었습니다.')
+      showSuccess('초대가 취소되었습니다.')
     },
     onError: (error) => {
-      alert('초대 취소 중 오류가 발생했습니다.')
-      console.error(error)
+      showError(error.message)
     },
   })
 
@@ -137,7 +138,7 @@ export default function EditInvitation() {
                       <div className="flex flex-col">
                         {/* 이메일 텍스트 대신 Tooltip으로 감싸기 */}
                         <Tooltip content={member.invitee.nickname}>
-                          <p className="cursor-help text-13 text-gray-500">
+                          <p className="Text-black cursor-help text-13">
                             {member.invitee.email}
                           </p>
                         </Tooltip>
