@@ -13,9 +13,8 @@ export function useUploadCardImage() {
       toast.error(
         '이미지 업로드 중 오류가 발생했습니다. 크기가 작은 파일을 시도해주세요.',
       )
-      const message =
-        error?.response?.data?.message ?? // 서버가 준 에러메세지
-        '이미지 업로드 중 오류가 발생했습니다. 크기가 작은 파일을 시도해주세요.' // 없으면 이 내용으로
+      const message = error?.response?.data?.message // 서버가 준 에러메세지
+      console.error('이미지 업로드 실패:', message ?? '알 수 없는 에러')
     },
   })
 }

@@ -131,7 +131,7 @@ export default function ModifyCardForm({
     >
       <h2 className="Text-black text-24 font-bold">할 일 수정</h2>
 
-      <div className="flex gap-32">
+      <div className="flex gap-32 mobile:flex-col">
         {/* 컬럼 선택 */}
         <Controller
           name="columnId"
@@ -144,13 +144,13 @@ export default function ModifyCardForm({
                   onClick={() => setIsOpenColumn((prev) => !prev)}
                   value={selectedColumn?.columnTitle ?? ''}
                   readOnly
-                  className="Input-readOnly w-217"
+                  className="Input-readOnly-217"
                   id="columnId"
                   type="text"
                   placeholder={currentColumn.columnTitle}
                 />
                 {/* 인풋에 보이는 선택된 컬럼 & 오른쪽 화살표 */}
-                <div className="absolute left-16 top-1/2 -translate-y-1/2">
+                <div className="absolute left-16 top-1/2 -translate-y-1/2 mobile:left-11">
                   <ColumnTitle title={selectedColumn.columnTitle} />
                 </div>
                 <Image
@@ -187,7 +187,7 @@ export default function ModifyCardForm({
                   onClick={() => setIsOpen((prev) => !prev)}
                   // value={selectedAssignee?.nickname ?? ''}
                   readOnly
-                  className="Input-readOnly w-217"
+                  className="Input-readOnly-217"
                   id="assigneeUserId"
                   type="text"
                 />

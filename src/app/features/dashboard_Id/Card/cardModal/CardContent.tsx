@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { Avatar } from '@/app/shared/components/common/Avatar'
 import Dropdown from '@/app/shared/components/common/Dropdown/Dropdown'
@@ -8,8 +8,6 @@ import { useIsMobile } from '@/app/shared/hooks/useIsmobile'
 import { useDeleteCardMutation } from '../../api/useDeleteCardMutation'
 import { Card } from '../../type/Card.type'
 import { Column } from '../../type/Column.type'
-import CreateCardModal from '../cardFormModals/CreateCardModal'
-import ModifyCardForm from '../cardFormModals/ModifyCardForm'
 import ColumnTitle from '../ColumnTitle'
 import Tags from '../Tags'
 import CommentForm from './CommentForm'
@@ -26,16 +24,16 @@ export default function CardContent({
   card: Card
   column: Column
 }) {
-  // const { id, imageUrl, title, tags, dueDate, assignee, description } = card
-  const [openModifyCard, setOpenModifyCard] = useState(false)
-  // const { title: columnTitle, id: columnId } = column
-  // const currentColumn = { columnTitle, columnId }
   const isMobile = useIsMobile()
   const { mutate: deleteCard, isPending } = useDeleteCardMutation()
 
+  const modalScrollRef = useRef<HTMLDivElement>(null)
+
   return (
-    // <div className="relative">
-    <div>
+    <div
+      className="BG-white relative max-h-764 min-h-764 w-730 overflow-auto overflow-y-scroll rounded-16 px-18 py-30 shadow-lg [mask-image:radial-gradient(white_100%,transparent_100%)] mobile:w-327 mobile:p-16 tablet:w-678 tablet:px-32 tablet:py-24"
+      ref={modalScrollRef}
+    >
       <h2 className="Text-black mb-24 text-24 font-bold mobile:mt-40 mobile:text-20">
         {card.title}
       </h2>
@@ -166,7 +164,7 @@ export default function CardContent({
         columnId={card.columnId}
         dashboardId={card.dashboardId}
       />
-      <Comments cardId={card.id} />
+      <Comments cardId={card.id} scrollRef={modalScrollRef} />
     </div>
   )
 }
