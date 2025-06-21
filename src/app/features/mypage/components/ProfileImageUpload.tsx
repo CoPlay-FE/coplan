@@ -26,7 +26,7 @@ export default function ProfileImageUpload({
   }, [value])
 
   // 파일이 선택되었을 때 처리
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
 
@@ -42,7 +42,7 @@ export default function ProfileImageUpload({
   }
 
   // 이미지 삭제 처리
-  const handleDelete = () => {
+  function handleDelete() {
     if (preview && preview.startsWith('blob:')) {
       URL.revokeObjectURL(preview) // 메모리 누수 방지
     }
