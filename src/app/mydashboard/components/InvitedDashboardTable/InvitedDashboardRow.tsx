@@ -52,34 +52,74 @@ export default function InvitedDashboardRow({
   const handleReject = () => handleInvitationResponse(false)
 
   return (
-    <div className="grid grid-cols-3 items-center gap-20 border-b border-gray-100 py-20 pl-36 pr-32">
-      {/* 대시보드 이름 */}
-      <span className="Text-black text-16">
-        {invitation.dashboard.title || '제목 없음'}
-      </span>
+    <>
+      {/* 데스크톱/태블릿 테이블 레이아웃 */}
+      <div className="mobile:hidden grid grid-cols-3 items-center gap-20 border-b border-gray-100 py-20 pl-36 pr-32">
+        {/* 대시보드 이름 */}
+        <span className="Text-black text-16">
+          {invitation.dashboard.title || '제목 없음'}
+        </span>
 
-      {/* 초대자 */}
-      <span className="Text-black text-center text-16">
-        {invitation.inviter.nickname || invitation.inviter.email}
-      </span>
+        {/* 초대자 */}
+        <span className="Text-black text-center text-16">
+          {invitation.inviter.nickname || invitation.inviter.email}
+        </span>
 
-      {/* 수락/거절 버튼들 */}
-      <div className="flex items-center justify-center gap-10">
-        <button
-          onClick={handleAccept}
-          disabled={isProcessing}
-          className="BG-blue flex h-32 w-70 items-center justify-center rounded-8 text-14 font-medium text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {isProcessing ? '처리 중' : '수락'}
-        </button>
-        <button
-          onClick={handleReject}
-          disabled={isProcessing}
-          className="BG-white Border-blue Text-blue flex h-32 w-70 items-center justify-center rounded-8 border text-14 font-medium transition-colors hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {isProcessing ? '처리 중' : '거절'}
-        </button>
+        {/* 수락/거절 버튼들 */}
+        <div className="flex items-center justify-center gap-10">
+          <button
+            onClick={handleAccept}
+            disabled={isProcessing}
+            className="BG-blue tablet:w-72 tablet:h-30 tablet:text-12 flex h-32 w-70 items-center justify-center rounded-8 text-14 font-medium text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isProcessing ? '처리 중' : '수락'}
+          </button>
+          <button
+            onClick={handleReject}
+            disabled={isProcessing}
+            className="BG-white Border-blue Text-blue tablet:w-72 tablet:h-30 tablet:text-12 flex h-32 w-70 items-center justify-center rounded-8 border text-14 font-medium transition-colors hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isProcessing ? '처리 중' : '거절'}
+          </button>
+        </div>
       </div>
-    </div>
+
+      {/* 모바일 카드 레이아웃 */}
+      <div className="mobile:block mb-12 hidden rounded-8 p-16">
+        {/* 이름 */}
+        <div className="mb-8 flex items-center gap-8">
+          <span className="Text-gray-light text-14 font-medium">이름</span>
+          <span className="Text-black text-14">
+            {invitation.dashboard.title || '제목 없음'}
+          </span>
+        </div>
+
+        {/* 초대자 */}
+        <div className="mb-12 flex items-center gap-8">
+          <span className="Text-gray-light text-14 font-medium">초대자</span>
+          <span className="Text-black text-14">
+            {invitation.inviter.nickname || invitation.inviter.email}
+          </span>
+        </div>
+
+        {/* 버튼들 */}
+        <div className="flex gap-8">
+          <button
+            onClick={handleAccept}
+            disabled={isProcessing}
+            className="BG-blue flex h-32 w-109 items-center justify-center rounded-8 text-12 font-medium text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isProcessing ? '처리 중' : '수락'}
+          </button>
+          <button
+            onClick={handleReject}
+            disabled={isProcessing}
+            className="BG-white Border-blue Text-blue flex h-32 w-109 items-center justify-center rounded-8 border text-12 font-medium transition-colors hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isProcessing ? '처리 중' : '거절'}
+          </button>
+        </div>
+      </div>
+    </>
   )
 }

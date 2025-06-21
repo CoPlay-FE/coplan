@@ -50,7 +50,7 @@ export default function InvitedDashboardTable() {
     return (
       <div className="space-y-24">
         {/* 검색창 스켈레톤 */}
-        <div className="h-40 animate-pulse rounded-8 bg-gray-200" />
+        <div className="mobile:h-36 h-40 animate-pulse rounded-8 bg-gray-200" />
 
         {/* 테이블 헤더 */}
         <div className="mobile:hidden grid grid-cols-3 items-center gap-20 pl-36 pr-32">
@@ -67,7 +67,7 @@ export default function InvitedDashboardTable() {
         {Array.from({ length: 3 }).map((_, index) => (
           <div
             key={index}
-            className="mobile:flex mobile:flex-col mobile:gap-8 mobile:p-16 mobile:rounded-8 mobile:bg-gray-50 grid grid-cols-3 items-center gap-20 border-b border-gray-100 py-20 pl-36 pr-32"
+            className="mobile:rounded-8 mobile:bg-gray-50 mobile:p-16 mobile:mb-12 grid grid-cols-3 items-center gap-20 border-b border-gray-100 py-20 pl-36 pr-32"
           >
             <div className="h-20 animate-pulse rounded-4 bg-gray-200" />
             <div className="h-20 animate-pulse rounded-4 bg-gray-200" />
@@ -129,7 +129,7 @@ export default function InvitedDashboardTable() {
       </div>
 
       {/* 테이블 바디 */}
-      <div className="space-y-0">
+      <div className="mobile:space-y-0">
         {searchQuery.trim() && filteredInvitations.length === 0 ? (
           // 검색 결과 없음
           <div className="flex flex-col items-center justify-center py-60">

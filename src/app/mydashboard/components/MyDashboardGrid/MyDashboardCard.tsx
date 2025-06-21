@@ -30,7 +30,7 @@ export default function MyDashboardCard({ dashboard }: MyDashboardCardProps) {
           />
 
           {/* 대시보드 제목 */}
-          <h3 className="Text-black tablet:max-w-140 mobile:max-w-160 max-w-200 truncate text-16 font-medium">
+          <h3 className="Text-black tablet:max-w-140 mobile:max-w-160 mobile:text-14 max-w-200 truncate text-16 font-medium">
             {dashboard.title}
           </h3>
 

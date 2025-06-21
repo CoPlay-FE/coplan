@@ -22,7 +22,7 @@ export default function MyDashboardGrid() {
   if (isLoading) {
     return (
       <section className="mb-40">
-        <div className="tablet:max-w-[520px] mobile:max-w-[260px] flex max-w-[1020px] flex-wrap gap-12">
+        <div className="tablet:grid tablet:grid-cols-2 tablet:gap-12 tablet:max-w-[520px] mobile:flex mobile:flex-col mobile:gap-12 mobile:max-w-[260px] flex max-w-[1020px] flex-wrap gap-12">
           {/* 새 대시보드 추가 버튼은 항상 표시 */}
           <AddDashboardCard />
 
@@ -61,7 +61,7 @@ export default function MyDashboardGrid() {
 
   return (
     <section className="mb-40">
-      <div className="tablet:max-w-[520px] mobile:max-w-[260px] flex max-w-[1020px] flex-wrap gap-12">
+      <div className="tablet:grid tablet:grid-cols-2 tablet:gap-12 tablet:max-w-[520px] mobile:flex mobile:flex-col mobile:gap-12 mobile:max-w-[260px] flex max-w-[1020px] flex-wrap gap-12">
         {/* 새 대시보드 추가 카드는 항상 첫 번째 고정 */}
         <AddDashboardCard />
 

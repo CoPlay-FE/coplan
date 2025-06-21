@@ -23,7 +23,7 @@ export default function MyDashboardPage() {
 
           {/* 초대받은 대시보드 섹션 */}
           <section className="BG-white tablet:w-504 mobile:w-260 tablet:p-24 mobile:p-16 w-1022 rounded-16 p-40 pb-120 pt-24">
-            <h2 className="Text-black tablet:text-20 mobile:text-14 mb-64 text-24 font-bold">
+            <h2 className="Text-black tablet:text-20 mobile:text-20 mb-64 text-24 font-bold">
               초대받은 대시보드
             </h2>
 
