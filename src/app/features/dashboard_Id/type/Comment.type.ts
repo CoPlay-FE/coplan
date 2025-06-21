@@ -7,7 +7,7 @@ export interface Comment {
   id: number
   content: string
   createdAt: string
-  updatedAt: number
+  updatedAt: string
   cardId: number
   author: Auth
 }

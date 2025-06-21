@@ -132,29 +132,16 @@ export default function CardContent({
                 </span>
                 {card.assignee && (
                   <div className="flex items-center gap-8">
-                    {isMobile ? (
-                      <>
-                        <Avatar
-                          size={24}
-                          name={card.assignee.nickname}
-                          imageUrl={card.assignee.profileImageUrl}
-                        />
-                        <span className="regular Text-black block pt-1 text-14 leading-none mobile:text-12">
-                          {card.assignee.nickname}
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <Avatar
-                          size={32}
-                          name={card.assignee.nickname}
-                          imageUrl={card.assignee.profileImageUrl}
-                        />
-                        <span className="regular Text-black block pt-1 text-14 leading-none mobile:text-12">
-                          {card.assignee.nickname}
-                        </span>
-                      </>
-                    )}
+                    <>
+                      <Avatar
+                        size={isMobile ? 24 : 32}
+                        name={card.assignee.nickname}
+                        imageUrl={card.assignee.profileImageUrl}
+                      />
+                      <span className="regular Text-black block pt-1 text-14 leading-none mobile:text-12">
+                        {card.assignee.nickname}
+                      </span>
+                    </>
                   </div>
                 )}
               </div>

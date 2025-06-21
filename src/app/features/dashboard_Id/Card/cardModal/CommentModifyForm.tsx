@@ -42,13 +42,13 @@ export default function CommentModifyForm({
         {...register('content', {
           required: '댓글 내용을 작성해주세요',
         })}
-        className="Text-black h-110 w-450 resize-none rounded-6 border border-[#D9D9D9] p-16 text-14 placeholder-gray-400 dark:border-[#747474] mobile:w-250 mobile:w-295 tablet:w-420"
+        className="Text-black h-110 w-450 resize-none rounded-6 border border-[#D9D9D9] p-16 text-14 placeholder-gray-400 dark:border-[#747474] mobile:w-250 tablet:w-420"
         id="content"
         placeholder={content ? content : '댓글 작성하기'}
       />
       <div className="flex flex-col mobile:flex-row">
         <button
-          type="submit"
+          type="button"
           className="Text-gray-light h-28 w-50 rounded-4 border border-[#D9D9D9] py-5 text-center text-12 font-medium dark:border-[#747474]"
           onClick={onClose}
         >

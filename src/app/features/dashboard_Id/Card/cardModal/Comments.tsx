@@ -1,5 +1,6 @@
 import { format } from 'date-fns'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 import { Avatar } from '@/app/shared/components/common/Avatar'
 
@@ -11,9 +12,9 @@ export default function Comments({ cardId }: { cardId: number }) {
   const { data, isLoading, error } = useCommentsQuery(cardId)
   const comments = data?.comments
 
-  //   if (isLoading) return <p>loading...</p>
-  //   if (error) return <p>error...{error.message}</p>
-
+  if (error) {
+    toast.error(error?.message || '문제가 발생했습니다.')
+  }
   return (
     <div className="flex w-450 flex-col gap-20">
       {comments?.map((comment: CommentType) => (
