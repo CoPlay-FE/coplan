@@ -2,11 +2,10 @@
 
 import Image from 'next/image'
 
-import { useAuthStore } from '@/app/features/auth/store/useAuthStore'
-import { getColor } from '@/app/shared/lib/getColor'
-
 type AvatarProps = {
   size?: number
+  nickname?: string
+  profileImageUrl?: string | null
 }
 
 const customColors = [
@@ -28,26 +27,40 @@ function getInitial(nickname: string): string {
   return '?'
 }
 
-export function Avatar({ size = 36 }: AvatarProps) {
-  const user = useAuthStore((state) => state.user)
+function getColorIndex(nickname: string) {
+  const sum = Array.from(nickname).reduce(
+    (acc, char) => acc + char.charCodeAt(0),
+    0,
+  )
+  return sum % customColors.length
+}
 
-  if (!user) return null // user가 없으면 렌더링하지 않음
-  const initial = getInitial(user.nickname)
-  const bgColor = getColor(user.nickname, customColors.length)
+export function Avatar({
+  size = 36,
+  nickname = '',
+  profileImageUrl,
+}: AvatarProps) {
+  const bgColor = getColorIndex(nickname)
 
-  return user?.profileImageUrl ? (
-    <div
-      className="relative overflow-hidden rounded-full"
-      style={{ width: size, height: size }}
-    >
-      <Image
-        src={user?.profileImageUrl}
-        fill
-        alt={`${user.nickname} 프로필 이미지`}
-        className="object-cover"
-      />
-    </div>
-  ) : (
+  if (profileImageUrl) {
+    return (
+      <div
+        className="relative overflow-hidden rounded-full"
+        style={{ width: size, height: size }}
+      >
+        <Image
+          src={profileImageUrl}
+          alt={`${nickname} 프로필 이미지`}
+          fill
+          className="object-cover"
+          sizes={`${size}px`}
+          priority={false}
+        />
+      </div>
+    )
+  }
+
+  return (
     <div
       className="flex items-center justify-center rounded-full font-semibold text-white"
       style={{
@@ -57,7 +70,7 @@ export function Avatar({ size = 36 }: AvatarProps) {
         backgroundColor: customColors[bgColor],
       }}
     >
-      {initial}
+      {getInitial(nickname)}
     </div>
   )
 }

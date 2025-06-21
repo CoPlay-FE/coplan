@@ -5,20 +5,28 @@ import { useAuthStore } from '@/app/features/auth/store/useAuthStore'
 import { Avatar } from './Avatar'
 
 type UserInfoProps = {
-  nickname: string
+  nickname?: string
   imageUrl?: string | null
   size?: number
 }
 
-export function UserInfo({ size = 36 }: UserInfoProps) {
+export function UserInfo({ nickname, imageUrl, size = 36 }: UserInfoProps) {
   const user = useAuthStore((state) => state.user)
 
-  if (!user) return null // 또는 로딩 중 표시나 기본 UI
+  const displayNickname = nickname ?? user?.nickname ?? ''
+  const displayImage = imageUrl ?? user?.profileImageUrl ?? null
+
+  if (!displayNickname) return null // 사용자 정보가 없는 경우 렌더링하지 않음
 
   return (
     <div className="flex items-center gap-4">
-      <Avatar size={size} />
-      <span className="text-sm font-semibold">{user.nickname}</span>
+      {/* Avatar에 nickname, profileImageUrl 모두 넘겨줌 */}
+      <Avatar
+        size={size}
+        nickname={displayNickname}
+        profileImageUrl={displayImage}
+      />
+      <span className="text-sm font-semibold">{displayNickname}</span>
     </div>
   )
 }
