@@ -3,17 +3,21 @@
 import Dropdown from '@components/common/Dropdown/Dropdown'
 import { useRouter } from 'next/navigation'
 
+import { useAuth } from '@/app/features/auth/hooks/useAuth'
+
 import { UserInfo } from '../UserInfo'
 
 export default function UserDropdown() {
   const router = useRouter()
+  const { logout } = useAuth()
 
   const goToMypage = () => {
     router.push('/mypage')
   }
 
   const handleLogout = () => {
-    console.log('로그아웃 처리')
+    logout()
+    router.push('/')
   }
 
   return (

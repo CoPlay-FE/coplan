@@ -6,7 +6,7 @@ import Header from '@/app/shared/components/common/header/Header'
 import Sidebar from '@/app/shared/components/common/sidebar/Sidebar'
 import ThemeToggle from '@/app/shared/components/ThemeToggle'
 
-import CreateDashboardModal from '../shared/components/common/sidebar/modal/CreateDashboardModal'
+import CreateDashboardModal from '../shared/components/common/modal/CreateDashboardModal'
 import { useModalStore } from '../shared/store/useModalStore'
 
 //<초기 설정 안내>
@@ -23,15 +23,15 @@ import { useModalStore } from '../shared/store/useModalStore'
 // globals.css에 작성한 커스텀 유틸 클래스(@apply) 참고해서, 클래스명 가져다 사용하거나 직접 커스텀
 
 export default function Home() {
-  const { openCreateDashboardModal } = useModalStore()
+  const { openModal } = useModalStore()
 
   return (
     <>
-      <Header />
+      <Header title="내 대시보드" />
       <div className="flex">
         {/* 사이드바 */}
         <Sidebar />
-       {/* 메인 콘텐츠 영역 */}
+        {/* 메인 콘텐츠 영역 */}
         <div className="ml-300 p-20">
           {/* 헤더 영역 */}
           <div className="mb-24">
@@ -40,7 +40,7 @@ export default function Home() {
             <ThemeToggle />
             {/* 모달 테스트 버튼 - 이 부분을 추가! */}
             <button
-              onClick={openCreateDashboardModal}
+              onClick={() => openModal('createDashboard')}
               className="BG-blue mt-12 rounded-6 px-16 py-10 text-white"
             >
               대시보드 생성 모달 테스트

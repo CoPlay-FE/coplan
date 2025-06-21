@@ -1,21 +1,39 @@
+'use client'
+
 import api from '@lib/axios'
+import { useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 import { DASHBOARD_COLORS } from '@/app/shared/constants/colors'
+import { useSelectedDashboardStore } from '@/app/shared/store/useSelectedDashboardStore'
 import { CreateDashboardRequest } from '@/app/shared/types/dashboard'
 
 export default function EditInfo() {
   const router = useRouter()
+  const { selectedDashboard, setSelectedDashboard } =
+    useSelectedDashboardStore()
+  const queryClient = useQueryClient()
+
   const [formData, setFormData] = useState<CreateDashboardRequest>({
     title: '',
     color: DASHBOARD_COLORS[0],
   })
-
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  /// 입력값 변경 처리
+  // selectedDashboard가 있을 때 formData 초기화
+  useEffect(() => {
+    if (selectedDashboard) {
+      setFormData({
+        title: selectedDashboard.title,
+        color: selectedDashboard.color,
+      })
+    }
+  }, [selectedDashboard])
+
+  // 입력값 변경 핸들러
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -23,34 +41,51 @@ export default function EditInfo() {
       [name]: value,
     }))
   }
-  // 색상 선택 처리
+
+  // 색상 선택 핸들러
   const handleColorSelect = (color: string) => {
     setFormData((prev) => ({ ...prev, color }))
   }
+
+  // 제출 핸들러
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!formData.title || !formData.color) {
-      return
-    }
+    if (!formData.title || !formData.color) return
+
     try {
       setIsSubmitting(true)
 
-      if (!process.env.NEXT_PUBLIC_TEAM_ID) {
-        throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.')
+      if (!process.env.NEXT_PUBLIC_TEAM_ID || !selectedDashboard?.id) {
+        throw new Error('필수 정보가 누락되었습니다.')
       }
 
-      const response = await api.post(
-        `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards`,
+      const response = await api.put(
+        `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards/${selectedDashboard.id}`,
         formData,
       )
 
       const data = response.data
 
-      // 성공 시 대시보드 상세 페이지로 이동
-      router.push(`/dashboard/${data.id}`)
-    } catch (error) {
-      console.error('대시보드 생성 오류:', error)
+      // 1. 상태 업데이트 (헤더, 수정정보 실시간 반영)
+      setSelectedDashboard(data)
+
+      // 2. react-query 캐시 무효화 → Sidebar 목록 재요청 유도
+      await queryClient.invalidateQueries({ queryKey: ['dashboards'] })
+
+      // 성공 시 상세 페이지 이동
+      router.push(`/dashboard/${data.id}/edit`)
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const message =
+          error.response?.data?.message ||
+          '대시보드 수정 중 오류가 발생했습니다.'
+        console.error('대시보드 수정 오류:', message)
+        alert(message)
+      } else {
+        console.error('대시보드 수정 오류:', error)
+        alert('알 수 없는 오류가 발생했습니다.')
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -60,7 +95,9 @@ export default function EditInfo() {
     <div>
       {/* 컨테이너 */}
       <div className="BG-white h-300 w-584 rounded-16 px-32 py-24">
-        <h2 className="Text-black mb-24 text-18 font-bold">새로운 대시보드</h2>
+        <h2 className="Text-black mb-24 text-18 font-bold">
+          {selectedDashboard?.title || '대시보드 편집'}
+        </h2>
 
         <form onSubmit={handleSubmit}>
           {/* 제목 입력 */}
@@ -92,7 +129,7 @@ export default function EditInfo() {
                   style={{ backgroundColor: color }}
                   aria-label={`색상 ${color}`}
                 >
-                  {/* 선택된 색상 체크 */}
+                  {/* 선택된 색상에 체크 표시 */}
                   {formData.color === color && (
                     <div className="relative size-24 items-center justify-center">
                       <Image

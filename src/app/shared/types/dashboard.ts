@@ -39,3 +39,29 @@ export interface ModalState {
   openCreateDashboardModal: () => void
   closeCreateDashboardModal: () => void
 }
+
+// 초대받은 대시보드
+export interface InvitationListResponse {
+  cursorId: number | null
+  invitations: Invitation[]
+}
+
+// 초대 정보 타입
+export interface Invitation {
+  id: number
+  inviter: {
+    id: number
+    email: string
+    nickname: string
+  }
+  teamId: string
+  dashboard: Dashboard
+  invitee: {
+    id: number
+    email: string
+    nickname: string
+  }
+  inviteAccepted: boolean | null
+  createdAt: string
+  updatedAt: string
+}
