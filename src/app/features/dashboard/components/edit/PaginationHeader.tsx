@@ -21,11 +21,11 @@ export function PaginationHeader({
   children,
 }: PaginationHeaderProps) {
   return (
-    <div className="mb-24 flex items-center justify-between">
+    <div className="mb-24 flex items-center justify-between whitespace-nowrap">
       <h2 className="Text-black text-18 font-bold">{title}</h2>
 
-      <div className="flex items-center">
-        <p className="Text-gray mr-16 text-12">
+      <div className="flex shrink-0 items-center">
+        <p className="Text-gray mr-16 shrink-0 text-12">
           {totalPages} 페이지 중 {currentPage}
         </p>
         <button onClick={onPrev} disabled={currentPage === 1}>
