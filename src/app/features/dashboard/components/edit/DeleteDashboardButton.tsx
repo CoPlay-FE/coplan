@@ -1,10 +1,12 @@
 'use client'
 
 import api from '@lib/axios'
+import { showError, showSuccess } from '@lib/toast'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import { toast } from 'sonner'
 
 type DeleteDashboardButtonProps = {
   dashboardId: string
@@ -26,27 +28,29 @@ export default function DeleteDashboardButton({
     },
     onSuccess: () => {
       router.push('/dashboard')
+      showSuccess('대시보드가 삭제되었습니다')
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
         const message =
           error.response?.data?.message ||
           '대시보드 삭제 중 오류가 발생했습니다.'
-        alert(message)
-        console.error('대시보드 삭제 오류:', message)
+        showError(message)
       } else {
-        alert('알 수 없는 오류가 발생했습니다.')
-        console.error('대시보드 삭제 오류:', error)
+        showError('알 수 없는 오류가 발생했습니다.')
       }
     },
   })
 
+  // sonner로 삭제 확인 토스트 구현
   function handleDelete() {
-    const confirmed = confirm(
-      '정말로 이 대시보드를 삭제하시겠습니까? 삭제 후 되돌릴 수 없습니다.',
-    )
-    if (!confirmed) return
-    mutation.mutate()
+    toast('대시보드를 삭제하시겠습니까?', {
+      description: '삭제 후 되돌릴 수 없습니다.',
+      action: {
+        label: '삭제하기',
+        onClick: () => mutation.mutate(),
+      },
+    })
   }
 
   return (
