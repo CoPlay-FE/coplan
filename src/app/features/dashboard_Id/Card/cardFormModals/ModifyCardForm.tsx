@@ -63,14 +63,14 @@ export default function ModifyCardForm({
     formState: { errors, isValid, isSubmitting, isDirty },
   } = useForm<CardFormData>({
     defaultValues: {
-      assigneeUserId: card.assignee.id,
+      assigneeUserId: card.assignee?.id,
       dashboardId: card.dashboardId,
       columnId: card.columnId,
       title: card.title,
       description: card.description,
-      dueDate: card.dueDate,
-      tags: card.tags,
-      imageUrl: card.imageUrl,
+      dueDate: card.dueDate ? card.dueDate : '',
+      tags: card.tags ? card.tags : [],
+      imageUrl: card.imageUrl ? card.imageUrl : '',
     },
     mode: 'onChange', // isValid와 isDirty가 입력 즉시 반영되도록
   })
@@ -78,7 +78,6 @@ export default function ModifyCardForm({
   // React Hook Form 과 tags 값 연결
   useEffect(() => {
     setValue('tags', tags)
-    console.log(tags)
   }, [tags, tags.length, setValue])
 
   // 상태(컬럼) 선택 시 / assignee 선택 시 드롭다운 닫기
@@ -125,7 +124,11 @@ export default function ModifyCardForm({
 
   // ✅ JSX
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-32">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-32"
+      onClick={(e) => e.stopPropagation()}
+    >
       <h2 className="Text-black text-24 font-bold">할 일 수정</h2>
 
       <div className="flex gap-32">
@@ -188,9 +191,11 @@ export default function ModifyCardForm({
                   id="assigneeUserId"
                   type="text"
                 />
-                <div className="BG-white absolute left-16 top-1/2 -translate-y-1/2">
-                  <MyAssignee assignee={selectedAssignee} />
-                </div>
+                {selectedAssignee && (
+                  <div className="BG-white absolute left-16 top-1/2 -translate-y-1/2">
+                    <MyAssignee assignee={selectedAssignee} />
+                  </div>
+                )}
                 <Image
                   src="/images/arrow-dropdown.svg"
                   alt="화살표"
