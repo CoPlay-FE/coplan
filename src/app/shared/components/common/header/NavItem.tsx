@@ -26,7 +26,7 @@ export default function NavItem({
     // 정적인 클래스만 쓸 경우 cn을 쓰지 않아도 되지만 외부에서 className 받는 경우 사용 권장
     <div
       className={cn(
-        'Text-black inline-flex items-center gap-6 rounded-md border border-gray-300 px-12 py-4 align-middle text-sm transition hover:bg-gray-100 hover:text-black',
+        'inline-flex items-center gap-6 rounded-md border border-gray-300 px-12 py-4 align-middle text-sm transition hover:bg-gray-100 hover:text-black',
         className,
       )}
     >
