@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 import { Avatar } from '@/app/shared/components/common/Avatar'
 import Dropdown from '@/app/shared/components/common/Dropdown/Dropdown'
+import { useIsMobile } from '@/app/shared/hooks/useIsmobile'
 
 import { Card } from '../../type/Card.type'
 import { Column } from '../../type/Column.type'
@@ -10,6 +11,8 @@ import CreateCardModal from '../cardFormModals/CreateCardModal'
 import ModifyCardForm from '../cardFormModals/ModifyCardForm'
 import ColumnTitle from '../ColumnTitle'
 import Tags from '../Tags'
+import CommentForm from './CommentForm'
+import Comments from './Comments'
 
 export default function CardContent({
   onClose,
@@ -26,6 +29,7 @@ export default function CardContent({
   const [openModifyCard, setOpenModifyCard] = useState(false)
   // const { title: columnTitle, id: columnId } = column
   // const currentColumn = { columnTitle, columnId }
+  const isMobile = useIsMobile()
 
   return (
     // <div className="relative">
@@ -88,50 +92,73 @@ export default function CardContent({
           <div className="w-470 mobile:w-295 tablet:w-420">
             <div className="mb-16 flex items-start gap-20 mobile:gap-12">
               <ColumnTitle title={column.title} />
-              <div className="mt-6 h-20 w-1 bg-[#D9D9D9]"></div>
-              <Tags tags={card.tags} />
+              <div className="mt-6 h-20 w-1 bg-[#D9D9D9] dark:bg-[#454545]"></div>
+              {card.tags && <Tags tags={card.tags} />}
             </div>
-            <p
-              className={
-                'font-regular Text-black mb-16 text-14 mobile:mb-32 mobile:text-12'
-              }
-            >
-              {card.description}
-            </p>
-            <Image
-              alt="카드 이미지"
-              src={card.imageUrl}
-              width={420}
-              height={300}
-              className="mb-24 h-auto w-full rounded-6 object-contain"
-              priority
-            />
+            {card.description && (
+              <p
+                className={
+                  'font-regular Text-black mb-16 text-14 mobile:mb-32 mobile:text-12'
+                }
+              >
+                {card.description}
+              </p>
+            )}
+            {card.imageUrl && (
+              <Image
+                alt="카드 이미지"
+                src={card.imageUrl}
+                width={420}
+                height={300}
+                className="mb-24 h-auto w-full rounded-6 object-contain"
+                priority
+              />
+            )}
           </div>
           {/* 담당자 / 마감일 박스 */}
           <div>
             <div className="Border-section flex w-200 flex-col gap-16 rounded-8 px-16 py-14 mobile:w-full mobile:flex-row mobile:py-9 tablet:w-181">
-              <div className="mobile:w-135">
+              <div className="mobile:w-120">
                 <span className="Text-black moblie:mb-0 mb-6 block text-12 font-semibold">
                   담당자
                 </span>
-                <div className="flex items-center gap-8">
-                  <Avatar
-                    size={34}
-                    name={card.assignee.nickname}
-                    imageUrl={card.assignee.profileImageUrl}
-                  />
-                  <span className="regular Text-black block pt-1 text-14 leading-none mobile:text-12">
-                    {card.assignee.nickname}
-                  </span>
-                </div>
+                {card.assignee && (
+                  <div className="flex items-center gap-8">
+                    {isMobile ? (
+                      <>
+                        <Avatar
+                          size={24}
+                          name={card.assignee.nickname}
+                          imageUrl={card.assignee.profileImageUrl}
+                        />
+                        <span className="regular Text-black block pt-1 text-14 leading-none mobile:text-12">
+                          {card.assignee.nickname}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <Avatar
+                          size={32}
+                          name={card.assignee.nickname}
+                          imageUrl={card.assignee.profileImageUrl}
+                        />
+                        <span className="regular Text-black block pt-1 text-14 leading-none mobile:text-12">
+                          {card.assignee.nickname}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
               <div>
                 <span className="Text-black mb-6 block text-12 font-semibold mobile:mb-8">
                   마감일
                 </span>
-                <span className="regular Text-black block pt-1 text-14 leading-none mobile:text-12">
-                  {card.dueDate}
-                </span>
+                {card.dueDate && (
+                  <span className="regular Text-black block pt-1 text-14 leading-none mobile:text-12">
+                    {card.dueDate}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -139,19 +166,12 @@ export default function CardContent({
         <div></div>
       </div>
 
-      <div>댓글 컴포넌트</div>
-
-      {/* 카드 수정 모달
-      {openModifyCard && (
-        <CreateCardModal>
-          <ModifyCardForm
-            onClose={() => setOpenModifyCard(false)}
-            // columnId={column.id}
-            currentColumn={currentColumn}
-            card={card}
-          />
-        </CreateCardModal>
-      )} */}
+      <CommentForm
+        cardId={card.id}
+        columnId={card.columnId}
+        dashboardId={card.dashboardId}
+      />
+      <Comments cardId={card.id} />
     </div>
   )
 }

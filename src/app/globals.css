@@ -70,7 +70,7 @@ body {
   @apply border border-[#D9D9D9] dark:border-[#747474];
 }
 .Border-section {
-  @apply border border-[#D9D9D9] dark:border-[#000000];
+  @apply border border-[#D9D9D9] dark:border-[#454545];
 }
 .Border-column {
   @apply border-r border-[#EEEEEE] dark:border-[#262626];

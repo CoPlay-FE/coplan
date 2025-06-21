@@ -63,14 +63,14 @@ export default function ModifyCardForm({
     formState: { errors, isValid, isSubmitting, isDirty },
   } = useForm<CardFormData>({
     defaultValues: {
-      assigneeUserId: card.assignee.id,
+      assigneeUserId: card.assignee?.id,
       dashboardId: card.dashboardId,
       columnId: card.columnId,
       title: card.title,
       description: card.description,
-      dueDate: card.dueDate,
-      tags: card.tags,
-      imageUrl: card.imageUrl,
+      dueDate: card.dueDate ? card.dueDate : '',
+      tags: card.tags ? card.tags : [],
+      imageUrl: card.imageUrl ? card.imageUrl : '',
     },
     mode: 'onChange', // isValid와 isDirty가 입력 즉시 반영되도록
   })
@@ -191,9 +191,11 @@ export default function ModifyCardForm({
                   id="assigneeUserId"
                   type="text"
                 />
-                <div className="BG-white absolute left-16 top-1/2 -translate-y-1/2">
-                  <MyAssignee assignee={selectedAssignee} />
-                </div>
+                {selectedAssignee && (
+                  <div className="BG-white absolute left-16 top-1/2 -translate-y-1/2">
+                    <MyAssignee assignee={selectedAssignee} />
+                  </div>
+                )}
                 <Image
                   src="/images/arrow-dropdown.svg"
                   alt="화살표"

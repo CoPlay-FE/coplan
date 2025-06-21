@@ -23,9 +23,9 @@ export function usePutCardMutation() {
     onError: (error) => {
       if (axios.isAxiosError(error)) {
         const message = error.response?.data?.message
-        console.error('카드 생성 실패:', message ?? '알 수 없는 에러')
+        console.error('카드 수정 실패:', message ?? '알 수 없는 에러')
       } else {
-        console.error('카드 생성 실패:', error)
+        console.error('카드 수정 실패:', error)
       }
     },
   })
