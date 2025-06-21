@@ -1,10 +1,10 @@
 // hooks/useDashboard.ts
 'use client'
 
+import api from '@lib/axios'
 import { useQuery } from '@tanstack/react-query'
 
-import api from '@/app/shared/lib/axios'
-import { DashboardListResponse } from '@/app/shared/types/dashboard'
+import { DashboardListResponse } from '@/types/dashboard'
 
 export const useDashboard = () => {
   return useQuery({
