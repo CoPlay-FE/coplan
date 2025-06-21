@@ -53,7 +53,7 @@ export default function InvitedDashboardTable() {
         <div className="h-40 animate-pulse rounded-8 bg-gray-200" />
 
         {/* 테이블 헤더 */}
-        <div className="grid grid-cols-3 items-center gap-20 pl-36 pr-32">
+        <div className="mobile:hidden grid grid-cols-3 items-center gap-20 pl-36 pr-32">
           <span className="text-16 font-medium text-gray-400">이름</span>
           <span className="text-center text-16 font-medium text-gray-400">
             초대자
@@ -67,7 +67,7 @@ export default function InvitedDashboardTable() {
         {Array.from({ length: 3 }).map((_, index) => (
           <div
             key={index}
-            className="grid grid-cols-3 items-center gap-20 border-b border-gray-100 py-20 pl-36 pr-32"
+            className="mobile:flex mobile:flex-col mobile:gap-8 mobile:p-16 mobile:rounded-8 mobile:bg-gray-50 grid grid-cols-3 items-center gap-20 border-b border-gray-100 py-20 pl-36 pr-32"
           >
             <div className="h-20 animate-pulse rounded-4 bg-gray-200" />
             <div className="h-20 animate-pulse rounded-4 bg-gray-200" />
@@ -82,10 +82,10 @@ export default function InvitedDashboardTable() {
   if (isError) {
     return (
       <div className="flex flex-col items-center justify-center py-60">
-        <p className="text-16 font-medium text-red-500">
+        <p className="mobile:text-12 text-16 font-medium text-red-500">
           초대받은 대시보드를 불러오는 중 오류가 발생했습니다.
         </p>
-        <p className="mt-8 text-14 text-gray-500">
+        <p className="mobile:text-10 mt-8 text-14 text-gray-500">
           {error?.message || '다시 시도해주세요.'}
         </p>
       </div>
@@ -96,7 +96,7 @@ export default function InvitedDashboardTable() {
   if (allInvitations.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-60">
-        <div className="relative mb-24 h-100 w-100">
+        <div className="mobile:size-60 relative mb-24 h-100 w-100">
           <Image
             src="/images/unsubscribe.svg"
             alt="초대받은 대시보드 없음"
@@ -104,7 +104,7 @@ export default function InvitedDashboardTable() {
             className="object-contain"
           />
         </div>
-        <p className="Text-gray-light text-16 font-medium">
+        <p className="Text-gray-light mobile:text-12 text-16 font-medium">
           아직 초대받은 대시보드가 없어요.
         </p>
       </div>
@@ -117,8 +117,8 @@ export default function InvitedDashboardTable() {
       {/* 검색창 */}
       <SearchInput value={searchQuery} onChange={setSearchQuery} />
 
-      {/* 테이블 헤더 */}
-      <div className="grid grid-cols-3 items-center gap-20 pl-36 pr-32">
+      {/* 테이블 헤더 - 모바일에서 숨김 */}
+      <div className="mobile:hidden grid grid-cols-3 items-center gap-20 pl-36 pr-32">
         <span className="Text-gray-light text-16 font-normal">이름</span>
         <span className="Text-gray-light text-center text-16 font-normal">
           초대자
@@ -133,7 +133,7 @@ export default function InvitedDashboardTable() {
         {searchQuery.trim() && filteredInvitations.length === 0 ? (
           // 검색 결과 없음
           <div className="flex flex-col items-center justify-center py-60">
-            <p className="Text-gray-light text-16 font-medium">
+            <p className="Text-gray-light mobile:text-12 text-16 font-medium">
               `{searchQuery}`에 대한 검색 결과가 없습니다.
             </p>
           </div>
@@ -155,7 +155,7 @@ export default function InvitedDashboardTable() {
       {/* 더 이상 데이터가 없을 때 */}
       {!hasNextPage && allInvitations.length > 0 && (
         <div className="py-20 text-center">
-          <p className="Text-gray-light text-14 font-normal">
+          <p className="Text-gray-light mobile:text-10 text-14 font-normal">
             모든 초대를 확인했습니다.
           </p>
         </div>

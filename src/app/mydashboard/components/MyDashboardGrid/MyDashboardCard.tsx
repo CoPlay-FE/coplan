@@ -19,7 +19,7 @@ export default function MyDashboardCard({ dashboard }: MyDashboardCardProps) {
   return (
     <div
       onClick={handleClick}
-      className="BG-white Border-btn hover:BG-gray group h-70 w-332 cursor-pointer rounded-8 border p-20 transition-all duration-200 hover:border-gray-300"
+      className="BG-white Border-btn hover:BG-gray tablet:w-247 tablet:h-68 mobile:w-260 mobile:h-58 group h-70 w-332 cursor-pointer rounded-8 border p-20 transition-all duration-200 hover:border-gray-300"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-12">
@@ -30,7 +30,7 @@ export default function MyDashboardCard({ dashboard }: MyDashboardCardProps) {
           />
 
           {/* 대시보드 제목 */}
-          <h3 className="Text-black max-w-200 truncate text-16 font-medium">
+          <h3 className="Text-black tablet:max-w-140 mobile:max-w-160 max-w-200 truncate text-16 font-medium">
             {dashboard.title}
           </h3>
 
