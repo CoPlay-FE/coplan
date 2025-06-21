@@ -38,7 +38,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           {...rest}
           ref={ref}
         />
-
         {hasError && errorMessage && (
           <p className="Text-error text-sm font-normal">{errorMessage}</p>
         )}
