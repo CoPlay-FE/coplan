@@ -1,9 +1,8 @@
 'use client'
 
+import DashboardForm from '@components/dashboard/DashboardForm'
+import { useDashboardForm } from '@hooks/useDashboardForm'
 import React from 'react'
-
-import DashboardForm from '@/app/shared/components/dashboard/DashboardForm'
-import { useDashboardForm } from '@/app/shared/hooks/useDashboardForm'
 
 export default function EditInfo() {
   const {
