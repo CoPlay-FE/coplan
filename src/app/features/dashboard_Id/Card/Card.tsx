@@ -6,6 +6,8 @@ import { Avatar } from '@/app/shared/components/common/Avatar'
 import { useDragStore } from '../store/useDragStore'
 import type { Card as CardType } from '../type/Card.type'
 import type { Column as ColumnType } from '../type/Column.type'
+import CreateCardModal from './cardFormModals/CreateCardModal'
+import ModifyCardForm from './cardFormModals/ModifyCardForm'
 import CardContent from './cardModal/CardContent'
 import CardModal from './cardModal/CardModal'
 import Tags from './Tags'
@@ -20,6 +22,9 @@ export default function Card({
   const { id, imageUrl, title, tags, dueDate, assignee } = card
   const { setDraggingCard } = useDragStore()
   const [openCard, setOpenCard] = useState(false) //card.tsx
+  const [openModifyCard, setOpenModifyCard] = useState(false)
+  const { title: columnTitle, id: columnId } = column
+  const currentColumn = { columnTitle, columnId }
 
   return (
     <div
@@ -84,10 +89,23 @@ export default function Card({
         <CardModal>
           <CardContent
             onClose={() => setOpenCard(false)}
+            openModifyModal={() => setOpenModifyCard(true)}
             card={card}
             column={column}
           />
         </CardModal>
+      )}
+
+      {/* 카드 수정 모달 */}
+      {openModifyCard && (
+        <CreateCardModal>
+          <ModifyCardForm
+            onClose={() => setOpenModifyCard(false)}
+            // columnId={column.id}
+            currentColumn={currentColumn}
+            card={card}
+          />
+        </CreateCardModal>
       )}
     </div>
   )
