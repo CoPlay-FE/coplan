@@ -26,7 +26,7 @@ export function UserInfo({ nickname, imageUrl, size = 36 }: UserInfoProps) {
         nickname={displayNickname}
         profileImageUrl={displayImage}
       />
-      <span className="text-sm font-semibold">{displayNickname}</span>
+      <span className="ml-4 text-sm font-semibold">{displayNickname}</span>
     </div>
   )
 }
