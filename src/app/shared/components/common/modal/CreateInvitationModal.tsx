@@ -2,6 +2,7 @@
 
 import { inviteUser } from '@dashboard/api/invitation'
 import { useModalStore } from '@store/useModalStore'
+import { useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
@@ -12,6 +13,8 @@ export default function CreateInvitationModal() {
   const { modalType, closeModal } = useModalStore()
   const [email, setEmail] = useState('')
   const { id: dashboardId } = useParams()
+  const teamId = process.env.NEXT_PUBLIC_TEAM_ID ?? ''
+  const queryClient = useQueryClient()
 
   function handleBackdropClick(e: React.MouseEvent<HTMLDivElement>) {
     if (e.target === e.currentTarget) {
@@ -27,17 +30,23 @@ export default function CreateInvitationModal() {
       if (!dashboardId) {
         throw new Error('대시보드 ID가 없습니다.')
       }
+
       await inviteUser({ email, dashboardId: Number(dashboardId) })
+
+      // ✅ 초대 후 캐시 무효화 (초대 내역 새로고침)
+      queryClient.invalidateQueries({
+        queryKey: ['invitations', teamId, String(dashboardId)],
+      })
+
       showSuccess('초대가 완료되었습니다.')
       closeModal()
     } catch (err: unknown) {
-      // 에러 타입 안정성을 위해 axios 에러 타입으로 캐스팅
       const error = err as AxiosError<{ message: string }>
       showError(error?.response?.data?.message || '초대에 실패하였습니다.')
     }
   }
 
-  if (!modalType) return null
+  if (modalType !== 'invite') return null
 
   return (
     <div
@@ -74,7 +83,7 @@ export default function CreateInvitationModal() {
             </button>
             <button
               type="submit"
-              className={`BG-violet h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold text-white hover:opacity-90`}
+              className="BG-violet h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold text-white hover:opacity-90"
             >
               초대
             </button>
