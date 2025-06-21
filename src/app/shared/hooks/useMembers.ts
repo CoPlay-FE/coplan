@@ -1,6 +1,7 @@
 'use client'
 
 import authHttpClient from '@lib/axios'
+import { getTeamId } from '@lib/getTeamId'
 
 export type Member = {
   id: number
@@ -11,7 +12,7 @@ export type Member = {
   userId: number
 }
 
-const teamId = process.env.NEXT_PUBLIC_TEAM_ID
+const teamId = getTeamId()
 
 export async function fetchMembers(dashboardId: string): Promise<Member[]> {
   const { data } = await authHttpClient.get(`/${teamId}/members`, {
