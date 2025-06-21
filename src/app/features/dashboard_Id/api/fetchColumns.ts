@@ -1,6 +1,5 @@
-import api from '@/app/shared/lib/testAxios'
+import authHttpClient from '@/app/shared/lib/axios'
 
-// import api from '@/app/shared/lib/axios'
 import { Column, ColumnsResponse } from '../type/Column.type'
 
 export async function fetchColumns(dashboardId: number): Promise<Column[]> {
@@ -8,7 +7,7 @@ export async function fetchColumns(dashboardId: number): Promise<Column[]> {
     throw new Error('dashboardId가 유효하지 않습니다.')
   }
 
-  const res = await api.get<ColumnsResponse>(
+  const res = await authHttpClient.get<ColumnsResponse>(
     `/${process.env.NEXT_PUBLIC_TEAM_ID}/columns?dashboardId=${dashboardId}`,
   )
 

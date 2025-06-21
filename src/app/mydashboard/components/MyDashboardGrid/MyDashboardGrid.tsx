@@ -67,7 +67,10 @@ export default function MyDashboardGrid() {
 
         {/* 대시보드 카드 */}
         {dashboards.map((dashboard) => (
-          <MyDashboardCard key={dashboard.id} dashboard={dashboard} />
+          <MyDashboardCard
+            key={`mydash-${dashboard.id}`}
+            dashboard={dashboard}
+          />
         ))}
       </div>
 
