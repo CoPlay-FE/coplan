@@ -5,7 +5,7 @@ import { CardModifyFormData } from '../type/CardFormData.type'
 import { postCard } from './postCard'
 import { putCard } from './putCard'
 
-// ✅ 카드 생성 모달에서 사용 (CreateCardForm.tsx)
+// ✅ 카드 수정 모달에서 사용 (CreateCardForm.tsx)
 export function usePutCardMutation() {
   const queryClient = useQueryClient()
 

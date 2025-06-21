@@ -15,6 +15,7 @@ export default function CommentForm({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm<CommentFormData>({
     mode: 'onChange',
@@ -32,10 +33,14 @@ export default function CommentForm({
     }
     console.log(payload)
     createComment(payload)
+    reset()
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mb-24 w-450">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="mb-24 w-450 mobile:w-295 tablet:w-420"
+    >
       <label
         htmlFor={'content'}
         className="Text-black mb-4 text-16 font-medium"

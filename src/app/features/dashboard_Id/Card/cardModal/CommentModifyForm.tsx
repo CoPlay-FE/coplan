@@ -1,21 +1,21 @@
-import { Form, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
-import { usePostCommentMutation } from '../../api/usePostCommentMutation'
 import { usePutCommentMutation } from '../../api/usePutCommentsMutation'
 import { PutCommentForm } from '../../type/CommentFormData.type'
-import Input from '../cardFormModals/input/Input'
 
 export default function CommentModifyForm({
+  onClose,
   commentId,
   content,
 }: {
+  onClose: () => void
   commentId: number
   content: string
 }) {
   const {
     register,
     handleSubmit,
-    setValue,
+
     formState: { errors, isValid, isSubmitting },
   } = useForm<PutCommentForm>({
     defaultValues: {
@@ -30,31 +30,35 @@ export default function CommentModifyForm({
     console.log(data)
     console.log(commentId)
     createComment({ payload: data, commentId }) //useMutation은 하나의 인자만 허용. 객체 하나로 묶어서 전달하는거 자꾸 까먹음..
+    onClose()
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mb-24 w-450">
-      <label
-        htmlFor={'content'}
-        className="Text-black mb-4 text-16 font-medium"
-      >
-        댓글
-      </label>
-      <div className="relative">
-        <textarea
-          {...register('content', {
-            required: '댓글 내용을 작성해주세요',
-          })}
-          className="Text-black h-110 w-full resize-none rounded-6 border border-[#D9D9D9] p-16 text-14 placeholder-gray-400 dark:border-[#747474]"
-          id="content"
-          placeholder={content ? content : '댓글 작성하기'}
-        />
-
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="relative flex gap-10 mobile:flex-col"
+    >
+      <textarea
+        {...register('content', {
+          required: '댓글 내용을 작성해주세요',
+        })}
+        className="Text-black h-110 w-450 resize-none rounded-6 border border-[#D9D9D9] p-16 text-14 placeholder-gray-400 dark:border-[#747474] mobile:w-250 mobile:w-295 tablet:w-420"
+        id="content"
+        placeholder={content ? content : '댓글 작성하기'}
+      />
+      <div className="flex flex-col mobile:flex-row">
         <button
           type="submit"
-          className="Text-blue absolute bottom-19 right-12 h-32 w-83 rounded-4 border border-[#D9D9D9] py-7 text-center text-12 font-medium dark:border-[#747474]"
+          className="Text-gray-light h-28 w-50 rounded-4 border border-[#D9D9D9] py-5 text-center text-12 font-medium dark:border-[#747474]"
+          onClick={onClose}
         >
-          입력
+          취소
+        </button>
+        <button
+          type="submit"
+          className="Text-blue h-28 w-50 rounded-4 border border-[#D9D9D9] py-5 text-center text-12 font-medium dark:border-[#747474]"
+        >
+          수정
         </button>
       </div>
     </form>

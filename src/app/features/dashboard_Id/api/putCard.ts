@@ -1,11 +1,8 @@
 import api from '@/app/shared/lib/testAxios'
 
+import { ApiResponse } from '../type/ApiResponse'
 // import api from '@/app/shared/lib/axios'
 import { CardModifyFormData } from '../type/CardFormData.type'
-
-interface ApiResponse {
-  message: string
-}
 
 export async function putCard(
   payload: CardModifyFormData,
