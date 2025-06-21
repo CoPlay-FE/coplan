@@ -1,24 +1,39 @@
 'use client'
 
 import Image from 'next/image'
-import { useRef } from 'react'
+import { useParams } from 'next/navigation'
+import { useEffect, useRef } from 'react'
 
-import useColumns from '@/app/api/useColumns'
-
-import { useCardMutation } from './api/useCardMutation'
-import Column from './Column/Column'
-import { useDragStore } from './store/useDragStore'
-import type { Card } from './type/Card'
+import { useCardMutation } from '@/app/features/dashboard_Id/api/useCardMutation'
+import useColumns from '@/app/features/dashboard_Id/api/useColumns'
+import Column from '@/app/features/dashboard_Id/Column/Column'
+import { useColumnsStore } from '@/app/features/dashboard_Id/store/useColumnsStore'
+import { useDragStore } from '@/app/features/dashboard_Id/store/useDragStore'
+import { Card } from '@/app/features/dashboard_Id/type/Card.type'
 
 export default function DashboardID() {
-  const dashboard = 15120
-  const { data: columns, isLoading, error } = useColumns(dashboard)
+  const params = useParams()
+  const dashboardId = Number(params.id)
+  const { data: columns, isLoading, error } = useColumns(dashboardId)
+  // const { data: columns, isLoading, error } = useColumns(id)
+
   const { draggingCard, setDraggingCard } = useDragStore()
+  const { setColumns } = useColumnsStore()
   const cardMutation = useCardMutation()
   const touchPos = useRef({ x: 0, y: 0 })
   const prevColumn = useRef<HTMLElement | null>(null)
   const longPressTimer = useRef<number | null>(null)
   const isLongPressActive = useRef(false)
+
+  useEffect(() => {
+    if (columns) {
+      const transformed = columns.map((column) => ({
+        columnId: column.id,
+        columnTitle: column.title,
+      }))
+      setColumns(transformed)
+    }
+  }, [columns, setColumns])
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     // 1. 터치 대상 찾기
@@ -124,10 +139,9 @@ export default function DashboardID() {
   if (error) return <p>error...{error.message}</p>
   return (
     <>
-      <div className="fixed left-0 h-1080 w-300 bg-gray-100">사이드바</div>
-      <div className="ml-300 select-none">
+      <div className="select-none">
         <div
-          className="tablet:flex-col flex"
+          className="flex min-h-[calc(100vh-100px)] mobile:flex-row tablet:flex-col"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
