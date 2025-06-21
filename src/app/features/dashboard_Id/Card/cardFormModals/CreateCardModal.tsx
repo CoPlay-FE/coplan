@@ -2,7 +2,6 @@ import { createPortal } from 'react-dom'
 
 interface ModalProps {
   children: React.ReactNode
-  onClose: () => void
 }
 export default function CreateCardModal({ children }: ModalProps) {
   const modalRoot = document.getElementById('modal-root')

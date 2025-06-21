@@ -7,12 +7,16 @@ import { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import { Controller, useForm } from 'react-hook-form'
 
+import { cn } from '@/app/shared/lib/cn'
+
 import useMembers from '../../api/useMembers'
 import { usePostCard } from '../../api/usePostCard'
 import { useUploadCardImage } from '../../api/useUploadCardImage'
+import { Assignee } from '../../type/Card.type'
 import type { CardFormData } from '../../type/CardFormData.type'
-import Tags from '../Tags'
-import AssigneeList, { Assignee } from './AssigneeList'
+import TagsCanDelete from '../TagsCanDelete'
+// import AssigneeList, { Assignee } from './AssigneeList'
+import AssigneeList from './AssigneeList'
 import DateInput from './input/DateInput'
 import Input from './input/Input'
 
@@ -111,10 +115,20 @@ export default function CreateCardForm({
                 onClick={() => setIsOpen((prev) => !prev)}
                 value={selectedAssignee?.nickname ?? ''}
                 readOnly
-                className="Input-readOnly"
+                className="Input-readOnly w-520"
                 id="assigneeUserId"
                 type="text"
                 placeholder="담당자를 선택해 주세요"
+              />
+              <Image
+                src="/images/arrow-dropdown.svg"
+                alt="화살표"
+                width={26}
+                height={24}
+                className={cn(
+                  'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300',
+                  isOpen && 'rotate-180',
+                )}
               />
               {isOpen && (
                 <AssigneeList
@@ -204,7 +218,7 @@ export default function CreateCardForm({
           {/* * 태그 클릭하면 해당 태그 삭제 가능하게 변형해야함 */}
           {tags && (
             <div className="mt-10">
-              <Tags tags={tags} />
+              <TagsCanDelete tags={tags} setTags={setTags} />
             </div>
           )}
         </div>

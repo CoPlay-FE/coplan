@@ -8,18 +8,35 @@ import useCards from '../api/useCards'
 import Card from '../Card/Card'
 import CreateCardForm from '../Card/cardFormModals/CreateCardForm'
 import CreateCardModal from '../Card/cardFormModals/CreateCardModal'
+import { useColumnModalStore } from '../store/useColumnModalStore'
 import { useDragStore } from '../store/useDragStore'
 import type { Column as ColumnType } from '../type/Column.type'
-export default function Column({ column }: { column: ColumnType }) {
+
+export default function Column({
+  column,
+  dashboardId,
+}: {
+  column: ColumnType
+  dashboardId: number
+}) {
   const { id, title }: { id: number; title: string } = column
   const { data, isLoading, error } = useCards(id)
+  const { openModal } = useColumnModalStore()
   const [isDraggingover, setDraggingover] = useState(false)
   const { draggingCard, clearDraggingCard } = useDragStore()
   const cardMutation = useCardMutation()
-  const [openCard, setOpenCard] = useState(false) //card.tsx
   const [openCreateCard, setOpenCreateCard] = useState(false)
+
   const [openCreateColumn, setOpenCreateColumn] = useState(false) //page.tsx
   const [oepnConfigColumn, setConfigColumn] = useState(false)
+
+  const handleConfigColumn = () => {
+    openModal('edit', {
+      dashboardId,
+      columnId: id,
+      columnTitle: title,
+    })
+  }
 
   if (isLoading) return <p>loading...</p>
   if (error) return <p>error...{error.message}</p>
@@ -52,7 +69,7 @@ export default function Column({ column }: { column: ColumnType }) {
       }}
       data-column-id={id}
       className={cn(
-        'BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20 tablet:w-584',
+        'BG-gray Border-column tablet:w-584 flex w-354 shrink-0 flex-col gap-16 p-20',
         {
           'BG-drag-hovered': isDraggingover,
         },
@@ -71,14 +88,16 @@ export default function Column({ column }: { column: ColumnType }) {
           alt="컬럼 설정"
           width={20}
           height={20}
-          onClick={() => setConfigColumn(true)}
+          onClick={handleConfigColumn}
+          className="cursor-pointer"
         />
       </div>
       <button
         className="BG-white Border-section flex justify-center rounded-6 py-9"
         onClick={() => setOpenCreateCard(true)}
       >
-        <div className="flex h-22 w-22 items-center justify-center rounded-4 bg-blue-100">
+        {/* <div className="flex h-22 w-22 items-center justify-center rounded-4 bg-blue-100 dark:bg-[#363636]"> */}
+        <div className="BG-lightblue flex h-22 w-22 items-center justify-center rounded-4">
           <Image
             src={'/images/plus.svg'}
             alt="추가하기"
@@ -88,16 +107,16 @@ export default function Column({ column }: { column: ColumnType }) {
         </div>
       </button>
       {data?.cards.map((card) => (
-        <Card key={card.id} card={card} columnId={id} />
+        <Card key={card.id} card={card} column={column} />
       ))}
 
-      {/* 모달 */}
+      {/* 카드 생성 모달 */}
       {openCreateCard && (
-        <CreateCardModal onClose={() => setOpenCreateCard(false)}>
+        <CreateCardModal>
           <CreateCardForm
             onClose={() => setOpenCreateCard(false)}
             columnId={id}
-          ></CreateCardForm>
+          />
         </CreateCardModal>
       )}
     </div>

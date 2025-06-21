@@ -32,3 +32,36 @@ export interface CreateDashboardRequest {
   title: string
   color: string
 }
+
+// 대시보드 생성 모달
+export interface ModalState {
+  createDashboardModalOpen: boolean
+  openCreateDashboardModal: () => void
+  closeCreateDashboardModal: () => void
+}
+
+// 초대받은 대시보드
+export interface InvitationListResponse {
+  cursorId: number | null
+  invitations: Invitation[]
+}
+
+// 초대 정보 타입
+export interface Invitation {
+  id: number
+  inviter: {
+    id: number
+    email: string
+    nickname: string
+  }
+  teamId: string
+  dashboard: Dashboard
+  invitee: {
+    id: number
+    email: string
+    nickname: string
+  }
+  inviteAccepted: boolean | null
+  createdAt: string
+  updatedAt: string
+}

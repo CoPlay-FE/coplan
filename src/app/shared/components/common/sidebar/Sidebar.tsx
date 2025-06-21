@@ -69,7 +69,7 @@ export default function Sidebar(): JSX.Element {
           ) : (
             dashboards.map((dashboard) => (
               <DashboardItem
-                key={dashboard.id}
+                key={`sidebar-${dashboard.id}`}
                 dashboard={dashboard}
                 isActive={pathname === `/dashboard/${dashboard.id}`}
                 onClick={() => handleDashboardClick(dashboard)}

@@ -1,0 +1,18 @@
+import { createPortal } from 'react-dom'
+
+interface ModalProps {
+  children: React.ReactNode
+}
+export default function CardModal({ children }: ModalProps) {
+  const modalRoot = document.getElementById('modal-root')
+  if (!modalRoot) return null
+
+  return createPortal(
+    <div className="fixed inset-0 flex items-center justify-center bg-black/40">
+      <div className="BG-white min-h-764 w-730 overflow-y-scroll rounded-16 p-32 shadow-lg [mask-image:radial-gradient(white_100%,transparent_100%)]">
+        {children}
+      </div>
+    </div>,
+    modalRoot,
+  )
+}

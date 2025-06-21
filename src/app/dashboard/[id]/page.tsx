@@ -2,11 +2,14 @@
 
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { useCardMutation } from '@/app/features/dashboard_Id/api/useCardMutation'
 import useColumns from '@/app/features/dashboard_Id/api/useColumns'
 import Column from '@/app/features/dashboard_Id/Column/Column'
+import ColumnModalRenderer from '@/app/features/dashboard_Id/components/ColumnModalRenderer'
+import { useColumnModalStore } from '@/app/features/dashboard_Id/store/useColumnModalStore'
+import { useColumnsStore } from '@/app/features/dashboard_Id/store/useColumnsStore'
 import { useDragStore } from '@/app/features/dashboard_Id/store/useDragStore'
 import { Card } from '@/app/features/dashboard_Id/type/Card.type'
 
@@ -14,14 +17,29 @@ export default function DashboardID() {
   const params = useParams()
   const dashboardId = Number(params.id)
   const { data: columns, isLoading, error } = useColumns(dashboardId)
-  // const { data: columns, isLoading, error } = useColumns(id)
+  const { openModal } = useColumnModalStore()
 
   const { draggingCard, setDraggingCard } = useDragStore()
+  const { setColumns } = useColumnsStore()
   const cardMutation = useCardMutation()
   const touchPos = useRef({ x: 0, y: 0 })
   const prevColumn = useRef<HTMLElement | null>(null)
   const longPressTimer = useRef<number | null>(null)
   const isLongPressActive = useRef(false)
+
+  const handleCreateColumn = () => {
+    openModal('create', { dashboardId })
+  }
+
+  useEffect(() => {
+    if (columns) {
+      const transformed = columns.map((column) => ({
+        columnId: column.id,
+        columnTitle: column.title,
+      }))
+      setColumns(transformed)
+    }
+  }, [columns, setColumns])
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     // 1. 터치 대상 찾기
@@ -127,16 +145,21 @@ export default function DashboardID() {
   if (error) return <p>error...{error.message}</p>
   return (
     <>
-      <div className="ml-300 select-none">
+      <div className="select-none">
         <div
-          className="flex min-h-[calc(100vh-100px)] tablet:flex-col"
+          className="mobile:flex-row tablet:flex-col flex min-h-[calc(100vh-100px)]"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {columns?.map((column) => <Column key={column.id} column={column} />)}
+          {columns?.map((column) => (
+            <Column key={column.id} column={column} dashboardId={dashboardId} />
+          ))}
           <div className="BG-gray Border-column p-20">
-            <button className="BG-white Border-btn flex items-center gap-12 whitespace-nowrap rounded-8 px-85 pb-20 pt-24 text-18 font-bold">
+            <button
+              className="BG-white Border-btn flex items-center gap-12 whitespace-nowrap rounded-8 px-85 pb-20 pt-24 text-18 font-bold"
+              onClick={handleCreateColumn}
+            >
               <span>새로운 컬럼 추가하기</span>
               <div className="flex h-22 w-22 items-center justify-center rounded-4 bg-blue-100">
                 <Image
@@ -150,6 +173,7 @@ export default function DashboardID() {
           </div>
         </div>
       </div>
+      <ColumnModalRenderer />
     </>
   )
 }
