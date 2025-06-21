@@ -21,7 +21,7 @@ export default function CollaboratorItem({
 }: CollaboratorItemProps) {
   return (
     <div className={cn('flex items-center gap-3', className)} onClick={onClick}>
-      <Avatar nickname={nickname} imageUrl={imageUrl} size={size} />
+      <Avatar nickname={nickname} profileImageUrl={imageUrl} size={size} />
     </div>
   )
 }
