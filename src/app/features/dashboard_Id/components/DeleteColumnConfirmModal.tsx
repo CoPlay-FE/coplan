@@ -51,10 +51,10 @@ export default function DeleteColumnConfirmModal() {
       onClick={handleBackdropClick}
     >
       {/* 모달 컨테이너 */}
-      <div className="BG-white h-174 w-568 rounded-8 p-24">
+      <div className="BG-white mobile:h-160 mobile:w-327 mobile:px-16 mobile:py-24 h-174 w-568 rounded-16 p-24">
         {/* 중앙 메시지 */}
         <div className="mb-32 text-center">
-          <p className="Text-black text-20 font-medium">
+          <p className="Text-black mobile:text-16 text-20 font-medium">
             컬럼의 모든 카드가 삭제됩니다.
           </p>
         </div>
@@ -66,7 +66,7 @@ export default function DeleteColumnConfirmModal() {
             type="button"
             onClick={closeModal}
             disabled={isSubmitting}
-            className="BG-white Border-btn Text-gray h-54 w-256 rounded-8 px-16 py-10 text-16 font-medium"
+            className="BG-white Border-btn Text-gray mobile:w-144 h-54 w-256 rounded-8 px-16 py-10 text-16 font-medium"
           >
             취소
           </button>
@@ -75,7 +75,7 @@ export default function DeleteColumnConfirmModal() {
           <button
             onClick={handleConfirmDelete}
             disabled={isSubmitting}
-            className={`BG-violet h-54 w-256 rounded-8 px-16 py-10 text-16 font-medium text-white transition-opacity ${
+            className={`BG-violet mobile:w-144 h-54 w-256 rounded-8 px-16 py-10 text-16 font-medium text-white transition-opacity ${
               isSubmitting
                 ? 'cursor-not-allowed opacity-50'
                 : 'hover:opacity-90'

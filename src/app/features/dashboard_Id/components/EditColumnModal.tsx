@@ -45,7 +45,7 @@ export default function EditColumnModal() {
     isSubmitting
 
   // 에러 메시지 표시 여부에 따른 높이 계산
-  const modalHeight = isDuplicate ? 'h-290' : 'h-270'
+  const modalHeight = isDuplicate ? 'h-290 mobile:h-280' : 'h-270 mobile:h-258'
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -103,10 +103,14 @@ export default function EditColumnModal() {
       onClick={handleBackdropClick}
     >
       {/* 모달 컨테이너 */}
-      <div className={`BG-white ${modalHeight} w-568 rounded-16 p-24`}>
+      <div
+        className={`BG-white ${modalHeight} mobile:w-327 mobile:px-16 mobile:py-24 w-568 rounded-16 p-24`}
+      >
         {/* 헤더에 닫기 버튼 */}
         <div className="mb-24 flex items-center justify-between">
-          <h2 className="Text-black text-24 font-bold">컬럼 관리</h2>
+          <h2 className="Text-black mobile:text-20 text-24 font-bold">
+            컬럼 관리
+          </h2>
           <button
             type="button"
             onClick={closeModal}
@@ -119,7 +123,10 @@ export default function EditColumnModal() {
         <form onSubmit={handleSubmit}>
           {/* 제목 입력 */}
           <div className="mb-24">
-            <label htmlFor="title" className="Text-black mb-8 block text-18">
+            <label
+              htmlFor="title"
+              className="Text-black mobile:text-16 mb-8 block text-18"
+            >
               이름
             </label>
             <input
@@ -129,7 +136,7 @@ export default function EditColumnModal() {
               value={title}
               onChange={handleChange}
               placeholder="컬럼 이름을 입력하세요"
-              className={`w-full rounded-8 px-12 py-10 text-16 outline-none ${
+              className={`mobile:text-14 w-full rounded-8 px-12 py-10 text-16 outline-none ${
                 isDuplicate ? 'Border-error' : 'Border-section'
               }`}
               maxLength={30}
@@ -139,7 +146,7 @@ export default function EditColumnModal() {
 
             {/* 에러 메시지 표시 */}
             {isDuplicate && (
-              <p className="Text-error mt-8 text-14 font-normal">
+              <p className="Text-error mobile:text-12 mt-8 text-14 font-normal">
                 중복된 컬럼 이름입니다
               </p>
             )}
@@ -151,7 +158,7 @@ export default function EditColumnModal() {
             <button
               type="button"
               onClick={handleDeleteClick}
-              className="BG-white Border-btn Text-gray h-54 w-256 rounded-8 px-16 py-10 text-16 font-medium"
+              className="BG-white Border-btn Text-gray h-54 w-144 rounded-8 px-16 py-10 text-16 font-medium"
             >
               삭제
             </button>
@@ -160,7 +167,7 @@ export default function EditColumnModal() {
             <button
               type="submit"
               disabled={isUpdateDisabled}
-              className={`BG-violet h-54 w-256 rounded-8 px-16 py-10 text-16 font-medium text-white transition-opacity ${
+              className={`BG-violet h-54 w-144 rounded-8 px-16 py-10 text-16 font-medium text-white transition-opacity ${
                 isUpdateDisabled
                   ? 'cursor-not-allowed opacity-50'
                   : 'hover:opacity-90'

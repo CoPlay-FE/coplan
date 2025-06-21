@@ -38,7 +38,7 @@ export default function CreateColumnModal() {
 
   // 에러 메시지 표시 여부에 따른 높이 계산
   const hasError = isDuplicate || isMaxColumns
-  const modalHeight = hasError ? 'h-286' : 'h-266'
+  const modalHeight = hasError ? 'h-286 mobile:h-280' : 'h-266 mobile:h-258'
 
   // 생성 버튼 활성화 조건
   const isCreateDisabled =
@@ -90,13 +90,20 @@ export default function CreateColumnModal() {
       onClick={handleBackdropClick}
     >
       {/* 모달 컨테이너 - 에러 메시지에 따른 동적 높이 */}
-      <div className={`BG-white ${modalHeight} w-568 rounded-8 p-24`}>
-        <h2 className="Text-black mb-24 text-24 font-bold">새 컬럼 생성</h2>
+      <div
+        className={`BG-white ${modalHeight} mobile:w-327 mobile:px-16 mobile:py-24 w-568 rounded-8 p-24`}
+      >
+        <h2 className="Text-black mobile:text-20 mb-24 text-24 font-bold">
+          새 컬럼 생성
+        </h2>
 
         <form onSubmit={handleSubmit}>
           {/* 제목 입력 */}
           <div className="mb-24">
-            <label htmlFor="title" className="Text-black mb-8 block text-18">
+            <label
+              htmlFor="title"
+              className="Text-black mobile:text-16 mb-8 block text-18"
+            >
               이름
             </label>
             <input
@@ -106,7 +113,7 @@ export default function CreateColumnModal() {
               value={title}
               onChange={handleChange}
               placeholder="새로운 프로젝트"
-              className={`w-full rounded-8 px-12 py-10 text-16 outline-none ${
+              className={`mobile:text-14 w-full rounded-8 px-12 py-10 text-16 outline-none ${
                 hasError ? 'Border-error' : 'Border-section'
               }`}
               maxLength={30}
@@ -116,12 +123,12 @@ export default function CreateColumnModal() {
 
             {/* 에러 메시지 표시 */}
             {isDuplicate && (
-              <p className="mt-8 text-14 text-red-500">
+              <p className="Text-error mobile:text-12 mt-8 text-14">
                 중복된 컬럼 이름입니다
               </p>
             )}
             {isMaxColumns && (
-              <p className="mt-8 text-14 text-red-500">
+              <p className="Text-error mobile:text-12 mt-8 text-14">
                 컬럼은 최대 10개까지 생성 가능합니다
               </p>
             )}
@@ -132,14 +139,14 @@ export default function CreateColumnModal() {
             <button
               type="button"
               onClick={closeModal}
-              className="Border-btn Text-black h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold"
+              className="Border-btn Text-black mobile:w-144 h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold"
             >
               취소
             </button>
             <button
               type="submit"
               disabled={isCreateDisabled}
-              className={`BG-violet h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold text-white transition-opacity ${
+              className={`BG-violet mobile:w-144 h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold text-white transition-opacity ${
                 isCreateDisabled
                   ? 'cursor-not-allowed opacity-50'
                   : 'hover:opacity-90'
