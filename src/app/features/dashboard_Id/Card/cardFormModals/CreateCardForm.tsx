@@ -126,7 +126,7 @@ export default function CreateCardForm({
                 width={26}
                 height={24}
                 className={cn(
-                  'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300',
+                  'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300 mobile:right-8',
                   isOpen && 'rotate-180',
                 )}
               />
