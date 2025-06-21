@@ -17,7 +17,9 @@ export default function DeleteColumnConfirmModal() {
   }
 
   const handleConfirmDelete = async () => {
-    if (!modalData?.columnId) return
+    if (!modalData?.columnId || !modalData?.dashboardId) {
+      return
+    }
 
     try {
       setIsSubmitting(true)

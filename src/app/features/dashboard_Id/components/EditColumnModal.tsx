@@ -54,13 +54,17 @@ export default function EditColumnModal() {
       return
     }
 
+    if (!modalData?.dashboardId || !modalData?.columnId) {
+      return
+    }
+
     try {
       setIsSubmitting(true)
 
       await updateColumnMutation.mutateAsync({
-        columnId: modalData!.columnId!,
+        columnId: modalData.columnId,
         title: title.trim(),
-        dashboardId: modalData!.dashboardId,
+        dashboardId: modalData.dashboardId,
       })
 
       closeModal()
@@ -78,7 +82,11 @@ export default function EditColumnModal() {
 
   // 삭제 버튼 클릭 시 삭제 확인 모달로 전환
   const handleDeleteClick = () => {
-    openModal('deleteConfirm', modalData!)
+    if (!modalData) {
+      return
+    }
+
+    openModal('deleteConfirm', modalData)
   }
 
   // 모달 외부 클릭 시 닫기

@@ -51,12 +51,16 @@ export default function CreateColumnModal() {
       return
     }
 
+    if (!modalData?.dashboardId) {
+      return
+    }
+
     try {
       setIsSubmitting(true)
 
       await createColumnMutation.mutateAsync({
         title: title.trim(),
-        dashboardId: modalData!.dashboardId,
+        dashboardId: modalData.dashboardId,
       })
 
       closeModal()
