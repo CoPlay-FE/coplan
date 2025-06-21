@@ -1,15 +1,19 @@
 // hooks/useDashboardForm.ts
+import { DASHBOARD_COLORS } from '@constants/colors'
 import api from '@lib/axios'
+import { getTeamId } from '@lib/getTeamId'
+import { showError } from '@lib/toast'
+import { useSelectedDashboardStore } from '@store/useSelectedDashboardStore'
 import { useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import { DASHBOARD_COLORS } from '@/app/shared/constants/colors'
-import { useSelectedDashboardStore } from '@/app/shared/store/useSelectedDashboardStore'
-import { CreateDashboardRequest } from '@/app/shared/types/dashboard'
+import { CreateDashboardRequest } from '@/types/dashboard'
 
 type Mode = 'create' | 'edit'
+
+const teamId = getTeamId()
 
 export function useDashboardForm(mode: Mode) {
   const router = useRouter()
@@ -65,11 +69,6 @@ export function useDashboardForm(mode: Mode) {
     try {
       setIsSubmitting(true)
 
-      const teamId = process.env.NEXT_PUBLIC_TEAM_ID
-      if (!teamId) {
-        throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 없습니다.')
-      }
-
       if (mode === 'create') {
         const response = await api.post(`/${teamId}/dashboards`, formData)
         router.push(`/dashboard/${response.data.id}`)
@@ -92,8 +91,7 @@ export function useDashboardForm(mode: Mode) {
         ? error.response?.data?.message ||
           '대시보드 요청 중 오류가 발생했습니다.'
         : '알 수 없는 오류가 발생했습니다.'
-      alert(message)
-      console.error('대시보드 오류:', error)
+      showError(message)
     } finally {
       setIsSubmitting(false)
     }
