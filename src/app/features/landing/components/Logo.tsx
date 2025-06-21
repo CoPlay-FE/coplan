@@ -26,12 +26,12 @@ export default function Logo() {
   return (
     <Link
       href="/"
-      className="mobile-wide:w-30 mobile-wide:h-30 relative h-30 w-120"
+      className="relative h-30 w-120 mobile-wide:h-30 mobile-wide:w-30"
     >
       {/* 모바일용 로고 */}
       <Image
         suppressHydrationWarning
-        className="mobile-wide:block hidden object-contain"
+        className="hidden object-contain mobile-wide:block"
         src={mobileLogoSrc}
         fill
         alt="모바일 로고"
@@ -40,7 +40,7 @@ export default function Logo() {
       {/* 데스크탑/태블릿용 로고 */}
       <Image
         suppressHydrationWarning
-        className="mobile-wide:hidden block object-contain"
+        className="block object-contain mobile-wide:hidden"
         src={desktopLogoSrc}
         fill
         alt="일반 로고"
