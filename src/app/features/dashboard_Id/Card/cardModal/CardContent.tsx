@@ -5,6 +5,7 @@ import { Avatar } from '@/app/shared/components/common/Avatar'
 import Dropdown from '@/app/shared/components/common/Dropdown/Dropdown'
 import { useIsMobile } from '@/app/shared/hooks/useIsmobile'
 
+import { useDeleteCardMutation } from '../../api/useDeleteCardMutation'
 import { Card } from '../../type/Card.type'
 import { Column } from '../../type/Column.type'
 import CreateCardModal from '../cardFormModals/CreateCardModal'
@@ -30,6 +31,7 @@ export default function CardContent({
   // const { title: columnTitle, id: columnId } = column
   // const currentColumn = { columnTitle, columnId }
   const isMobile = useIsMobile()
+  const { mutate: deleteCard, isPending } = useDeleteCardMutation()
 
   return (
     // <div className="relative">
@@ -64,7 +66,13 @@ export default function CardContent({
           >
             수정하기
           </button>
-          <button className="Text-black w-full whitespace-nowrap rounded-6 px-22 py-11 text-center text-14 font-medium hover:bg-[#dbf0ff] hover:text-[#228DFF] dark:hover:bg-[#02406d]">
+          <button
+            className="Text-black w-full whitespace-nowrap rounded-6 px-22 py-11 text-center text-14 font-medium hover:bg-[#dbf0ff] hover:text-[#228DFF] dark:hover:bg-[#02406d]"
+            onClick={(e) => {
+              e.stopPropagation()
+              deleteCard(card.id)
+            }}
+          >
             삭제하기
           </button>
         </Dropdown>
