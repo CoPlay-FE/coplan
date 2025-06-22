@@ -1,6 +1,6 @@
 'use client'
 
-import authHttpClient from '@lib/axios'
+import authHttpClient from '@api/axios'
 import { cn } from '@lib/cn'
 import { getTeamId } from '@lib/getTeamId'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'

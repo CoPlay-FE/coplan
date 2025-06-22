@@ -1,4 +1,4 @@
-import authHttpClient from '@lib/axios'
+import authHttpClient from '@api/axios'
 
 // ✅ 카드 이미지 파일 업로드 시 - 카드 생성 요청에(post) 전달 가능한 형태의 데이터로, 응답 받아서 사용할 예정
 export async function postCardImages(

@@ -1,4 +1,4 @@
-import authHttpClient from '@lib/axios'
+import authHttpClient from '@api/axios'
 
 import { Member, MembersResponse } from '../type/Member.type'
 

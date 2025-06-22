@@ -1,4 +1,4 @@
-import authHttpClient from '@lib/axios'
+import authHttpClient from '@api/axios'
 import { useQuery } from '@tanstack/react-query'
 
 import { useAuthStore } from '@/app/features/auth/store/useAuthStore'

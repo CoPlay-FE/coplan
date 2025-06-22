@@ -1,4 +1,4 @@
-import authHttpClient from '@lib/axios'
+import authHttpClient from '@api/axios'
 
 import { CommentResponse, PutCommentForm } from '../type/CommentFormData.type'
 
