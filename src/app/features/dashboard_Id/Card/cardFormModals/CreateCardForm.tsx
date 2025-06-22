@@ -16,7 +16,6 @@ import { Assignee } from '../../type/Card.type'
 import type { CardFormData } from '../../type/CardFormData.type'
 import MyAssignee from '../MyAssignee'
 import TagsCanDelete from '../TagsCanDelete'
-// import AssigneeList, { Assignee } from './AssigneeList'
 import AssigneeList from './AssigneeList'
 import DateInput from './input/DateInput'
 import Input from './input/Input'
@@ -170,6 +169,7 @@ export default function CreateCardForm({
           className="Input h-126 resize-none"
           id="description"
           placeholder="설명을 입력해 주세요"
+          maxLength={250}
         />
       </Input>
 
@@ -209,6 +209,7 @@ export default function CreateCardForm({
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault()
+                if (e.nativeEvent.isComposing) return //현재 단어가 composition 중인지 체크하여, 이벤트 중복 발생을 방지.(한글 입력 시 마지막 글자 남는 문제 해결)
                 if (tagInput.trim() === '') return
                 if (!tags.includes(tagInput.trimEnd())) {
                   setTags((prev) => [...prev, tagInput.trim()]) // 중복 태그가 아니면 ok, 태그배열에 추가 및 입력창 초기화
@@ -217,7 +218,13 @@ export default function CreateCardForm({
               }
             }}
             value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value
+              const allowed = /^[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z\s]*$/
+              if (allowed.test(value)) {
+                setTagInput(value)
+              }
+            }}
           />
 
           {/* 추가한 태그 */}

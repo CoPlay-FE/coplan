@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { useTheme } from 'next-themes'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 
 import { Avatar } from '@/app/shared/components/common/Avatar'
 import Dropdown from '@/app/shared/components/common/Dropdown/Dropdown'
@@ -128,7 +128,7 @@ export default function CardContent({
             {card.description && (
               <p
                 className={
-                  'font-regular Text-black mb-16 text-14 mobile:mb-32 mobile:text-12'
+                  'font-regular Text-black mb-16 whitespace-pre-line text-14 mobile:mb-32 mobile:text-12'
                 }
               >
                 {card.description}
