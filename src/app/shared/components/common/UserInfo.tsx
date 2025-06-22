@@ -22,9 +22,7 @@ export function UserInfo({ nickname, imageUrl, size = 36 }: UserInfoProps) {
     <div className="flex items-center gap-4">
       {/* Avatar에 nickname, profileImageUrl 모두 넘겨줌 */}
       <Avatar size={size} name={displayNickname} imageUrl={displayImage} />
-      <span className="ml-4 text-sm font-semibold tablet:hidden">
-        {displayNickname}
-      </span>
+      <span className="ml-4 text-sm font-semibold">{displayNickname}</span>
     </div>
   )
 }

@@ -10,7 +10,7 @@ export default function AboutLayout({
   return (
     <>
       <Sidebar />
-      <div className="pl-300">
+      <div className="pl-[300px] transition-all duration-300 mobile:pl-67 tablet:pl-[150px]">
         <Header />
         <main>{children}</main>
       </div>

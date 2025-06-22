@@ -18,14 +18,13 @@ export function PaginationHeader({
   title,
   onPrev,
   onNext,
-  children,
 }: PaginationHeaderProps) {
   return (
-    <div className="mb-24 flex items-center justify-between whitespace-nowrap">
+    <div className="mb-20 flex max-w-500 items-center justify-between whitespace-nowrap">
       <h2 className="Text-black text-18 font-bold">{title}</h2>
 
       <div className="flex shrink-0 items-center">
-        <p className="Text-gray mr-16 shrink-0 text-12">
+        <p className="Text-gray mx-32 shrink-0 text-12">
           {totalPages} 페이지 중 {currentPage}
         </p>
         <button onClick={onPrev} disabled={currentPage === 1}>
@@ -52,7 +51,6 @@ export function PaginationHeader({
             height={36}
           />
         </button>
-        {children && <div className="ml-16">{children}</div>}
       </div>
     </div>
   )
