@@ -4,7 +4,7 @@ export default function AboutLayout({
   children: React.ReactNode
 }) {
   return (
-    <div>
+    <div className="BG-gray min-h-screen px-20 sm:px-30">
       <main>{children}</main>
     </div>
   )
