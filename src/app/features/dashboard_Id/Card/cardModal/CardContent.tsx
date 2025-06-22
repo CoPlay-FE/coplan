@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { useTheme } from 'next-themes'
 import { useRef, useState } from 'react'
 
 import { Avatar } from '@/app/shared/components/common/Avatar'
@@ -28,6 +29,9 @@ export default function CardContent({
   const { mutate: deleteCard, isPending } = useDeleteCardMutation()
 
   const modalScrollRef = useRef<HTMLDivElement>(null)
+
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
 
   return (
     <div

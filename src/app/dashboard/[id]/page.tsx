@@ -141,14 +141,14 @@ export default function DashboardID() {
     <>
       <div className="select-none">
         <div
-          className="flex min-h-[calc(100vh-100px)] mobile:flex-row tablet:flex-col"
+          className="flex min-h-[calc(100vh-100px)] mobile:flex-col tablet:flex-col"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
           {columns?.map((column) => <Column key={column.id} column={column} />)}
-          <div className="BG-gray Border-column p-20">
-            <button className="BG-white Border-btn flex items-center gap-12 whitespace-nowrap rounded-8 px-85 pb-20 pt-24 text-18 font-bold">
+          <div className="BG-gray Border-column p-20 mobile:w-308 mobile:border-t-2 tablet:w-584 tablet:border-t-2">
+            <button className="BG-white Border-btn m flex justify-center gap-12 whitespace-nowrap rounded-8 px-85 pb-20 pt-24 text-18 font-bold mobile:flex mobile:w-full mobile:justify-center mobile:px-50 mobile:py-20 mobile:text-16 tablet:flex tablet:w-full tablet:items-center">
               <span>새로운 컬럼 추가하기</span>
               <div className="flex h-22 w-22 items-center justify-center rounded-4 bg-blue-100">
                 <Image

@@ -11,6 +11,7 @@ import ModifyCardForm from './cardFormModals/ModifyCardForm'
 import CardContent from './cardModal/CardContent'
 import CardModal from './cardModal/CardModal'
 import Tags from './Tags'
+import TagsInCard from './TagsInCard'
 
 export default function Card({
   card,
@@ -36,54 +37,58 @@ export default function Card({
       className="BG-white Border-section relative rounded-6 border-solid px-20 py-16"
       onClick={() => setOpenCard(true)}
     >
-      {imageUrl && (
-        <Image
-          src={imageUrl}
-          alt="카드 이미지"
-          width={400}
-          height={600}
-          className="mb-15 h-auto w-full rounded-6 object-contain"
-          priority
-          draggable="false"
-        />
-      )}
-
-      {/* 할 일 제목 */}
-      <h3 className="Text-black mb-10 text-16 font-medium leading-relaxed">
-        {title}
-      </h3>
-
-      {/* 태그 */}
-      {tags.length !== 0 && <Tags tags={tags} />}
-
-      {/* 마감일 & 담당자 */}
-      <div className="mt-8 flex content-around items-center">
-        {/* :마감일 */}
-        <div className="flex size-full items-center gap-6">
+      <div className="mobile:flex-col tablet:flex tablet:w-full tablet:items-center tablet:gap-20">
+        {imageUrl && (
           <Image
-            src={'/images/calendar.svg'}
-            alt="마감일"
-            width={18}
-            height={18}
+            src={imageUrl}
+            alt="카드 이미지"
+            width={400}
+            height={600}
+            className="mb-15 h-auto w-full rounded-6 object-contain mobile:mb-4 mobile:h-auto mobile:w-260 tablet:m-0 tablet:h-68 tablet:max-w-fit"
+            priority
+            draggable="false"
           />
-          {dueDate && (
-            <div className="Text-gray mt-4 text-12 font-medium leading-none">
-              {dueDate.split(' ')[0]}
-            </div>
-          )}
-        </div>
-        {/* :담당자 */}
-        {assignee && (
-          <div className="shrink-0">
-            <Avatar
-              size={24}
-              name={assignee.nickname}
-              imageUrl={assignee.profileImageUrl}
-            />
-          </div>
         )}
-      </div>
+        <div className="tablet:w-full">
+          {/* 할 일 제목 */}
+          <h3 className="Text-black mb-10 text-16 font-medium leading-relaxed mobile:mb-6">
+            {title}
+          </h3>
 
+          <div className="tablet:flex tablet:flex-wrap tablet:items-center">
+            {/* 태그 */}
+            {tags.length !== 0 && <Tags tags={tags} />}
+
+            {/* 마감일 & 담당자 */}
+            <div className="mt-8 flex content-around items-center mobile:mt-6 tablet:m-0 tablet:w-full tablet:justify-between">
+              {/* :마감일 */}
+              <div className="flex size-full items-center gap-6 tablet:mr-10 tablet:w-90">
+                <Image
+                  src={'/images/calendar.svg'}
+                  alt="마감일"
+                  width={18}
+                  height={18}
+                />
+                {dueDate && (
+                  <div className="Text-gray mt-4 text-12 font-medium leading-none">
+                    {dueDate.split(' ')[0]}
+                  </div>
+                )}
+              </div>
+              {/* :담당자 */}
+              {assignee && (
+                <div className="shrink-0">
+                  <Avatar
+                    size={24}
+                    name={assignee.nickname}
+                    imageUrl={assignee.profileImageUrl}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
       {/* 카드 모달 */}
       {openCard && (
         <CardModal>

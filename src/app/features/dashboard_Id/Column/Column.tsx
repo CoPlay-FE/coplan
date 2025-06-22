@@ -65,7 +65,7 @@ export default function Column({ column }: { column: ColumnType }) {
       }}
       data-column-id={id}
       className={cn(
-        'BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20 tablet:w-584',
+        'BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20 mobile:w-308 tablet:w-584',
         {
           'BG-drag-hovered': isDraggingover,
         },
