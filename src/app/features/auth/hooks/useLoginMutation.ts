@@ -38,6 +38,5 @@ export function useLoginMutation() {
         showError('알 수 없는 에러 발생')
       }
     },
-    throwOnError: true,
   })
 }
