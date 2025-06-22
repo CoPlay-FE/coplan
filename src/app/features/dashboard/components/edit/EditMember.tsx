@@ -65,16 +65,23 @@ export default function EditMember() {
   return (
     <div>
       <div className="BG-white max-w-584 overflow-x-auto rounded-16 px-32 py-24">
-        <PaginationHeader
-          currentPage={currentPage}
-          totalPages={totalPages}
-          title="구성원"
-          onPrev={handlePrev}
-          onNext={handleNext}
-        />
+        <div className="mb-20 flex items-center justify-between">
+          <h2 className="Text-black text-18 font-bold mobile-sm:text-14">
+            구성원
+          </h2>
+          <PaginationHeader
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPrev={handlePrev}
+            onNext={handleNext}
+          />
+        </div>
 
         <form>
-          <label htmlFor="title" className="Text-black mb-8 block text-16">
+          <label
+            htmlFor="title"
+            className="Text-black mb-8 block text-16 mobile-sm:text-12"
+          >
             이름
           </label>
 
@@ -119,7 +126,7 @@ export default function EditMember() {
                       disabled={isDeleting}
                       onClick={() => removeMember(member.id)}
                       className={cn(
-                        'Text-btn Border-btn rounded-md px-16 py-2',
+                        'Text-btn Border-btn rounded-md px-16 py-2 mobile-sm:text-12',
                         isDeleting && 'cursor-not-allowed opacity-50',
                       )}
                     >
