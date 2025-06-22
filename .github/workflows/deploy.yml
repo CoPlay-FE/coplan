@@ -6,51 +6,51 @@ on:
     branches: [main, develop]
 
 jobs:
-  deploy:
-    if: github.event.pull_request.merged == true
+  # 환경 체크 단계 분리
+  warmup:
     runs-on: self-hosted
-    timeout-minutes: 15
+    timeout-minutes: 3
+    steps:
+      - name: Environment check
+        run: |
+          echo "=== System Check ==="
+          whoami                
+          docker --version       
+          free -h               # 메모리 상태 사전 체크
+          docker ps             # 현재 컨테이너 상태
 
+  deploy:
+    needs: warmup # ✅ warmup 완료 후 실행
+    runs-on: self-hosted
+    timeout-minutes: 10
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Deploy to EC2
+      # 스크립트 분리
+      - name: Execute deployment script
         run: |
           echo "🚀 Starting deployment..."
           echo "🔄 Branch: ${{ github.ref_name }}"
           echo "🔄 Commit: ${{ github.sha }}"
 
-          # 메모리 정리
-          echo "🧹 Cleaning up memory..."
-          docker system prune -f
-
-          # 앱 디렉토리로 코드 복사
-          echo "📂 Copying files..."
-          rsync -av --delete \
-            --exclude='.git' \
-            --exclude='node_modules' \
-            --exclude='.next' \
-            ./ /home/ubuntu/coplan/app/
-
-          # 배포 디렉토리로 이동
+          # 단순히 스크립트만 실행
           cd /home/ubuntu/coplan
+          chmod +x ./deploy.sh
+          ./deploy.sh
 
-          # Docker 컨테이너 재시작
-          echo "🔄 Restarting containers..."
-          docker compose down
-          docker compose up -d --build
-
-          # 헬스체크
+      # 헬스체크
+      - name: Health check
+        run: |
           echo "🏥 Health checking..."
           sleep 15
 
-          if docker ps | grep -q coplan-app; then
-            echo "✅ Deployment completed successfully!"
-            docker logs --tail 10 coplan-app
-            echo "🌐 Service available at: http://15.164.127.149"
+          if docker ps | grep -q $DOCKER_CONTAINER_NAME; then
+            echo "✅ Deployment completed!"
+            docker logs --tail 5 $DOCKER_CONTAINER_NAME
+            echo "🌐 https://coplan.work"  # ✅ HTTPS
           else
             echo "❌ Deployment failed!"
-            docker logs coplan-app
+            docker logs $DOCKER_CONTAINER_NAME 2>/dev/null || echo "No logs"
             exit 1
           fi

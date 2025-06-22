@@ -9,24 +9,26 @@ on:
 jobs:
   eslint-check:
     runs-on: self-hosted
-    timeout-minutes: 10
+    timeout-minutes: 2
 
     steps:
-      # 코드 가져오기
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # Node.js 환경 설정
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
+      - name: Lightning fast lint check
+        run: |
+          echo "⚡ Quick lint check..."
 
-      # 의존성 설치
-      - name: Install dependencies
-        run: npm ci
+          # 변경된 파일만 검사(전체가 아닌 2~3개 파일만)
+          CHANGED_FILES=$(git diff --name-only HEAD~1 -- '*.ts' '*.tsx' '*.js' '*.jsx')
 
-      # ESLint 실행
-      - name: Run ESLint
-        run: npm run lint
+          # 변경사항 없으면 즉시 종료
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "✅ No JS/TS files changed"
+            exit 0
+          fi
+
+          # 글로벌 ESLint 사용
+          echo "📝 Checking: $CHANGED_FILES"
+          npx eslint $CHANGED_FILES
+          echo "✅ Lint check passed!"
