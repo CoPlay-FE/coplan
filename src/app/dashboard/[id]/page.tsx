@@ -147,7 +147,7 @@ export default function DashboardID() {
     <>
       <div className="select-none">
         <div
-          className="flex min-h-[calc(100vh-100px)] mobile:flex-col tablet:flex-col"
+          className="flex min-h-screen mobile:flex-col tablet:flex-col"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}

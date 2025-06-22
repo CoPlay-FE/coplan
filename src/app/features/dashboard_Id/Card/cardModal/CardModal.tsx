@@ -13,7 +13,7 @@ export default function CardModal({ children }: ModalProps) {
   if (!modalRoot) return null
 
   return createPortal(
-    <div className="fixed inset-0 flex items-center justify-center bg-black/40">
+    <div className="z-60 fixed inset-0 flex items-center justify-center bg-black/40">
       <div>{children}</div>
     </div>,
     modalRoot,
