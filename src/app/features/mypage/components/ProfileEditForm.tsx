@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
+import { useAuthStore } from '@/app/features/auth/store/useAuthStore'
+
 import { useUpdateMyProfileMutation } from '../hook/useUpdateMyProfileMutation'
 import { useUploadProfileImageMutation } from '../hook/useUploadProfileImageMutation'
 import { useUserQuery } from '../hook/useUserQurey'
@@ -41,6 +43,9 @@ export default function ProfileEditForm() {
   const { mutateAsync: uploadImage } = useUploadProfileImageMutation()
   const { mutateAsync: updateProfile } = useUpdateMyProfileMutation()
 
+  // Zustand 상태 갱신 함수 가져오기
+  const setUser = useAuthStore((state) => state.setUser)
+
   // 유저 정보가 비동기적으로 넘어오기 때문에 유저가 로딩된 시점에서 RHF을 초기화 하기 위함 (SSR 도입 시 변경 예정)
   useEffect(() => {
     if (user) {
@@ -69,8 +74,18 @@ export default function ProfileEditForm() {
         profileImageUrl: imageUrl,
       }
 
-      // 서버에 프로필 정보 수정 요청 (PUT)
-      await updateProfile(submitData)
+      // 서버에 프로필 수정 요청
+      const updatedUser = await updateProfile(submitData)
+
+      if (!user) return // user가 없으면 갱신하지 않음
+
+      // zustand 상태 갱신 (전역 사용자 정보 업데이트)
+      setUser({
+        ...user,
+        nickname: updatedUser.nickname ?? data.nickname,
+        profileImageUrl: updatedUser.profileImageUrl ?? imageUrl,
+        // 필요 시 추가 필드도 넣기
+      })
 
       // 사용자에게 성공 알림 + 컴포넌트 최신화
       showSuccess('프로필 변경이 완료되었습니다.')

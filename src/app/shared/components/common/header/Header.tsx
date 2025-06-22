@@ -9,13 +9,15 @@ import UserDropdown from './UserDropdown'
 
 export default function Header() {
   return (
-    <header className="BG-white Border-bottom Text-black w-full overflow-x-hidden border-b px-48 py-10">
+    <header className="BG-white Border-bottom Text-black w-full overflow-x-auto border-b px-48 py-10">
       <div className="flex w-full items-center justify-between pr-16">
         {/* 좌측 대시보드명 */}
-        <LeftHeaderContent />
+        <div className="hidden lg:block">
+          <LeftHeaderContent />
+        </div>
 
         {/* 우측 사용자 정보/다크모드 */}
-        <div className="flex gap-16">
+        <div className="flex gap-16 whitespace-nowrap">
           <RightHeaderNav />
           <CreateInvitationModal />
           {/* 협업자 목록 */}
