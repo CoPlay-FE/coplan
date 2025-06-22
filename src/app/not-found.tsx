@@ -2,15 +2,30 @@
 
 import { useMounted } from '@hooks/useMounted'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'
+
+import { useAuthStore } from '@/app/features/auth/store/useAuthStore'
 
 export default function NotFound() {
   const { theme, systemTheme } = useTheme()
   const mounted = useMounted()
+  const router = useRouter()
+  const { isLoggedIn } = useAuthStore()
+
   if (!mounted) return null
 
   const currentTheme = theme === 'system' ? systemTheme : theme
   const isDark = currentTheme === 'dark'
+
+  const buttonText = isLoggedIn ? '대시보드로 이동' : '메인으로 이동'
+  const buttonClass = isDark
+    ? isLoggedIn
+      ? 'bg-blue-700 hover:bg-blue-800'
+      : 'bg-blue-500 hover:bg-blue-600'
+    : isLoggedIn
+      ? 'bg-blue-600 hover:bg-blue-700'
+      : 'bg-blue-400 hover:bg-blue-500'
 
   return (
     <div
@@ -48,14 +63,10 @@ export default function NotFound() {
         요청하신 페이지를 찾을 수 없습니다.
       </div>
       <button
-        className={
-          isDark
-            ? 'mt-8 rounded-lg bg-blue-700 px-8 py-3 text-lg font-semibold text-white shadow transition-colors hover:bg-blue-800'
-            : 'mt-8 rounded-lg bg-blue-600 px-8 py-3 text-lg font-semibold text-white shadow transition-colors hover:bg-blue-700'
-        }
-        onClick={() => window.history.back()}
+        className={`mt-8 rounded-lg px-8 py-3 text-lg font-semibold text-white shadow transition-colors ${buttonClass}`}
+        onClick={() => router.replace('/')}
       >
-        이전 페이지로
+        {buttonText}
       </button>
     </div>
   )

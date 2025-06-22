@@ -10,6 +10,14 @@ import { useAuthStore } from '@/app/features/auth/store/useAuthStore'
 // 로그인 없이 접근 가능한 경로
 const PUBLIC_ROUTES = ['/login', '/signup']
 
+// 보호 경로: 로그인 필요, 정규식 기반
+const PROTECTED_ROUTE_PATTERNS = [
+  /^\/dashboard\/[^/]+$/, // /dashboard/:id
+  /^\/dashboard\/[^/]+\/edit$/, // /dashboard/:id/edit
+  /^\/mypage$/, // /mypage
+  /^\/mydashboard$/, // /mydashboard
+]
+
 export default function Redirect({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
@@ -20,11 +28,12 @@ export default function Redirect({ children }: { children: React.ReactNode }) {
 
   const { data: firstDashboardId, isSuccess } = useFirstDashboardIdQuery()
 
-  // ✅ 경로 파생값 선언 (중복 제거)
   const isRoot = pathname === '/'
   const isPublic = PUBLIC_ROUTES.includes(pathname)
+  const isProtectedRoute = PROTECTED_ROUTE_PATTERNS.some((pattern) =>
+    pattern.test(pathname),
+  )
 
-  // 경로 변경 시 redirecting 상태 초기화
   useEffect(() => {
     if (prevPath.current !== pathname) {
       setRedirecting(false)
@@ -32,21 +41,17 @@ export default function Redirect({ children }: { children: React.ReactNode }) {
     }
   }, [pathname])
 
-  // 로그인 상태와 경로에 따른 리다이렉트 처리
   useEffect(() => {
     if (!mounted || redirecting) return
 
-    // 1. 비로그인 + 루트(/): 랜딩 페이지 접근 허용
     if (!isLoggedIn && isRoot) return
 
-    // 2. 비로그인 + 보호 경로: 로그인 페이지로 이동
-    if (!isLoggedIn && !isPublic && !isRoot) {
+    if (!isLoggedIn && isProtectedRoute) {
       setRedirecting(true)
       router.replace('/login')
       return
     }
 
-    // 3. 로그인 + 루트(/): 대시보드 또는 마이대시보드로 이동
     if (isLoggedIn && isRoot) {
       if (!isSuccess) return
       setRedirecting(true)
@@ -56,14 +61,11 @@ export default function Redirect({ children }: { children: React.ReactNode }) {
       return
     }
 
-    // 4. 로그인 + 퍼블릭 경로: 마이대시보드로 이동
     if (isLoggedIn && isPublic) {
       setRedirecting(true)
       router.replace('/mydashboard')
       return
     }
-
-    // 5. 나머지는 접근 허용
   }, [
     pathname,
     isLoggedIn,
@@ -74,11 +76,10 @@ export default function Redirect({ children }: { children: React.ReactNode }) {
     firstDashboardId,
     isRoot,
     isPublic,
+    isProtectedRoute,
   ])
 
-  // 🔒 깜빡임 방지: 루트 경로만 예외로 즉시 렌더링 허용
   if (!mounted && !isRoot) return null
 
-  // ✅ 최종 렌더링
   return <>{children}</>
 }
