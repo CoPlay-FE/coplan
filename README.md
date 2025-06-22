@@ -134,7 +134,6 @@ feature/login, feature/dashboard-edit, fix/signup-error 등
 ## 💻 프로젝트 리소스
 - [기획안](https://www.notion.so/_-Taskify-1fc6fd228e8d812ba53be0c85e3c9e38?pvs=21) 
 - [디자인(Figma)](https://www.figma.com/design/dcbwJF5AMJcnlf2aaYb659/CoPlan) 
-- [API 명세](https://sp-taskify-api.vercel.app/docs/#/) 
 - [프로젝트 관련 문서(Notion)](https://www.notion.so/B-1fec90b4efb6805d80f2d54085755289)
 
 ---
