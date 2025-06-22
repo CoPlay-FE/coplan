@@ -31,8 +31,8 @@ export default function DashBoardEditPage() {
         <EditInvitation />
       </div>
 
-      {/* 삭제 버튼 영역: 기본 너비 292px, 화면 작으면 100% 최대 292px, 좌측 margin 제거 */}
-      <div className="BG-white align-center Text-btn i8 ml-16 mt-8 flex max-w-292 justify-center rounded-md px-16 py-6">
+      {/* 삭제 버튼 영역: 기본 너비 292px, 화면 작으면 100% 최대 292px */}
+      <div className="BG-white align-center Text-btn ml-48 mt-8 flex max-w-292 justify-center rounded-md px-16 py-6">
         <DeleteDashboardButton dashboardId={String(id)} />
       </div>
     </div>
