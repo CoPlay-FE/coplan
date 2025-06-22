@@ -15,21 +15,51 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2 # HEAD와 HEAD~1을 모두 가져오기
+          fetch-depth: 2 # HEAD와 베이스 브랜치 히스토리 확보
 
       - name: Lightning fast lint check
         run: |
           echo "⚡ Quick lint check..."
 
-          # 더 안전한 변경 파일 감지
-          if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
-            # HEAD~1이 존재하는 경우 (일반적인 경우)
-            CHANGED_FILES=$(git diff --name-only HEAD~1 -- '*.ts' '*.tsx' '*.js' '*.jsx')
-            echo "🔍 Checking changed files since last commit"
+          # 메모리 상태 사전 체크
+          AVAILABLE_MB=$(free -m | grep ^Mem | awk '{print $7}')
+          echo "💾 Available memory: ${AVAILABLE_MB}MB"
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # PR인 경우: 베이스 브랜치와 비교
+            BASE_BRANCH="${{ github.base_ref }}"
+            git fetch origin $BASE_BRANCH --depth=1
+            
+            ALL_CHANGED=$(git diff --name-only origin/$BASE_BRANCH...HEAD -- '*.ts' '*.tsx' '*.js' '*.jsx')
+            FILE_COUNT=$(echo "$ALL_CHANGED" | wc -w)
+            
+            echo "📊 Base: $BASE_BRANCH, Changed files: $FILE_COUNT"
+            
+            # 🛡️ 메모리 기반 안전장치
+            if [ "$AVAILABLE_MB" -lt 200 ]; then
+              MAX_FILES=10
+              echo "⚠️ Low memory mode: checking $MAX_FILES files only"
+            elif [ "$FILE_COUNT" -gt 30 ]; then
+              MAX_FILES=30
+              echo "⚠️ Large PR detected: checking first $MAX_FILES files for memory safety"
+              echo "ℹ️ Note: Full project will be built during deployment"
+            else
+              MAX_FILES="$FILE_COUNT"
+              echo "✅ Normal mode: checking all $FILE_COUNT files"
+            fi
+            
+            CHANGED_FILES=$(echo "$ALL_CHANGED" | head -$MAX_FILES)
+            
           else
-            # 첫 커밋이거나 shallow clone인 경우
-            echo "🔍 Checking recent TypeScript/JavaScript files..."
-            CHANGED_FILES=$(find . -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" | grep -v node_modules | head -10)
+            # Push인 경우: 이전 커밋과 비교
+            echo "🔍 Push event detected"
+            if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+              CHANGED_FILES=$(git diff --name-only HEAD~1 -- '*.ts' '*.tsx' '*.js' '*.jsx')
+              echo "📝 Checking files changed since last commit"
+            else
+              echo "🔍 First commit or shallow clone, checking recent files"
+              CHANGED_FILES=$(find . -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" | grep -v node_modules | head -5)
+            fi
           fi
 
           # 변경사항 없으면 즉시 종료
@@ -38,7 +68,12 @@ jobs:
             exit 0
           fi
 
-          # 글로벌 ESLint 사용
-          echo "📝 Checking: $CHANGED_FILES"
+          # 최종 실행 정보
+          FINAL_COUNT=$(echo $CHANGED_FILES | wc -w)
+          ESTIMATED_MB=$((FINAL_COUNT * 2))
+          echo "🧠 Checking $FINAL_COUNT files (~${ESTIMATED_MB}MB estimated)"
+          echo "📝 Files: $CHANGED_FILES"
+
+          # 글로벌 ESLint 실행
           npx eslint $CHANGED_FILES
           echo "✅ Lint check passed!"

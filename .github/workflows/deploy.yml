@@ -3,54 +3,74 @@ name: Deploy to EC2
 on:
   pull_request:
     types: [closed]
-    branches: [main, develop]
+    branches: [main] # main 브랜치만 배포
+
+env:
+  DOCKER_CONTAINER_NAME: coplan-app
 
 jobs:
-  # 환경 체크 단계 분리
   warmup:
+    # 🛡️ 머지된 경우에만 실행
+    if: github.event.pull_request.merged == true
     runs-on: self-hosted
     timeout-minutes: 3
     steps:
       - name: Environment check
         run: |
-          echo "=== System Check ==="
+          echo "=== Deployment System Check ==="
+          echo "📋 Merged PR: ${{ github.event.pull_request.title }}"
+          echo "👤 Author: ${{ github.event.pull_request.user.login }}"
+          echo "🔄 From: ${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}"
+          echo "📝 Commit: ${{ github.event.pull_request.merge_commit_sha }}"
+          echo ""
+          echo "🖥️ System Status:"
           whoami                
           docker --version       
-          free -h               # 메모리 상태 사전 체크
-          docker ps             # 현재 컨테이너 상태
+          free -h
+          echo ""
+          echo "🐳 Container Status:"
+          docker ps
 
   deploy:
-    needs: warmup # ✅ warmup 완료 후 실행
+    needs: warmup
     runs-on: self-hosted
     timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 스크립트 분리
       - name: Execute deployment script
         run: |
           echo "🚀 Starting deployment..."
           echo "🔄 Branch: ${{ github.ref_name }}"
           echo "🔄 Commit: ${{ github.sha }}"
+          echo "📦 PR: #${{ github.event.pull_request.number }}"
 
-          # 단순히 스크립트만 실행
+          # deploy.sh 실행
           cd /home/ubuntu/coplan
           chmod +x ./deploy.sh
           ./deploy.sh
 
-      # 헬스체크
       - name: Health check
         run: |
           echo "🏥 Health checking..."
           sleep 15
 
           if docker ps | grep -q $DOCKER_CONTAINER_NAME; then
-            echo "✅ Deployment completed!"
+            echo "✅ Deployment completed successfully!"
+            echo "📊 Container status:"
+            docker ps | grep $DOCKER_CONTAINER_NAME
+            echo ""
+            echo "📝 Recent logs:"
             docker logs --tail 5 $DOCKER_CONTAINER_NAME
-            echo "🌐 https://coplan.work"  # ✅ HTTPS
+            echo ""
+            echo "🌐 Service available at: https://coplan.work"
           else
             echo "❌ Deployment failed!"
-            docker logs $DOCKER_CONTAINER_NAME 2>/dev/null || echo "No logs"
+            echo "🔍 Checking container logs..."
+            docker logs $DOCKER_CONTAINER_NAME 2>/dev/null || echo "No container logs available"
+            echo "🔍 Checking system status..."
+            docker ps -a
+            free -h
             exit 1
           fi
