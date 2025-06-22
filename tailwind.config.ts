@@ -19,6 +19,7 @@ const config: Config = {
       screens: {
         mobile: { max: '375px' }, // 0 ~ 375px
         tablet: { raw: '(min-width: 376px) and (max-width: 744px)' }, // 376 ~ 1919px
+        'mobile-sm': { max: '500px' }, // ✅ 0 ~ 500px
         'mobile-wide': { raw: '(min-width: 0px) and (max-width: 683px)' }, // 0 ~ 683px
         'tablet-wide': { raw: '(min-width: 684px) and (max-width: 1439px)' }, // 684 ~ 1439px
       },
