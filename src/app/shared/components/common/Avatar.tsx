@@ -50,7 +50,7 @@ export function Avatar({ size = 36, name, imageUrl }: AvatarProps) {
 
   return profileImageUrl.current ? (
     <div
-      className="relative overflow-hidden rounded-full"
+      className="relative shrink-0 overflow-hidden rounded-full"
       style={{ width: size, height: size }}
     >
       <Image
@@ -62,7 +62,7 @@ export function Avatar({ size = 36, name, imageUrl }: AvatarProps) {
     </div>
   ) : (
     <div
-      className="flex items-center justify-center rounded-full font-semibold text-white"
+      className="flex shrink-0 items-center justify-center rounded-full font-semibold text-white"
       style={{
         width: size,
         height: size,

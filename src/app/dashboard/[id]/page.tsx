@@ -147,17 +147,17 @@ export default function DashboardID() {
     <>
       <div className="select-none">
         <div
-          className="mobile:flex-row tablet:flex-col flex min-h-[calc(100vh-100px)]"
+          className="flex min-h-[calc(100vh-100px)] mobile:flex-col tablet:flex-col"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
           {columns?.map((column) => (
             <Column key={column.id} column={column} dashboardId={dashboardId} />
-          ))}
-          <div className="BG-gray Border-column p-20">
+          ))}{' '}
+          <div className="BG-gray Border-column p-20 mobile:w-308 mobile:border-t-2 tablet:w-584 tablet:border-t-2">
             <button
-              className="BG-white Border-btn flex items-center gap-12 whitespace-nowrap rounded-8 px-85 pb-20 pt-24 text-18 font-bold"
+              className="BG-white Border-btn m flex justify-center gap-12 whitespace-nowrap rounded-8 px-85 pb-20 pt-24 text-18 font-bold mobile:flex mobile:w-full mobile:justify-center mobile:px-50 mobile:py-20 mobile:text-16 tablet:flex tablet:w-full tablet:items-center"
               onClick={handleCreateColumn}
             >
               <span>새로운 컬럼 추가하기</span>

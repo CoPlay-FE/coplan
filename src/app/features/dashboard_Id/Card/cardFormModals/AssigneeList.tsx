@@ -28,12 +28,13 @@ export default function AssigneeList({
   const assignees = getDashboardMembers(members)
 
   return (
-    <div className="BG-white Border-btn Text-gray absolute left-0 top-full z-10 mt-4 w-full rounded-6 text-14">
+    <div className="BG-white Text-gray absolute left-0 top-full z-10 mt-4 w-full rounded-6 border border-[#D9D9D9] text-14 dark:border-[#747474]">
       {assignees.map((assignee: Assignee, index: number) => (
         <div
           className={cn(
             'BG-Input-hovered w-full cursor-pointer px-16 py-11 pt-14 placeholder-gray-400 caret-transparent',
-            index !== 0 && 'border-t',
+            index !== 0 &&
+              'border-t border-[#D9D9D9] text-14 dark:border-[#747474]',
           )}
           key={assignee.id}
           onClick={() => {
