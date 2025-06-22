@@ -1,4 +1,4 @@
-# <img src="https://github.com/user-attachments/assets/28cc58ac-93bf-43f8-bee3-c0d912714813" width="36" height="36" /> CoPlan - 협업을 위한 일정/태스크 관리 서비스
+# CoPlan - 협업을 위한 일정/태스크 관리 서비스
 
 ![favicon](https://github.com/user-attachments/assets/432cf916-abef-4338-805f-f0b2f2cdee5c)
 
