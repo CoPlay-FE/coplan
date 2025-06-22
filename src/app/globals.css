@@ -119,3 +119,7 @@ body {
 .BG-card {
   @apply bg-[#83C8FA] dark:bg-[#000000];
 }
+
+.Border-right {
+  @apply border-r border-[#D9D9D9] dark:border-[#454545];
+}

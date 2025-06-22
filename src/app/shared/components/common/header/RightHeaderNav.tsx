@@ -14,7 +14,7 @@ export default function RightHeaderNav() {
   const isMyDashboardPage = pathname === '/mydashboard'
 
   return (
-    <nav className="Text-black hidden gap-6 whitespace-nowrap text-sm md:flex">
+    <nav className="Text-black flex gap-6 whitespace-nowrap text-sm md:flex">
       {!isMyDashboardPage && (
         <>
           <NavItem
