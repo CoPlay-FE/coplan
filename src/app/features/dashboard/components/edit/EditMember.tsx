@@ -24,7 +24,7 @@ async function deleteMember(memberId: number): Promise<void> {
 export default function EditMember() {
   const queryClient = useQueryClient()
   const { id: dashboardId } = useParams()
-  const dashboardIdStr = String(dashboardId)
+  const dashboardIdNum = Number(dashboardId)
 
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -33,9 +33,9 @@ export default function EditMember() {
     isLoading,
     isError,
   } = useQuery<Member[]>({
-    queryKey: ['members', dashboardIdStr],
-    queryFn: () => fetchMembers(dashboardIdStr),
-    enabled: !!dashboardIdStr,
+    queryKey: ['members', dashboardIdNum],
+    queryFn: () => fetchMembers(dashboardIdNum),
+    enabled: !!dashboardIdNum,
   })
 
   // 본인이 구성원으로 들어가기 때문에 0 페이지일 경우 X
@@ -55,7 +55,7 @@ export default function EditMember() {
     mutationFn: (memberId: number) => deleteMember(memberId),
     onSuccess: () => {
       showSuccess('삭제에 성공하였습니다.')
-      queryClient.invalidateQueries({ queryKey: ['members', dashboardIdStr] })
+      queryClient.invalidateQueries({ queryKey: ['members', dashboardIdNum] })
     },
     onError: () => {
       showError('삭제에 실패했습니다.')

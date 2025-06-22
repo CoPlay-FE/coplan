@@ -12,16 +12,16 @@ const MAX_COLLABS = 4
 
 export default function CollaboratorList() {
   const { id: dashboardId } = useParams()
-  const dashboardIdStr = String(dashboardId)
+  const dashboardIdNum = Number(dashboardId)
 
   const {
     data: members = [],
     isLoading,
     isError,
   } = useQuery<Member[]>({
-    queryKey: ['members', dashboardIdStr],
-    queryFn: () => fetchMembers(dashboardIdStr),
-    enabled: !!dashboardIdStr,
+    queryKey: ['members', dashboardIdNum],
+    queryFn: () => fetchMembers(dashboardIdNum),
+    enabled: !!dashboardIdNum,
   })
 
   if (isLoading && isError) return null
