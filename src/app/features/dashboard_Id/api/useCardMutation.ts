@@ -53,6 +53,7 @@ export const useCardMutation = () => {
         ['columnId', currentCard.cardData.columnId],
         (oldData) => {
           if (!oldData) return
+          console.log('oldData', oldData)
 
           const filtered = oldData.cards.filter((card) => {
             return card.id !== cardData.id
