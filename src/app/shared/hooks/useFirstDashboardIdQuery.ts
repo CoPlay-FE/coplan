@@ -1,7 +1,7 @@
+import authHttpClient from '@lib/axios'
 import { useQuery } from '@tanstack/react-query'
 
 import { useAuthStore } from '@/app/features/auth/store/useAuthStore'
-import authHttpClient from '@/app/shared/lib/axios'
 
 import { DashboardListResponse } from '../types/dashboard'
 

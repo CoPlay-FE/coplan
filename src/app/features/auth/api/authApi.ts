@@ -1,4 +1,5 @@
-import authHttpClient from '@/app/shared/lib/axios'
+import authHttpClient from '@lib/axios'
+
 import { User as SignupResponse } from '@/app/shared/types/user.type'
 
 import { LoginRequest, LoginResponse, SignupRequest } from '../types/auth.type'

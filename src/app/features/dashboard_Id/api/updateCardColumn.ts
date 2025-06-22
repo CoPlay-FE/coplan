@@ -1,4 +1,4 @@
-import authHttpClient from '@/app/shared/lib/axios'
+import authHttpClient from '@lib/axios'
 
 // 카드 이동 - 해당 카드의 컬럼ID를 변경하는 방식(PUT)
 export async function updateCardColumn(

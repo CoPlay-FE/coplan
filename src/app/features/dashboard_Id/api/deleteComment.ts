@@ -1,4 +1,4 @@
-import authHttpClient from '@/app/shared/lib/axios'
+import authHttpClient from '@lib/axios'
 
 import { ApiResponse } from '../type/ApiResponse'
 

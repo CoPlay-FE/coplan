@@ -27,6 +27,7 @@
       "@store/*": ["./src/app/shared/store/*"],
       "@hooks/*": ["./src/app/shared/hooks/*"],
       "@lib/*": ["./src/app/shared/lib/*"],
+      "@api/*": ["./src/app/shared/api/*"],
       "@util/*": ["./src/app/shared/util/*"],
       "@/types/*": ["./src/app/shared/types/*"],
       "@constants/*": ["./src/app/shared/constants/*"],

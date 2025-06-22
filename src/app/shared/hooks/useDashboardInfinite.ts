@@ -1,8 +1,8 @@
 'use client'
 
+import api from '@lib/axios'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
-import api from '@/app/shared/lib/axios'
 import { DashboardListResponse } from '@/app/shared/types/dashboard'
 
 /**
