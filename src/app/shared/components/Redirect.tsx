@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { useAuthStore } from '@/app/features/auth/store/useAuthStore'
 
+// 로그인 없이 접근 가능한 경로
 const PUBLIC_ROUTES = ['/login', '/signup']
 
 export default function Redirect({ children }: { children: React.ReactNode }) {
@@ -18,10 +19,13 @@ export default function Redirect({ children }: { children: React.ReactNode }) {
   const [redirecting, setRedirecting] = useState(false)
   const prevPath = useRef(pathname)
 
-  // 대시보드 첫 번째 ID 가져오기 (로그인 상태일 때만 요청됨)
   const { data: firstDashboardId, isSuccess } = useFirstDashboardIdQuery()
 
-  // 페이지 이동 시 redirecting 상태 초기화
+  // ✅ 경로 파생값 선언 (중복 제거)
+  const isRoot = pathname === '/'
+  const isPublic = PUBLIC_ROUTES.includes(pathname)
+
+  // 경로 변경 시 redirecting 상태 초기화
   useEffect(() => {
     if (prevPath.current !== pathname) {
       setRedirecting(false)
@@ -29,26 +33,23 @@ export default function Redirect({ children }: { children: React.ReactNode }) {
     }
   }, [pathname])
 
-  // 라우팅 조건 분기 처리
+  // 로그인 상태와 경로에 따른 리다이렉트 처리
   useEffect(() => {
     if (!mounted || redirecting) return
 
-    const isPublic = PUBLIC_ROUTES.includes(pathname)
-    const isRoot = pathname === '/'
-
-    // 비로그인 상태에서 루트 접근 시: 랜딩 페이지 접근 허용
+    // 1. 비로그인 + 루트(/): 랜딩 페이지 접근 허용
     if (!isLoggedIn && isRoot) return
 
-    // 비로그인 상태에서 보호 경로 접근 시: 로그인 페이지로 리다이렉트
+    // 2. 비로그인 + 보호 경로: 로그인 페이지로 이동
     if (!isLoggedIn && !isPublic && !isRoot) {
       setRedirecting(true)
       router.replace('/login')
       return
     }
 
-    // 로그인 상태에서 루트 접근 시: 첫 대시보드 or 마이대시보드로 리다이렉트
+    // 3. 로그인 + 루트(/): 대시보드 또는 마이대시보드로 이동
     if (isLoggedIn && isRoot) {
-      if (!isSuccess) return // 대시보드 ID 준비 안 됨
+      if (!isSuccess) return
       setRedirecting(true)
       router.replace(
         firstDashboardId ? `/dashboard/${firstDashboardId}` : '/mydashboard',
@@ -56,14 +57,14 @@ export default function Redirect({ children }: { children: React.ReactNode }) {
       return
     }
 
-    // 로그인 상태에서 퍼블릭 경로 접근 시: 마이대시보드로 리다이렉트
+    // 4. 로그인 + 퍼블릭 경로: 마이대시보드로 이동
     if (isLoggedIn && isPublic) {
       setRedirecting(true)
       router.replace('/mydashboard')
       return
     }
 
-    // 나머지는 접근 허용
+    // 5. 나머지는 접근 허용
   }, [
     pathname,
     isLoggedIn,
@@ -72,15 +73,13 @@ export default function Redirect({ children }: { children: React.ReactNode }) {
     router,
     isSuccess,
     firstDashboardId,
+    isRoot,
+    isPublic,
   ])
 
-  // 깜빡임 방지 (조건 충족 시 children 렌더 차단)
-  const shouldBlockRender =
-    !mounted || redirecting || (isLoggedIn && pathname === '/' && !isSuccess)
+  // 🔒 깜빡임 방지: 루트 경로만 예외로 즉시 렌더링 허용
+  if (!mounted && !isRoot) return null
 
-  if (shouldBlockRender) {
-    return null
-  }
-
+  // ✅ 최종 렌더링
   return <>{children}</>
 }

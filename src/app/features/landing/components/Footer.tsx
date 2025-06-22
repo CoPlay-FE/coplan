@@ -1,3 +1,5 @@
+'use client'
+
 import GithubIcon from './GithubIcon'
 
 export default function Footer() {

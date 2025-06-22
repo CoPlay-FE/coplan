@@ -1,3 +1,5 @@
+'use client'
+
 import FeatureCardSection from './FeatureCardSection'
 import HeroSection from './HeroSection'
 import PointSection from './PointSection'
