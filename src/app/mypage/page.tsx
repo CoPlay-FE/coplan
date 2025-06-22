@@ -7,7 +7,7 @@ import ProfileEditForm from '@mypage/components/ProfileEditForm'
 export default function Mypage() {
   return (
     <>
-      <div className="p-20">
+      <div className="p-20 mobile-wide:p-10">
         {/* 헤더 영역 */}
         <section className="flex flex-col gap-16">
           {/* 뒤로 가기 버튼 */}

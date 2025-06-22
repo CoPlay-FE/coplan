@@ -14,8 +14,8 @@ export default function AuthLogo({ text }: AuthLogoProps): JSX.Element {
   const isDark = resolvedTheme === 'dark'
 
   return (
-    <div className="flex w-[230px] flex-col items-center justify-center gap-12">
-      <Link className="relative block h-[250px] w-full" href="/">
+    <div className="flex w-230 flex-col items-center justify-center gap-12">
+      <Link className="relative block h-250 w-full mobile-wide:h-150" href="/">
         <Image
           src={isDark ? '/images/logo-dark.svg' : '/images/logo-light.svg'}
           alt="CoPlan 로고"
