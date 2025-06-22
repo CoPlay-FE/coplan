@@ -26,7 +26,7 @@ export function HeaderUserInfo({
     <div className="flex items-center gap-4">
       <Avatar size={size} name={displayNickname} imageUrl={displayImage} />
       {/* sm 이하 화면에서는 닉네임 숨김, md 이상에서만 보임 */}
-      <span className="ml-4 hidden text-sm font-semibold sm:inline">
+      <span className="ml-4 inline text-sm font-semibold mobile-sm:hidden">
         {displayNickname}
       </span>
     </div>
