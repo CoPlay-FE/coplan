@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 
 import { useAuth } from '@/app/features/auth/hooks/useAuth'
 
-import { UserInfo } from '../UserInfo'
+import { HeaderUserInfo } from './HeaderUserInfo'
 
 export default function UserDropdown() {
   const router = useRouter()
@@ -29,7 +29,7 @@ export default function UserDropdown() {
       trigger={
         <div className="flex cursor-pointer items-center gap-8">
           {/* 로그인된 사용자 정보 자동으로 불러옴 */}
-          <UserInfo size={36} />
+          <HeaderUserInfo size={36} />
         </div>
       }
       width="w-6"
