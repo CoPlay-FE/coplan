@@ -54,11 +54,16 @@ export default function CreateInvitationModal() {
       onClick={handleBackdropClick}
     >
       <div className="BG-white h-auto w-584 rounded-16 p-32">
-        <h2 className="Text-black mb-24 text-24 font-bold">초대하기</h2>
+        <h2 className="Text-black mb-24 text-24 font-bold mobile:text-18 tablet:text-20">
+          초대하기
+        </h2>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-32">
-            <label htmlFor="email" className="Text-black mb-8 block text-18">
+            <label
+              htmlFor="email"
+              className="Text-black mb-8 block text-18 mobile:text-12 tablet:text-16"
+            >
               이메일
             </label>
             <input
@@ -73,17 +78,17 @@ export default function CreateInvitationModal() {
             />
           </div>
 
-          <div className="flex justify-end gap-10">
+          <div className="flex gap-10">
             <button
               type="button"
               onClick={closeModal}
-              className="Border-btn Text-black h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold"
+              className="Border-btn Text-black h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold mobile:h-40 mobile:text-12 tablet:h-48 tablet:w-full tablet:text-14 mobile-sm:w-full"
             >
               취소
             </button>
             <button
               type="submit"
-              className="BG-violet h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold text-white hover:opacity-90"
+              className="BG-violet h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold text-white hover:opacity-90 mobile:h-40 mobile:text-12 tablet:h-48 tablet:w-full tablet:text-14 mobile-sm:w-full"
             >
               초대
             </button>
