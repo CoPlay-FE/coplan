@@ -1,6 +1,6 @@
 'use client'
 
-import api from '@lib/axios'
+import authHttpClient from '@api/axios'
 import { showError, showSuccess } from '@lib/toast'
 import { useMutation } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
@@ -24,7 +24,7 @@ export default function DeleteDashboardButton({
       if (!process.env.NEXT_PUBLIC_TEAM_ID) {
         throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.')
       }
-      await api.delete(
+      await authHttpClient.delete(
         `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards/${dashboardId}`,
       )
     },

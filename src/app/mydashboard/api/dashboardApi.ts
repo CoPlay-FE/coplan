@@ -1,4 +1,5 @@
-import authHttpClient from '@/app/shared/lib/axios'
+import authHttpClient from '@api/axios'
+
 import {
   DashboardListResponse,
   InvitationListResponse,

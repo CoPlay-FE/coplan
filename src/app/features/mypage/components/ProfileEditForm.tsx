@@ -1,7 +1,11 @@
 'use client'
 
-import Input from '@components/Input'
+import Input from '@components/common/Input/Input'
 import { showError, showSuccess } from '@lib/toast'
+import { useUpdateMyProfileMutation } from '@mypage/hook/useUpdateMyProfileMutation'
+import { useUploadProfileImageMutation } from '@mypage/hook/useUploadProfileImageMutation'
+import { useUserQuery } from '@mypage/hook/useUserQurey'
+import { mypageValidation } from '@mypage/schemas/mypageValidation'
 import { isAxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -9,10 +13,6 @@ import { Controller, useForm } from 'react-hook-form'
 
 import { useAuthStore } from '@/app/features/auth/store/useAuthStore'
 
-import { useUpdateMyProfileMutation } from '../hook/useUpdateMyProfileMutation'
-import { useUploadProfileImageMutation } from '../hook/useUploadProfileImageMutation'
-import { useUserQuery } from '../hook/useUserQurey'
-import { mypageValidation } from '../schemas/mypageValidation'
 import ProfileImageUpload from './ProfileImageUpload'
 
 interface ProfileFormData {
@@ -111,7 +111,7 @@ export default function ProfileEditForm() {
     >
       <h2 className="text-2xl font-bold">프로필</h2>
 
-      <div className="flex justify-between gap-42 tablet:flex-col">
+      <div className="flex justify-between gap-42 mobile-wide:flex-col tablet-wide:flex-col">
         <Controller
           name="profileImageUrl"
           control={control}
@@ -125,7 +125,7 @@ export default function ProfileEditForm() {
         />
 
         <div className="flex flex-grow flex-col gap-16">
-          <Input labelName="이메일" {...register('email')} readOnly />
+          <Input labelName="이메일" {...register('email')} readOnly disabled />
           <Input
             labelName="닉네임"
             type="text"

@@ -1,4 +1,4 @@
-import authHttpClient from '@/app/shared/lib/axios'
+import authHttpClient from '@api/axios'
 
 export async function deleteColumn(columnId: number): Promise<void> {
   await authHttpClient.delete(

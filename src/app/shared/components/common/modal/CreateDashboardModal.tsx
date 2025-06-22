@@ -60,8 +60,8 @@ export default function CreateDashboardModal() {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
       onClick={handleBackdropClick}
     >
-      <div className="BG-white mobile:h-312 mobile:w-327 mobile:px-20 mobile:py-16 h-344 w-584 rounded-16 p-32">
-        <h2 className="Text-black mobile:text-20 mb-24 text-24 font-bold">
+      <div className="BG-white h-344 w-584 rounded-16 p-32 mobile:h-312 mobile:w-327 mobile:px-20 mobile:py-16">
+        <h2 className="Text-black mb-24 text-24 font-bold mobile:text-20">
           새로운 대시보드
         </h2>
         <DashboardForm

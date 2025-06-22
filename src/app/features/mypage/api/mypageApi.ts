@@ -1,4 +1,4 @@
-import authHttpClient from '@lib/axios'
+import authHttpClient from '@api/axios'
 
 import { User as UserDataResponse } from '@/app/shared/types/user.type'
 
@@ -9,7 +9,7 @@ import {
 } from '../types/mypage.type'
 import { MYPAGE_ENDPOINT } from './mypageEndPoint'
 
-export async function loadUser(): Promise<UserDataResponse> {
+export async function fetchUser(): Promise<UserDataResponse> {
   const response = await authHttpClient.get(MYPAGE_ENDPOINT.USER)
   return response.data
 }

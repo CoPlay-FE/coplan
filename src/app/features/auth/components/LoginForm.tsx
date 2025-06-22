@@ -1,6 +1,7 @@
 'use client'
 
-import Input from '@components/Input'
+import Input from '@components/common/Input/Input'
+import PasswordInput from '@components/common/Input/PasswordInput'
 import { cn } from '@lib/cn'
 import { useForm } from 'react-hook-form'
 
@@ -37,9 +38,8 @@ export default function LoginForm() {
         hasError={!!errors.email}
         errorMessage={errors.email?.message}
       />
-      <Input
+      <PasswordInput
         labelName="비밀번호"
-        type="password"
         placeholder="비밀번호 입력"
         autoComplete="off"
         {...register('password', loginValidation.password)}

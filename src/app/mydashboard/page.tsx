@@ -13,17 +13,17 @@ export default function MyDashboardPage() {
       <Sidebar />
 
       {/* 메인 */}
-      <div className="BG-gray tablet:ml-160 mobile:ml-67 ml-300 flex-1">
+      <div className="BG-gray ml-300 flex-1 mobile:ml-67 tablet:ml-160">
         {/* 헤더 */}
         <Header />
 
         {/* 페이지 콘텐츠 */}
-        <main className="tablet:p-24 mobile:p-16 p-40">
+        <main className="p-40 mobile:p-16 tablet:p-24">
           <MyDashboardGrid />
 
           {/* 초대받은 대시보드 섹션 */}
-          <section className="BG-white tablet:w-504 mobile:w-260 tablet:p-24 mobile:p-16 w-1022 rounded-16 p-40 pb-120 pt-24">
-            <h2 className="Text-black tablet:text-20 mobile:text-20 mb-64 text-24 font-bold">
+          <section className="BG-white w-1022 rounded-16 p-40 pb-120 pt-24 mobile:w-260 mobile:p-16 tablet:w-504 tablet:p-24">
+            <h2 className="Text-black mb-64 text-24 font-bold mobile:text-20 tablet:text-20">
               초대받은 대시보드
             </h2>
 

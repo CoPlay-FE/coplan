@@ -1,4 +1,4 @@
-import authHttpClient from '@/app/shared/lib/axios'
+import authHttpClient from '@api/axios'
 
 import { UpdateColumnRequest, UpdateColumnResponse } from '../type/Column.type'
 

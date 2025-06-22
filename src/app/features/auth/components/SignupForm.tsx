@@ -1,8 +1,9 @@
 'use client'
 
-import Input from '@components/Input'
-import { useConfirmPasswordValidation } from '@hooks/useConfirmPasswordValidation'
+import Input from '@components/common/Input/Input'
+import PasswordInput from '@components/common/Input/PasswordInput'
 import { cn } from '@lib/cn'
+import { getConfirmPasswordValidation } from '@util/getConfirmPasswordValidation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -29,7 +30,7 @@ export default function SignupForm() {
 
   const [isChecked, setIsChecked] = useState(false)
   const { mutate: signupMtate, isPending } = useSignupMutation()
-  const validation = useConfirmPasswordValidation(() => getValues('password'))
+  const validation = getConfirmPasswordValidation(() => getValues('password'))
 
   function handleAgree() {
     setIsChecked((prev) => !prev)
@@ -60,9 +61,8 @@ export default function SignupForm() {
         hasError={!!errors.nickname}
         errorMessage={errors.nickname?.message}
       />
-      <Input
+      <PasswordInput
         labelName="비밀번호"
-        type="password"
         placeholder="8자 이상 입력해 주세요"
         autoComplete="new-password"
         {...register('password', {
@@ -72,9 +72,8 @@ export default function SignupForm() {
         hasError={!!errors.password}
         errorMessage={errors.password?.message}
       />
-      <Input
+      <PasswordInput
         labelName="비밀번호 확인"
-        type="password"
         placeholder="비밀번호를 한번 더 입력해주세요"
         autoComplete="new-password"
         {...register('confirmPassword', validation)}

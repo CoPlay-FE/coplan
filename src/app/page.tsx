@@ -1,13 +1,9 @@
-import Footer from './features/landing/components/Footer'
-import Header from './features/landing/components/Header'
-import Main from './features/landing/components/Main'
+import Landing from './features/landing/components/Landing'
 
 export default function Home() {
   return (
     <>
-      <Header />
-      <Main />
-      <Footer />
+      <Landing />
     </>
   )
 }

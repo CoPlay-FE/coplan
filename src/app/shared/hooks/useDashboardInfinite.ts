@@ -1,8 +1,8 @@
 'use client'
 
+import authHttpClient from '@api/axios'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
-import api from '@/app/shared/lib/axios'
 import { DashboardListResponse } from '@/app/shared/types/dashboard'
 
 /**
@@ -23,7 +23,7 @@ export const useDashboardsInfinite = (size: number = 10) => {
         page: pageParam.toString(),
       })
 
-      const res = await api.get<DashboardListResponse>(
+      const res = await authHttpClient.get<DashboardListResponse>(
         `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards?${params.toString()}`,
       )
 

@@ -1,6 +1,6 @@
 'use client'
 
-import authHttpClient from '@lib/axios'
+import authHttpClient from '@api/axios'
 import { getTeamId } from '@lib/getTeamId'
 
 export type Member = {

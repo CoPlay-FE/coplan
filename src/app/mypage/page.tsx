@@ -1,58 +1,22 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import BackButton from '@components/common/BackButton/BackButton'
+import PasswordChangeForm from '@mypage/components/PasswordChangeForm'
+import ProfileEditForm from '@mypage/components/ProfileEditForm'
 
-import Header from '@/app/shared/components/common/header/Header'
-import Sidebar from '@/app/shared/components/common/sidebar/Sidebar'
-
-import PasswordChangeForm from '../features/mypage/components/PasswordChangeForm'
-import ProfileEditForm from '../features/mypage/components/ProfileEditForm'
 export default function Mypage() {
-  const router = useRouter()
   return (
     <>
-      <div className="pl-300">
-        <Header />
-      </div>
-
-      <div className="BG-gray h-full">
-        {/* 사이드바 */}
-        <Sidebar />
-        {/* 메인 콘텐츠 영역 */}
-        <div className="ml-300 p-20 tablet:ml-67">
-          {/* 헤더 영역 */}
-          <div className="flex flex-col gap-16">
-            {/* 임시 버튼 (교체 예정) */}
-            <div>
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="text-xm flex items-center justify-start gap-8"
-              >
-                <svg
-                  width={20}
-                  height={20}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15 18L9 12L15 6"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                돌아가기
-              </button>
-            </div>
-            {/* 닉네임 프로필 변경 */}
-            <ProfileEditForm />
-            {/* 비밀번호 변경 */}
-            <PasswordChangeForm />
-          </div>
-        </div>
+      <div className="p-20">
+        {/* 헤더 영역 */}
+        <section className="flex flex-col gap-16">
+          {/* 뒤로 가기 버튼 */}
+          <BackButton />
+          {/* 닉네임 프로필 변경 */}
+          <ProfileEditForm />
+          {/* 비밀번호 변경 */}
+          <PasswordChangeForm />
+        </section>
       </div>
     </>
   )
