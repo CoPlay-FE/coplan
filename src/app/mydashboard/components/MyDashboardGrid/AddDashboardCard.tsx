@@ -14,7 +14,7 @@ export default function AddDashboardCard() {
   return (
     <button
       onClick={handleClick}
-      className="BG-white Border-btn BG-Input-hovered tablet:w-247 tablet:h-68 mobile:w-260 mobile:h-58 group flex h-70 w-332 items-center justify-center gap-12 rounded-8 border p-20 transition-all duration-200 hover:border-gray-300"
+      className="BG-white Border-btn BG-Input-hovered tablet-wide:w-247 tablet-wide:h-68 mobile-wide:w-260 mobile-wide:h-58 group flex h-70 w-332 items-center justify-center gap-12 rounded-8 border p-20 transition-all duration-200 hover:border-gray-300"
     >
       <span className="Text-black text-16 font-medium">새로운 대시보드</span>
 

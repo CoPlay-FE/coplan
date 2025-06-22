@@ -52,17 +52,17 @@ export default function Sidebar(): JSX.Element {
     error instanceof Error ? error.message : '대시보드 목록 불러오기 실패'
 
   return (
-    <aside className="BG-white Border-section fixed left-0 top-0 z-50 flex h-full w-300 flex-col mobile:w-67 tablet:w-160">
+    <aside className="BG-white Border-section mobile-wide:w-67 tablet-wide:w-160 fixed left-0 top-0 z-50 flex h-full w-300 flex-col">
       {/* 로고 섹션 */}
-      <div className="flex h-70 flex-shrink-0 items-center px-20 mobile:justify-center mobile:px-8 tablet:px-12">
+      <div className="mobile-wide:justify-center mobile-wide:px-8 tablet-wide:px-12 flex h-70 flex-shrink-0 items-center px-20">
         <Link href="/mydashboard" className="flex items-center gap-8">
-          <div className="relative h-35 w-150 mobile:size-24 tablet:h-30 tablet:w-120">
+          <div className="mobile-wide:size-24 tablet-wide:h-30 tablet-wide:w-120 relative h-35 w-150">
             {/* 데스크톱 & 태블릿: 전체 로고 */}
             <Image
               src="/images/logo-light2.svg"
               alt="Coplan logo"
               fill
-              className="object-contain mobile:hidden"
+              className="mobile-wide:hidden object-contain"
               priority
             />
             {/* 모바일: 아이콘만 */}
@@ -70,7 +70,7 @@ export default function Sidebar(): JSX.Element {
               src="/images/logo-icon-light.svg"
               alt="Coplan"
               fill
-              className="hidden object-contain mobile:block"
+              className="mobile-wide:block hidden object-contain"
               priority
             />
           </div>
@@ -78,36 +78,36 @@ export default function Sidebar(): JSX.Element {
       </div>
 
       {/* 대시보드 섹션 */}
-      <div className="flex min-h-0 flex-1 flex-col px-20 py-24 mobile:px-8 mobile:py-12 tablet:px-12 tablet:py-16">
+      <div className="mobile-wide:px-8 mobile-wide:py-12 tablet-wide:px-12 tablet-wide:py-16 flex min-h-0 flex-1 flex-col px-20 py-24">
         {/* 헤더 */}
-        <div className="mb-24 flex flex-shrink-0 items-center justify-between mobile:hidden tablet:mb-16">
-          <h2 className="Text-gray text-12 font-semibold tablet:text-10">
+        <div className="mobile-wide:hidden tablet-wide:mb-16 mb-24 flex flex-shrink-0 items-center justify-between">
+          <h2 className="Text-gray tablet-wide:text-10 text-12 font-semibold">
             Dash Boards
           </h2>
           <CreateDashboardButton onClick={() => openModal('createDashboard')} />
         </div>
 
         {/* 모바일 전용 + 버튼 */}
-        <div className="mb-12 hidden flex-shrink-0 justify-center mobile:flex">
+        <div className="mobile-wide:flex mb-12 hidden flex-shrink-0 justify-center">
           <CreateDashboardButton onClick={() => openModal('createDashboard')} />
         </div>
 
         {/* 스크롤 가능한 대시보드 목록 컨테이너 */}
         <div
           ref={containerRef}
-          className="flex-1 space-y-8 overflow-y-auto mobile:space-y-4 tablet:space-y-6"
+          className="mobile-wide:space-y-4 tablet-wide:space-y-6 flex-1 space-y-8 overflow-y-auto"
           style={{ minHeight: '200px' }}
         >
           {isLoading ? (
-            <div className="flex items-center justify-center py-20 mobile:py-8 tablet:py-12">
-              <div className="Text-gray text-14 mobile:hidden tablet:text-12">
+            <div className="mobile-wide:py-8 tablet-wide:py-12 flex items-center justify-center py-20">
+              <div className="Text-gray mobile-wide:hidden tablet-wide:text-12 text-14">
                 로딩중...
               </div>
               {/* 모바일: 로딩 스피너만 */}
-              <div className="hidden size-16 animate-spin rounded-full border-2 border-gray-200 border-t-blue-500 mobile:block" />
+              <div className="mobile-wide:block hidden size-16 animate-spin rounded-full border-2 border-gray-200 border-t-blue-500" />
             </div>
           ) : error ? (
-            <div className="flex items-center justify-center py-20 mobile:py-8 tablet:py-12">
+            <div className="mobile-wide:py-8 tablet-wide:py-12 flex items-center justify-center py-20">
               <div className="Text-red text-14">{errorMessage}</div>
             </div>
           ) : allDashboards.length > 0 ? (
@@ -124,16 +124,16 @@ export default function Sidebar(): JSX.Element {
 
               {/* 추가 로딩 중일 때 스켈레톤 */}
               {isFetchingNextPage && (
-                <div className="space-y-8 mobile:space-y-4 tablet:space-y-6">
+                <div className="mobile-wide:space-y-4 tablet-wide:space-y-6 space-y-8">
                   {Array.from({ length: 3 }).map((_, index) => (
                     <div
                       key={`skeleton-${index}`}
-                      className="flex items-center gap-12 rounded-6 p-12 mobile:justify-center mobile:gap-0 mobile:p-4 tablet:gap-8 tablet:p-8"
+                      className="mobile-wide:justify-center mobile-wide:gap-0 mobile-wide:p-4 tablet-wide:gap-8 tablet-wide:p-8 flex items-center gap-12 rounded-6 p-12"
                     >
                       {/* 색상 원 스켈레톤 */}
-                      <div className="size-8 animate-pulse rounded-full bg-gray-200 mobile:size-12 tablet:size-6" />
+                      <div className="mobile-wide:size-12 tablet-wide:size-6 size-8 animate-pulse rounded-full bg-gray-200" />
                       {/* 제목 스켈레톤 - 모바일에서 숨김 */}
-                      <div className="h-16 flex-1 animate-pulse rounded-4 bg-gray-200 mobile:hidden tablet:h-14" />
+                      <div className="mobile-wide:hidden tablet-wide:h-14 h-16 flex-1 animate-pulse rounded-4 bg-gray-200" />
                     </div>
                   ))}
                 </div>
@@ -141,12 +141,14 @@ export default function Sidebar(): JSX.Element {
 
               {/* 더 이상 데이터가 없을 때 */}
               {!hasNextPage && allDashboards.length > 0 && (
-                <div className="py-12 text-center mobile:py-4 tablet:py-8">
-                  <p className="Text-gray text-12 mobile:hidden tablet:text-10">
+                <div className="mobile-wide:py-4 tablet-wide:py-8 py-12 text-center">
+                  <p className="Text-gray mobile-wide:hidden tablet-wide:text-10 text-12">
                     모든 대시보드를 확인했습니다.
                   </p>
                   {/* 모바일: 완료 아이콘만 */}
-                  <div className="Text-gray hidden text-12 mobile:block">✓</div>
+                  <div className="Text-gray mobile-wide:block hidden text-12">
+                    ✓
+                  </div>
                 </div>
               )}
             </>
