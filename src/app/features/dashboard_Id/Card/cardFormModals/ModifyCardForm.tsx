@@ -237,6 +237,7 @@ export default function ModifyCardForm({
           {...register('description', {
             required: '설명을 입력해 주세요',
           })}
+          maxLength={250}
           className="Input h-126 resize-none"
           id="description"
           placeholder="설명을 입력해 주세요"
@@ -279,6 +280,7 @@ export default function ModifyCardForm({
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault()
+                if (e.nativeEvent.isComposing) return
                 if (tagInput.trim() === '') return
                 if (!tags.includes(tagInput.trimEnd())) {
                   setTags((prev) => [...prev, tagInput.trim()]) // 중복 태그가 아니면 ok, 태그배열에 추가 및 입력창 초기화
@@ -287,7 +289,13 @@ export default function ModifyCardForm({
               }
             }}
             value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value
+              const allowed = /^[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z\s]*$/
+              if (allowed.test(value)) {
+                setTagInput(value)
+              }
+            }}
           />
 
           {/* 추가한 태그 */}

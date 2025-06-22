@@ -1,5 +1,7 @@
 import { useCallback, useEffect } from 'react'
 
+import { useIsMobile } from '@/app/shared/hooks/useIsmobile'
+
 /**
  * 범용 무한스크롤 훅
  *
@@ -22,7 +24,8 @@ export const useInfiniteScroll = (
     const clientHeight = targetRef?.current?.clientHeight ?? window.innerHeight
 
     const scrollPercentage = (scrollTop + clientHeight) / scrollHeight
-    const isNearBottom = scrollPercentage >= 0.8
+
+    const isNearBottom = scrollPercentage >= 0.7
 
     if (isNearBottom && hasNextPage && !isFetchingNextPage) {
       fetchNextPage()
