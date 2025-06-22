@@ -94,33 +94,27 @@ export default function EditInvitation() {
         : null
 
   return (
-    <div className="BG-white w-full max-w-584 overflow-x-auto whitespace-nowrap rounded-16 px-32 py-24">
+    <div className="BG-white w-full max-w-584 overflow-x-auto rounded-16 px-32 py-24">
       {/* Header + 초대 버튼 영역 (데스크탑용) */}
-      <div className="mb-16 flex flex-col gap-12 md:flex-row md:items-center md:justify-between">
+      <div className="mb-20 flex items-center justify-between">
+        <h2 className="Text-black text-18 font-bold mobile-sm:text-14">
+          초대 내역
+        </h2>
         <PaginationHeader
           currentPage={currentPage}
           totalPages={totalPages}
-          title="초대 내역"
           onPrev={handlePrev}
           onNext={handleNext}
         />
-
-        {/* 데스크탑에서만 보이는 초대 버튼 */}
-        <button
-          onClick={() => openModal('invite')}
-          className="BG-violet mb-24 hidden w-fit shrink-0 items-center gap-8 self-end rounded-5 px-12 py-6 md:flex"
-        >
-          <div className="relative flex size-12 shrink-0">
-            <Image src="/images/invitation-white.png" fill alt="초대 버튼" />
-          </div>
-          <p className="text-14 text-white">초대하기</p>
-        </button>
       </div>
 
       {/* 이메일 입력 및 모바일 전용 버튼 */}
       <form className="overflow-x-auto">
-        <div className="mb-8 flex flex-row items-center justify-between gap-4 md:block">
-          <label htmlFor="title" className="Text-black block text-16">
+        <div className="mb-8 flex flex-row items-center justify-between gap-4">
+          <label
+            htmlFor="title"
+            className="Text-black block text-16 mobile-sm:text-12"
+          >
             이메일
           </label>
 
@@ -128,12 +122,12 @@ export default function EditInvitation() {
           <button
             onClick={() => openModal('invite')}
             type="button"
-            className="BG-violet mb-12 flex w-fit shrink-0 items-center gap-8 rounded-5 px-12 py-6 md:hidden"
+            className="BG-violet flex w-fit shrink-0 items-center gap-8 rounded-5 px-12 py-6"
           >
             <div className="relative flex size-12 shrink-0">
               <Image src="/images/invitation-white.png" fill alt="초대 버튼" />
             </div>
-            <p className="text-14 text-white">초대하기</p>
+            <p className="text-14 text-white mobile-sm:text-12">초대하기</p>
           </button>
         </div>
 
@@ -145,21 +139,20 @@ export default function EditInvitation() {
             <p className="Text-blue py-12 text-center">{errorMessage}</p>
           )}
           {!isLoading &&
-            !errorMessage &&
             currentItems.map((member, index) => {
               const isLast = index === currentItems.length - 1
               return (
                 <div
                   key={member.id}
                   className={cn(
-                    'flex items-center justify-between gap-12 py-4',
+                    'flex items-center justify-between gap-12 py-12',
                     !isLast && 'Border-bottom',
                   )}
                 >
                   <div className="flex min-w-0 items-center gap-12">
                     <div className="flex min-w-0 flex-col">
                       <Tooltip content={member.invitee.nickname}>
-                        <p className="Text-black max-w-[200px] cursor-help truncate text-13">
+                        <p className="Text-black max-w-200 cursor-help truncate text-13">
                           {member.invitee.email}
                         </p>
                       </Tooltip>
@@ -169,7 +162,7 @@ export default function EditInvitation() {
                     type="button"
                     disabled={cancelMutation.isPending}
                     className={cn(
-                      'Text-btn Border-btn w-fit shrink-0 rounded-md px-16 py-2',
+                      'Text-btn Border-btn w-fit shrink-0 rounded-md px-16 py-2 mobile-sm:text-12',
                       cancelMutation.isPending &&
                         'cursor-not-allowed opacity-50',
                     )}
