@@ -15,7 +15,6 @@ export default function Redirect({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const mounted = useMounted()
   const { isLoggedIn } = useAuthStore()
-
   const [redirecting, setRedirecting] = useState(false)
   const prevPath = useRef(pathname)
 
