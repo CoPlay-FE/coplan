@@ -20,14 +20,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className="flex flex-col gap-8">
-        <label htmlFor={name} className="Text-black text-base font-normal">
+        <label
+          htmlFor={name}
+          className="Text-black text-base font-normal mobile-sm:text-12"
+        >
           {labelName}
         </label>
 
         <input
           id={name}
           className={cn(
-            'Text-black h-50 w-full rounded-8 px-16 py-12 text-base font-normal',
+            'Text-black h-50 w-full rounded-8 px-16 py-12 text-base font-normal mobile-sm:text-14',
             hasError ? 'Border-error' : 'Border-btn',
             props.readOnly && 'Text-gray cursor-default',
           )}
