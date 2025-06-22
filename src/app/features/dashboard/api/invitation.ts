@@ -1,5 +1,5 @@
 // src/app/features/dashboard/api/invitation.ts
-import api from '@lib/axios'
+import authHttpClient from '@api/axios'
 
 type InvitationRequest = {
   email: string
@@ -7,7 +7,7 @@ type InvitationRequest = {
 }
 
 export const inviteUser = async ({ email, dashboardId }: InvitationRequest) => {
-  const response = await api.post(
+  const response = await authHttpClient.post(
     `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards/${dashboardId}/invitations`,
     {
       email,

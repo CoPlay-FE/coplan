@@ -1,7 +1,7 @@
 // hooks/useDashboard.ts
 'use client'
 
-import api from '@lib/axios'
+import authHttpClient from '@api/axios'
 import { useQuery } from '@tanstack/react-query'
 
 import { DashboardListResponse } from '@/types/dashboard'
@@ -14,7 +14,7 @@ export const useDashboard = () => {
         throw new Error('NEXT_PUBLIC_TEAM_ID 환경변수가 설정되지 않았습니다.')
       }
 
-      const res = await api.get<DashboardListResponse>(
+      const res = await authHttpClient.get<DashboardListResponse>(
         `/${process.env.NEXT_PUBLIC_TEAM_ID}/dashboards?navigationMethod=infiniteScroll`,
       )
 

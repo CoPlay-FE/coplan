@@ -1,7 +1,7 @@
 'use client'
 
+import authHttpClient from '@api/axios'
 import Tooltip from '@components/common/header/Collaborator/Tooltip'
-import api from '@lib/axios'
 import { cn } from '@lib/cn'
 import { showError, showSuccess } from '@lib/toast'
 import { useModalStore } from '@store/useModalStore'
@@ -44,7 +44,7 @@ export default function EditInvitation() {
     queryKey: ['invitations', teamId, dashboardId],
     queryFn: async () => {
       if (!teamId || !dashboardId) return []
-      const res = await api.get<{ invitations: Invitation[] }>(
+      const res = await authHttpClient.get<{ invitations: Invitation[] }>(
         `/${teamId}/dashboards/${dashboardId}/invitations`,
       )
       return res.data.invitations
@@ -68,7 +68,7 @@ export default function EditInvitation() {
     mutationFn: async (invitationId: number) => {
       if (!teamId || !dashboardId)
         throw new Error('teamId 또는 dashboardId가 없습니다.')
-      await api.delete(
+      await authHttpClient.delete(
         `/${teamId}/dashboards/${dashboardId}/invitations/${invitationId}`,
       )
     },

@@ -1,6 +1,6 @@
 // hooks/useDashboardForm.ts
+import authHttpClient from '@api/axios'
 import { DASHBOARD_COLORS } from '@constants/colors'
-import api from '@lib/axios'
 import { getTeamId } from '@lib/getTeamId'
 import { showError } from '@lib/toast'
 import { useSelectedDashboardStore } from '@store/useSelectedDashboardStore'
@@ -70,10 +70,13 @@ export function useDashboardForm(mode: Mode) {
       setIsSubmitting(true)
 
       if (mode === 'create') {
-        const response = await api.post(`/${teamId}/dashboards`, formData)
+        const response = await authHttpClient.post(
+          `/${teamId}/dashboards`,
+          formData,
+        )
         router.push(`/dashboard/${response.data.id}`)
       } else if (mode === 'edit' && selectedDashboard?.id) {
-        const response = await api.put(
+        const response = await authHttpClient.put(
           `/${teamId}/dashboards/${selectedDashboard.id}`,
           formData,
         )
