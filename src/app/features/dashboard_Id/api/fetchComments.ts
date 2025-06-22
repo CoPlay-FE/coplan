@@ -1,6 +1,5 @@
-import api from '@/app/shared/lib/testAxios'
+import authHttpClient from '@/app/shared/lib/axios'
 
-// import api from '@/app/shared/lib/axios'
 import { CommentsResponse } from '../type/Comment.type'
 
 export async function fetchComments({
@@ -12,7 +11,7 @@ export async function fetchComments({
   size?: number
   cursorId?: number | null
 }): Promise<CommentsResponse> {
-  const res = await api.get<CommentsResponse>(
+  const res = await authHttpClient.get<CommentsResponse>(
     `/${process.env.NEXT_PUBLIC_TEAM_ID}/comments`,
     {
       params: {

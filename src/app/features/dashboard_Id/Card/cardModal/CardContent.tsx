@@ -48,13 +48,23 @@ export default function CardContent({
           width="w-6"
           align="right"
           trigger={
-            <Image
-              src="/images/drop-more.svg"
-              alt="드롭 옵션 보기"
-              width={28}
-              height={28}
-              className="mobile:size-20"
-            />
+            isDark ? (
+              <Image
+                src="/images/drop-more-darkmode.svg"
+                alt="드롭 옵션 보기"
+                width={28}
+                height={28}
+                className="mobile:size-20"
+              />
+            ) : (
+              <Image
+                src="/images/drop-more.svg"
+                alt="드롭 옵션 보기"
+                width={28}
+                height={28}
+                className="mobile:size-20"
+              />
+            )
           }
         >
           {/* 트리거의(케밥) 드롭다운 - 수정하기, 삭제하기 */}
@@ -85,13 +95,23 @@ export default function CardContent({
             onClose()
           }}
         >
-          <Image
-            src="/images/close.svg"
-            alt="카드 닫기"
-            width={32}
-            height={32}
-            className="mobile:size-24"
-          />
+          {isDark ? (
+            <Image
+              src="/images/close-darkmode.svg"
+              alt="드롭 옵션 보기"
+              width={28}
+              height={28}
+              className="mobile:size-20"
+            />
+          ) : (
+            <Image
+              src="/images/close.svg"
+              alt="드롭 옵션 보기"
+              width={28}
+              height={28}
+              className="mobile:size-20"
+            />
+          )}
         </button>
       </div>
 

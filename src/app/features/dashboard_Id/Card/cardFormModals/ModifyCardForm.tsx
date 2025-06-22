@@ -158,7 +158,7 @@ export default function ModifyCardForm({
                   width={26}
                   height={24}
                   className={cn(
-                    'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300',
+                    'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300 mobile:-right-65',
                     isOpenColumn && 'rotate-180',
                   )}
                 />
@@ -201,7 +201,7 @@ export default function ModifyCardForm({
                   width={26}
                   height={24}
                   className={cn(
-                    'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300',
+                    'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300 mobile:-right-65',
                     isOpen && 'rotate-180',
                   )}
                 />
@@ -316,11 +316,14 @@ export default function ModifyCardForm({
                 height={76}
                 className="size-full object-cover"
               />
+            ) : isUploading ? (
+              ''
             ) : (
               <Image
                 src="/images/plus.svg"
                 width={28}
                 height={28}
+                className="size-28"
                 alt="플러스 아이콘"
               />
             )}

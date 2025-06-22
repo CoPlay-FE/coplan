@@ -234,42 +234,46 @@ export default function CreateCardForm({
       <div>
         <h3 className="mb-8">이미지</h3>
         {/* 이미지 미리보기 or 업로드 버튼 */}
-        <label
-          htmlFor="imageUrl"
-          className="flex size-76 items-center justify-center overflow-hidden rounded-6 border-[#747474] bg-[#F5F5F5] dark:border dark:bg-[#3B3B3B]"
-        >
-          {preview ? (
-            <Image
-              src={preview}
-              alt="미리보기"
-              width={76}
-              height={76}
-              className="size-full object-cover"
-            />
-          ) : (
-            <Image
-              src="/images/plus.svg"
-              width={28}
-              height={28}
-              alt="플러스 아이콘"
-            />
-          )}
-        </label>
-
-        {/* ❌ 이미지 제거 버튼 (이미지가 있을 경우만 표시) */}
-        {preview && (
-          <button
-            type="button"
-            className="mt-2 size-20 rounded-20 bg-blue-300 text-15 font-bold"
-            onClick={() => {
-              setPreview(null)
-              setValue('imageUrl', '') // 또는 null
-            }}
+        <div className="relative">
+          <label
+            htmlFor="imageUrl"
+            className="flex size-76 items-center justify-center overflow-hidden rounded-6 border-[#747474] bg-[#F5F5F5] dark:border dark:bg-[#3B3B3B]"
           >
-            X
-          </button>
-        )}
+            {preview ? (
+              <Image
+                src={preview}
+                alt="미리보기"
+                width={76}
+                height={76}
+                className="size-full object-cover"
+              />
+            ) : isUploading ? (
+              ''
+            ) : (
+              <Image
+                src="/images/plus.svg"
+                width={28}
+                height={28}
+                className="size-28"
+                alt="플러스 아이콘"
+              />
+            )}
+          </label>
 
+          {/* ❌ 이미지 제거 버튼 (이미지가 있을 경우만 표시) */}
+          {preview && !isUploading && (
+            <button
+              type="button"
+              className="Text-gray absolute bottom-0 left-83 text-12 font-medium"
+              onClick={() => {
+                setPreview(null)
+                setValue('imageUrl', '') // 또는 null
+              }}
+            >
+              삭제
+            </button>
+          )}
+        </div>
         {/* 파일 입력 필드 (실제 input은 숨겨져 있음) */}
         <input
           id="imageUrl"

@@ -1,10 +1,9 @@
-import api from '@/app/shared/lib/testAxios'
+import authHttpClient from '@/app/shared/lib/axios'
 
-// import api from '@/app/shared/lib/axios'
 import { ApiResponse } from '../type/ApiResponse'
 
 export async function deleteComment(commentId: number): Promise<ApiResponse> {
-  const res = await api.delete(
+  const res = await authHttpClient.delete(
     `/${process.env.NEXT_PUBLIC_TEAM_ID}/comments/${commentId}`,
   )
   return res.data
