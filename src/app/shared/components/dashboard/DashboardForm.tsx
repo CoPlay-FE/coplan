@@ -1,11 +1,10 @@
 'use client'
 
+import Input from '@components/common/Input/Input'
 import Image from 'next/image'
 import React from 'react'
 
 import { DASHBOARD_COLORS } from '@/app/shared/constants/colors'
-
-import Input from '../Input'
 
 type DashboardFormProps = {
   formData: { title: string; color: string }
