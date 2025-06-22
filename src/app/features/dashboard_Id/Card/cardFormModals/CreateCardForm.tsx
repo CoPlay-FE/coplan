@@ -14,6 +14,7 @@ import { usePostCard } from '../../api/usePostCard'
 import { useUploadCardImage } from '../../api/useUploadCardImage'
 import { Assignee } from '../../type/Card.type'
 import type { CardFormData } from '../../type/CardFormData.type'
+import MyAssignee from '../MyAssignee'
 import TagsCanDelete from '../TagsCanDelete'
 // import AssigneeList, { Assignee } from './AssigneeList'
 import AssigneeList from './AssigneeList'
@@ -120,13 +121,18 @@ export default function CreateCardForm({
                 type="text"
                 placeholder="담당자를 선택해 주세요"
               />
+              {selectedAssignee && (
+                <div className="absolute left-16 top-1/2 -translate-y-1/2 bg-[#FFFFFF] dark:bg-[#3B3B3B]">
+                  <MyAssignee assignee={selectedAssignee} />
+                </div>
+              )}
               <Image
                 src="/images/arrow-dropdown.svg"
                 alt="화살표"
                 width={26}
                 height={24}
                 className={cn(
-                  'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300',
+                  'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300 mobile:right-8',
                   isOpen && 'rotate-180',
                 )}
               />
@@ -230,7 +236,7 @@ export default function CreateCardForm({
         {/* 이미지 미리보기 or 업로드 버튼 */}
         <label
           htmlFor="imageUrl"
-          className="flex size-76 items-center justify-center rounded-6 bg-[#F5F5F5]"
+          className="flex size-76 items-center justify-center overflow-hidden rounded-6 border-[#747474] bg-[#F5F5F5] dark:border dark:bg-[#3B3B3B]"
         >
           {preview ? (
             <Image
@@ -283,7 +289,7 @@ export default function CreateCardForm({
           취소
         </button>
         <button
-          className="BG-blue w-full rounded-8 border-solid py-14 text-16 font-medium text-[#FFFFFF]"
+          className="BG-blue w-full rounded-8 border-solid py-14 text-16 font-medium text-[#FFFFFF] disabled:bg-gray-300 dark:disabled:bg-[#464646]"
           type="submit"
           disabled={!isValid || isPending || isSubmitting}
         >

@@ -1,10 +1,7 @@
 import authHttpClient from '@/app/shared/lib/axios'
 
+import { ApiResponse } from '../type/ApiResponse'
 import { CardModifyFormData } from '../type/CardFormData.type'
-
-interface ApiResponse {
-  message: string
-}
 
 export async function putCard(
   payload: CardModifyFormData,

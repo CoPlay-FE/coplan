@@ -3,7 +3,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { format } from 'date-fns'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import { Controller, useForm } from 'react-hook-form'
 
@@ -36,7 +36,7 @@ export default function ModifyCardForm({
   card: Card
 }) {
   const [preview, setPreview] = useState<string | null>(card.imageUrl) // 이미지 URl 임시 저장
-  const [tags, setTags] = useState<string[]>(card.tags) // 태그 목록 임시 저장
+  const [tags, setTags] = useState<string[]>(card.tags) // 태그 목록 임시 저장]
   const [tagInput, setTagInput] = useState('') // 작성중인 태그
   const { mutate: uploadImage, isPending: isUploading } = useUploadCardImage()
 
@@ -63,22 +63,21 @@ export default function ModifyCardForm({
     formState: { errors, isValid, isSubmitting, isDirty },
   } = useForm<CardFormData>({
     defaultValues: {
-      assigneeUserId: card.assignee.id,
+      assigneeUserId: card.assignee?.id,
       dashboardId: card.dashboardId,
       columnId: card.columnId,
       title: card.title,
       description: card.description,
-      dueDate: card.dueDate,
-      tags: card.tags,
-      imageUrl: card.imageUrl,
+      dueDate: card.dueDate ? card.dueDate : '',
+      tags: card.tags ? card.tags : [],
+      imageUrl: card.imageUrl ? card.imageUrl : '',
     },
     mode: 'onChange', // isValid와 isDirty가 입력 즉시 반영되도록
   })
 
   // React Hook Form 과 tags 값 연결
   useEffect(() => {
-    setValue('tags', tags)
-    console.log(tags)
+    setValue('tags', tags, { shouldDirty: true })
   }, [tags, tags.length, setValue])
 
   // 상태(컬럼) 선택 시 / assignee 선택 시 드롭다운 닫기
@@ -112,7 +111,7 @@ export default function ModifyCardForm({
   function onSubmit(data: CardModifyFormData) {
     const payload: CardModifyFormData = {
       ...data,
-      columnId: columnId,
+      columnId: selectedColumn.columnId,
     }
 
     if (!data.dueDate) delete payload.dueDate
@@ -125,10 +124,14 @@ export default function ModifyCardForm({
 
   // ✅ JSX
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-32">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-32"
+      onClick={(e) => e.stopPropagation()}
+    >
       <h2 className="Text-black text-24 font-bold">할 일 수정</h2>
 
-      <div className="flex gap-32">
+      <div className="flex gap-32 mobile:flex-col">
         {/* 컬럼 선택 */}
         <Controller
           name="columnId"
@@ -139,15 +142,14 @@ export default function ModifyCardForm({
                 <input
                   {...field}
                   onClick={() => setIsOpenColumn((prev) => !prev)}
-                  value={selectedColumn?.columnTitle ?? ''}
                   readOnly
-                  className="Input-readOnly w-217"
+                  className="Input-readOnly-217"
                   id="columnId"
                   type="text"
                   placeholder={currentColumn.columnTitle}
                 />
                 {/* 인풋에 보이는 선택된 컬럼 & 오른쪽 화살표 */}
-                <div className="absolute left-16 top-1/2 -translate-y-1/2">
+                <div className="absolute left-16 top-1/2 -translate-y-1/2 mobile:left-11">
                   <ColumnTitle title={selectedColumn.columnTitle} />
                 </div>
                 <Image
@@ -182,15 +184,17 @@ export default function ModifyCardForm({
                 <input
                   {...field}
                   onClick={() => setIsOpen((prev) => !prev)}
-                  // value={selectedAssignee?.nickname ?? ''}
                   readOnly
-                  className="Input-readOnly w-217"
+                  className="Input-readOnly-217"
                   id="assigneeUserId"
                   type="text"
+                  placeholder={selectedAssignee ? '' : '담당자를 선택해 주세요'}
                 />
-                <div className="BG-white absolute left-16 top-1/2 -translate-y-1/2">
-                  <MyAssignee assignee={selectedAssignee} />
-                </div>
+                {selectedAssignee && (
+                  <div className="absolute left-16 top-1/2 -translate-y-1/2 bg-[#FFFFFF] dark:bg-[#3B3B3B]">
+                    <MyAssignee assignee={selectedAssignee} />
+                  </div>
+                )}
                 <Image
                   src="/images/arrow-dropdown.svg"
                   alt="화살표"
@@ -299,42 +303,54 @@ export default function ModifyCardForm({
       <div>
         <h3 className="mb-8">이미지</h3>
         {/* 이미지 미리보기 or 업로드 버튼 */}
-        <label
-          htmlFor="imageUrl"
-          className="flex size-76 items-center justify-center rounded-6 bg-[#F5F5F5]"
-        >
-          {preview ? (
-            <Image
-              src={preview}
-              alt="미리보기"
-              width={76}
-              height={76}
-              className="size-full object-cover"
-            />
-          ) : (
-            <Image
-              src="/images/plus.svg"
-              width={28}
-              height={28}
-              alt="플러스 아이콘"
-            />
-          )}
-        </label>
-
-        {/* ❌ 이미지 제거 버튼 (이미지가 있을 경우만 표시) */}
-        {preview && (
-          <button
-            type="button"
-            className="mt-2 size-20 rounded-20 bg-blue-300 text-15 font-bold"
-            onClick={() => {
-              setPreview(null)
-              setValue('imageUrl', '') // 또는 null
-            }}
+        <div className="relative">
+          <label
+            htmlFor="imageUrl"
+            className="flex size-76 items-center justify-center overflow-hidden rounded-6 border-[#747474] bg-[#F5F5F5] dark:border dark:border-[#747474] dark:bg-[#3B3B3B]"
           >
-            X
-          </button>
-        )}
+            {preview ? (
+              <Image
+                src={preview}
+                alt="미리보기"
+                width={76}
+                height={76}
+                className="size-full object-cover"
+              />
+            ) : (
+              <Image
+                src="/images/plus.svg"
+                width={28}
+                height={28}
+                alt="플러스 아이콘"
+              />
+            )}
+          </label>
 
+          {/* ❌ 이미지 제거 버튼 (이미지가 있을 경우만 표시) */}
+          {preview && (
+            <button
+              type="button"
+              className="Text-gray absolute bottom-0 left-83 text-12 font-medium"
+              onClick={() => {
+                setPreview(null)
+                setValue('imageUrl', '') // 또는 null
+              }}
+            >
+              삭제
+            </button>
+          )}
+          {/* 이미지 수정 가능 표시  */}
+          {preview === card.imageUrl && (
+            <div className="pointer-events-none absolute left-0 top-0 flex size-76 items-center justify-center rounded-6 bg-black/60">
+              <Image
+                src="/images/modify-pen.svg"
+                width={30}
+                height={30}
+                alt="이미지 수정펜"
+              />
+            </div>
+          )}
+        </div>
         {/* 파일 입력 필드 (실제 input은 숨겨져 있음) */}
         <input
           id="imageUrl"
@@ -354,7 +370,7 @@ export default function ModifyCardForm({
           취소
         </button>
         <button
-          className="BG-blue w-full rounded-8 border-solid py-14 text-16 font-medium text-[#FFFFFF] disabled:bg-gray-300"
+          className="BG-blue w-full rounded-8 border-solid py-14 text-16 font-medium text-[#FFFFFF] disabled:bg-gray-300 dark:disabled:bg-[#464646]"
           type="submit"
           disabled={!isValid || !isDirty || isPending || isSubmitting}
         >
