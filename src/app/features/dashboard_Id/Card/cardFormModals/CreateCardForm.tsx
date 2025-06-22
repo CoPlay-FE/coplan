@@ -14,6 +14,7 @@ import { usePostCard } from '../../api/usePostCard'
 import { useUploadCardImage } from '../../api/useUploadCardImage'
 import { Assignee } from '../../type/Card.type'
 import type { CardFormData } from '../../type/CardFormData.type'
+import MyAssignee from '../MyAssignee'
 import TagsCanDelete from '../TagsCanDelete'
 // import AssigneeList, { Assignee } from './AssigneeList'
 import AssigneeList from './AssigneeList'
@@ -120,13 +121,18 @@ export default function CreateCardForm({
                 type="text"
                 placeholder="담당자를 선택해 주세요"
               />
+              {selectedAssignee && (
+                <div className="absolute left-16 top-1/2 -translate-y-1/2 bg-[#FFFFFF] dark:bg-[#3B3B3B]">
+                  <MyAssignee assignee={selectedAssignee} />
+                </div>
+              )}
               <Image
                 src="/images/arrow-dropdown.svg"
                 alt="화살표"
                 width={26}
                 height={24}
                 className={cn(
-                  'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300',
+                  'pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 transition-transform duration-300 mobile:right-8',
                   isOpen && 'rotate-180',
                 )}
               />
@@ -228,42 +234,46 @@ export default function CreateCardForm({
       <div>
         <h3 className="mb-8">이미지</h3>
         {/* 이미지 미리보기 or 업로드 버튼 */}
-        <label
-          htmlFor="imageUrl"
-          className="flex size-76 items-center justify-center rounded-6 bg-[#F5F5F5]"
-        >
-          {preview ? (
-            <Image
-              src={preview}
-              alt="미리보기"
-              width={76}
-              height={76}
-              className="size-full object-cover"
-            />
-          ) : (
-            <Image
-              src="/images/plus.svg"
-              width={28}
-              height={28}
-              alt="플러스 아이콘"
-            />
-          )}
-        </label>
-
-        {/* ❌ 이미지 제거 버튼 (이미지가 있을 경우만 표시) */}
-        {preview && (
-          <button
-            type="button"
-            className="mt-2 size-20 rounded-20 bg-blue-300 text-15 font-bold"
-            onClick={() => {
-              setPreview(null)
-              setValue('imageUrl', '') // 또는 null
-            }}
+        <div className="relative">
+          <label
+            htmlFor="imageUrl"
+            className="flex size-76 items-center justify-center overflow-hidden rounded-6 border-[#747474] bg-[#F5F5F5] dark:border dark:bg-[#3B3B3B]"
           >
-            X
-          </button>
-        )}
+            {preview ? (
+              <Image
+                src={preview}
+                alt="미리보기"
+                width={76}
+                height={76}
+                className="size-full object-cover"
+              />
+            ) : isUploading ? (
+              ''
+            ) : (
+              <Image
+                src="/images/plus.svg"
+                width={28}
+                height={28}
+                className="size-28"
+                alt="플러스 아이콘"
+              />
+            )}
+          </label>
 
+          {/* ❌ 이미지 제거 버튼 (이미지가 있을 경우만 표시) */}
+          {preview && !isUploading && (
+            <button
+              type="button"
+              className="Text-gray absolute bottom-0 left-83 text-12 font-medium"
+              onClick={() => {
+                setPreview(null)
+                setValue('imageUrl', '') // 또는 null
+              }}
+            >
+              삭제
+            </button>
+          )}
+        </div>
         {/* 파일 입력 필드 (실제 input은 숨겨져 있음) */}
         <input
           id="imageUrl"
@@ -283,7 +293,7 @@ export default function CreateCardForm({
           취소
         </button>
         <button
-          className="BG-blue w-full rounded-8 border-solid py-14 text-16 font-medium text-[#FFFFFF]"
+          className="BG-blue w-full rounded-8 border-solid py-14 text-16 font-medium text-[#FFFFFF] disabled:bg-gray-300 dark:disabled:bg-[#464646]"
           type="submit"
           disabled={!isValid || isPending || isSubmitting}
         >

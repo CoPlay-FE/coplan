@@ -22,7 +22,7 @@ export default function MyDashboardGrid() {
   if (isLoading) {
     return (
       <section className="mb-40">
-        <div className="flex max-w-[1020px] flex-wrap gap-12">
+        <div className="tablet:grid tablet:grid-cols-2 tablet:gap-12 tablet:max-w-[520px] mobile:flex mobile:flex-col mobile:gap-12 mobile:max-w-[260px] flex max-w-[1020px] flex-wrap gap-12">
           {/* 새 대시보드 추가 버튼은 항상 표시 */}
           <AddDashboardCard />
 
@@ -30,7 +30,7 @@ export default function MyDashboardGrid() {
           {Array.from({ length: 5 }).map((_, index) => (
             <div
               key={index}
-              className="h-70 w-332 animate-pulse rounded-8 bg-gray-200"
+              className="tablet:h-68 tablet:w-247 mobile:h-58 mobile:w-260 h-70 w-332 animate-pulse rounded-8 bg-gray-200"
             />
           ))}
         </div>
@@ -61,7 +61,7 @@ export default function MyDashboardGrid() {
 
   return (
     <section className="mb-40">
-      <div className="flex max-w-[1020px] flex-wrap gap-12">
+      <div className="tablet:grid tablet:grid-cols-2 tablet:gap-12 tablet:max-w-[520px] mobile:flex mobile:flex-col mobile:gap-12 mobile:max-w-[260px] flex max-w-[1020px] flex-wrap gap-12">
         {/* 새 대시보드 추가 카드는 항상 첫 번째 고정 */}
         <AddDashboardCard />
 
@@ -76,7 +76,7 @@ export default function MyDashboardGrid() {
 
       {/* 페이지네이션 */}
       {totalPages > 1 && (
-        <div className="mt-24 flex max-w-[1020px] items-center justify-end gap-12">
+        <div className="tablet:max-w-[520px] mobile:max-w-[260px] mt-24 flex max-w-[1020px] items-center justify-end gap-12">
           <span className="Text-black text-14 font-normal">
             {currentPage} 페이지 중 {totalPages}
           </span>

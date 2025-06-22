@@ -15,7 +15,7 @@ export default function ThemeToggle() {
   return (
     <>
       <button
-        className="BG-ThemeToggle relative flex h-30 w-60 rounded-25 bg-[url('/images/darkmode.svg')] bg-center bg-no-repeat"
+        className="BG-ThemeToggle relative flex h-30 w-60 shrink-0 rounded-25 bg-[url('/images/darkmode.svg')] bg-center bg-no-repeat"
         onClick={() => setTheme(isDark ? 'light' : 'dark')}
       >
         <div

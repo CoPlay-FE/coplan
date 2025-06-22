@@ -1,4 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+  InfiniteData,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query'
 
 import { useDragStore } from '../store/useDragStore'
 import { Card, CardResponse } from '../type/Card.type'
@@ -49,29 +53,43 @@ export const useCardMutation = () => {
 
       // A. 이전 컬럼에서 카드 제거 & 카드 추출
       // setQueryData의 콜백함수의 리턴값이 쿼리키 캐시에 저장됨(캐시 업데이트)
-      queryClient.setQueryData<CardResponse>(
+      queryClient.setQueryData<InfiniteData<CardResponse>>(
         ['columnId', currentCard.cardData.columnId],
         (oldData) => {
           if (!oldData) return
+          console.log('oldData', oldData)
 
-          const filtered = oldData.cards.filter((card) => {
-            return card.id !== cardData.id
+          // 첫 페이지에만 낙관적으로 추가한다고 가정 (pages[0])
+          const updatedPages = oldData.pages.map((page, index) => {
+            if (index !== 0) return page
+            //첫페이지면 캐시 업데이트
+            return {
+              ...page,
+              cards: page.cards.filter((card) => card.id !== cardData.id),
+            }
           })
-          return { ...oldData, cards: filtered }
+          return { ...oldData, pages: updatedPages }
         },
       )
       // B. 새 컬럼에 카드 추가
-      queryClient.setQueryData<CardResponse>(
+      queryClient.setQueryData<InfiniteData<CardResponse>>(
         ['columnId', columnId],
         (oldData) => {
           if (!oldData) return
 
-          const movedCard = { ...cardData, columnId: columnId }
-          console.log('Cardcolumn changed', { movedCard })
-          return {
-            ...oldData,
-            cards: [...oldData.cards, movedCard],
-          }
+          const movedCard = { ...cardData, columnId }
+
+          const updatedPages = oldData.pages.map((page, i) => {
+            if (i === 0) {
+              return {
+                ...page,
+                cards: [...page.cards, movedCard],
+              }
+            }
+            return page
+          })
+
+          return { ...oldData, pages: updatedPages }
         },
       )
 

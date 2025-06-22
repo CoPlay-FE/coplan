@@ -1,10 +1,10 @@
 'use client'
 
+import { getColor } from '@lib/getColor' // 경로는 실제 위치에 맞게 조정
 import Image from 'next/image'
 import { useRef } from 'react'
 
 import { useAuthStore } from '@/app/features/auth/store/useAuthStore'
-import { getColor } from '@/app/shared/lib/getColor'
 
 type AvatarProps = {
   size?: number
@@ -46,12 +46,11 @@ export function Avatar({ size = 36, name, imageUrl }: AvatarProps) {
     profileImageUrl.current = user.profileImageUrl
   }
 
-  const initial = getInitial(nickname.current)
   const bgColor = getColor(nickname.current, customColors.length)
 
   return profileImageUrl.current ? (
     <div
-      className="relative overflow-hidden rounded-full"
+      className="relative shrink-0 overflow-hidden rounded-full"
       style={{ width: size, height: size }}
     >
       <Image
@@ -63,7 +62,7 @@ export function Avatar({ size = 36, name, imageUrl }: AvatarProps) {
     </div>
   ) : (
     <div
-      className="flex items-center justify-center rounded-full font-semibold text-white"
+      className="flex shrink-0 items-center justify-center rounded-full font-semibold text-white"
       style={{
         width: size,
         height: size,
@@ -71,7 +70,7 @@ export function Avatar({ size = 36, name, imageUrl }: AvatarProps) {
         backgroundColor: customColors[bgColor],
       }}
     >
-      {initial}
+      {getInitial(name)}
     </div>
   )
 }
