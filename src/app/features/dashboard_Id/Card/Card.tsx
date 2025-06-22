@@ -10,7 +10,7 @@ import CreateCardModal from './cardFormModals/CreateCardModal'
 import ModifyCardForm from './cardFormModals/ModifyCardForm'
 import CardContent from './cardModal/CardContent'
 import CardModal from './cardModal/CardModal'
-// import Tags from './Tags'
+import Tags from './Tags'
 import TagsInCard from './TagsInCard'
 
 export default function Card({
@@ -57,7 +57,8 @@ export default function Card({
 
           <div className="tablet:flex tablet:flex-wrap tablet:items-center">
             {/* 태그 */}
-            {tags.length !== 0 && <TagsInCard tags={tags} />}
+            {tags.length !== 0 && <Tags tags={tags} />}
+
             {/* 마감일 & 담당자 */}
             <div className="mt-8 flex content-around items-center mobile:mt-6 tablet:m-0 tablet:w-full tablet:justify-between">
               {/* :마감일 */}
