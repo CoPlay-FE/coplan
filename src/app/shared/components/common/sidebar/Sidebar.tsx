@@ -52,7 +52,7 @@ export default function Sidebar(): JSX.Element {
     error instanceof Error ? error.message : '대시보드 목록 불러오기 실패'
 
   return (
-    <aside className="BG-white Border-section fixed left-0 top-0 flex h-full w-300 flex-col mobile:w-67 tablet:w-160">
+    <aside className="BG-white Border-section fixed left-0 top-0 z-50 flex h-full w-300 flex-col mobile:w-67 tablet:w-160">
       {/* 로고 섹션 */}
       <div className="flex h-70 flex-shrink-0 items-center px-20 mobile:justify-center mobile:px-8 tablet:px-12">
         <Link href="/mydashboard" className="flex items-center gap-8">

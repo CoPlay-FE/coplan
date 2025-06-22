@@ -9,6 +9,13 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# 빌드 시점에 환경변수 설정 (외부에서 전달받음, 기본값 없음)
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_TEAM_ID
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_TEAM_ID=$NEXT_PUBLIC_TEAM_ID
+
 RUN npm run build
 
 FROM base AS runner
