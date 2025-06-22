@@ -141,11 +141,11 @@ export default function DashboardID() {
     })
   }
 
-  if (isLoading) return <p>loading...</p>
-  if (error) return <p>error...{error.message}</p>
+  if (isLoading) return <div className="BG-gray size-full"></div> // 스켈레톤 적용???⭐️⭐️
+
   return (
     <>
-      <div className="select-none">
+      <div className="h-screen select-none">
         <div
           className="flex min-h-screen mobile:flex-col tablet:flex-col"
           onTouchStart={handleTouchStart}
