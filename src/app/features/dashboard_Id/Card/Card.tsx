@@ -37,7 +37,7 @@ export default function Card({
       className="BG-white Border-section relative rounded-6 border-solid px-20 py-16"
       onClick={() => setOpenCard(true)}
     >
-      <div className="mobile:flex-col tablet:flex tablet:w-full tablet:items-center tablet:justify-start tablet:gap-20">
+      <div className="mobile:flex-col tablet:flex tablet:w-full tablet:items-center tablet:gap-20">
         {imageUrl && (
           <Image
             src={imageUrl}
@@ -49,7 +49,7 @@ export default function Card({
             draggable="false"
           />
         )}
-        <div>
+        <div className="tablet:w-full">
           {/* 할 일 제목 */}
           <h3 className="Text-black mb-10 text-16 font-medium leading-relaxed mobile:mb-6">
             {title}
@@ -58,7 +58,6 @@ export default function Card({
           <div className="tablet:flex tablet:flex-wrap tablet:items-center">
             {/* 태그 */}
             {tags.length !== 0 && <TagsInCard tags={tags} />}
-
             {/* 마감일 & 담당자 */}
             <div className="mt-8 flex content-around items-center mobile:mt-6 tablet:m-0 tablet:w-full tablet:justify-between">
               {/* :마감일 */}
