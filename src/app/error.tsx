@@ -24,6 +24,14 @@ export default function ErrorPage({ reset }: { reset?: () => void }) {
 
   const buttonText = reset ? '다시 시도하기' : '이전 페이지로'
 
+  const buttonClass = isDark
+    ? reset
+      ? 'bg-blue-700 hover:bg-blue-800'
+      : 'bg-blue-500 hover:bg-blue-600'
+    : reset
+      ? 'bg-blue-600 hover:bg-blue-700'
+      : 'bg-blue-400 hover:bg-blue-500'
+
   return (
     <div
       className={
@@ -32,7 +40,7 @@ export default function ErrorPage({ reset }: { reset?: () => void }) {
           : 'flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100'
       }
     >
-      <div className="flex size-28 items-center justify-center">
+      <div className="relative flex size-300 items-center justify-center">
         <Image
           src={isDark ? '/images/logo-dark.svg' : '/images/logo-light.svg'}
           alt="logo"
@@ -60,11 +68,7 @@ export default function ErrorPage({ reset }: { reset?: () => void }) {
         문제가 발생했습니다. 잠시 후 다시 시도해 주세요.
       </div>
       <button
-        className={
-          isDark
-            ? 'mt-8 rounded-lg bg-blue-700 px-8 py-3 text-lg font-semibold text-white shadow transition-colors hover:bg-blue-800'
-            : 'mt-8 rounded-lg bg-blue-600 px-8 py-3 text-lg font-semibold text-white shadow transition-colors hover:bg-blue-700'
-        }
+        className={`mt-8 rounded-lg px-8 py-3 text-lg font-semibold text-white shadow transition-colors ${buttonClass}`}
         onClick={handleClick}
       >
         {buttonText}
