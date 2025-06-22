@@ -147,7 +147,7 @@ export default function DashboardID() {
     <>
       <div className="h-screen select-none">
         <div
-          className="flex min-h-screen mobile:flex-col tablet:flex-col"
+          className="BG-gray flex min-h-screen mobile:flex-col tablet:flex-col"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
@@ -155,9 +155,11 @@ export default function DashboardID() {
           {columns?.map((column) => (
             <Column key={column.id} column={column} dashboardId={dashboardId} />
           ))}{' '}
-          <div className="BG-gray Border-column p-20 mobile:h-full mobile:w-308 mobile:border-t-2 tablet:h-full tablet:w-584 tablet:border-t-2">
+          {/* <div className="BG-gray Border-column p-20 mobile:h-full mobile:w-308 mobile:border-t-2 tablet:h-full tablet:w-584 tablet:border-t-2"> */}
+          <div className="BG-gray Border-column p-20 pt-84 mobile:size-full mobile:border-t-2 mobile:pt-20 tablet:size-full tablet:border-t-2 tablet:pt-20">
             <button
-              className="BG-white Border-btn m flex justify-center gap-12 whitespace-nowrap rounded-8 px-85 pb-20 pt-24 text-18 font-bold mobile:flex mobile:w-full mobile:justify-center mobile:px-50 mobile:py-20 mobile:text-16 tablet:flex tablet:w-full tablet:items-center"
+              // className="BG-white Border-btn m flex justify-center gap-12 whitespace-nowrap rounded-8 px-85 pb-20 pt-24 text-18 font-bold mobile:flex mobile:w-full mobile:justify-center mobile:px-50 mobile:py-20 mobile:text-16 tablet:flex tablet:w-full tablet:items-center"
+              className="BG-white Border-btn m flex justify-center gap-12 whitespace-nowrap rounded-8 px-85 pb-20 pt-24 text-18 font-bold mobile:flex mobile:size-full mobile:justify-center mobile:px-50 mobile:py-20 mobile:text-16 tablet:flex tablet:w-full tablet:items-center"
               onClick={handleCreateColumn}
             >
               <span>새로운 컬럼 추가하기</span>
