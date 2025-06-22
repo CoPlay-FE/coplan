@@ -53,7 +53,7 @@ export default function Column({
 
   if (isLoading)
     return (
-      <div className="BG-gray Border-column w-354 shrink-0 p-20 pt-103 mobile:w-308 tablet:w-584">
+      <div className="BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20 pt-104 mobile:h-190 mobile:w-full tablet:h-190 tablet:w-full">
         <div className="BG-white size-full"></div>
       </div>
     ) // 스켈레톤 적용???⭐️
@@ -87,7 +87,9 @@ export default function Column({
       }}
       data-column-id={id}
       className={cn(
-        'BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20 mobile:w-308 tablet:w-584',
+        // 'BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20 mobile:w-308 tablet:w-584',
+        'BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20 mobile:w-full tablet:w-full',
+
         {
           'BG-drag-hovered': isDraggingover,
         },
