@@ -84,7 +84,7 @@ export default function DashboardForm({
         <button
           type="submit"
           disabled={!formData.title || !formData.color || isSubmitting}
-          className={`BG-violet h-48 ${submitButtonWidth} rounded-8 px-16 py-10 text-16 font-semibold text-white transition-opacity ${
+          className={`BG-violet h-48 ${submitButtonWidth} rounded-8 px-16 py-10 text-16 font-semibold text-white transition-opacity mobile-sm:text-14 ${
             !formData.title || !formData.color || isSubmitting
               ? 'cursor-not-allowed opacity-50'
               : 'hover:opacity-90'
