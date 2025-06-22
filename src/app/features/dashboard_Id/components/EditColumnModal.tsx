@@ -158,7 +158,7 @@ export default function EditColumnModal() {
             <button
               type="button"
               onClick={handleDeleteClick}
-              className="BG-white Border-btn Text-gray h-54 w-256 rounded-8 px-16 py-10 text-16 font-medium"
+              className="BG-white Border-btn Text-gray mobile:h-54 mobile:w-144 h-54 w-256 rounded-8 px-16 py-10 text-16 font-medium"
             >
               삭제
             </button>
@@ -167,7 +167,7 @@ export default function EditColumnModal() {
             <button
               type="submit"
               disabled={isUpdateDisabled}
-              className={`BG-violet h-54 w-256 rounded-8 px-16 py-10 text-16 font-medium text-white transition-opacity ${
+              className={`BG-violet mobile:h-54 mobile:w-144 h-54 w-256 rounded-8 px-16 py-10 text-16 font-medium text-white transition-opacity ${
                 isUpdateDisabled
                   ? 'cursor-not-allowed opacity-50'
                   : 'hover:opacity-90'
