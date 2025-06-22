@@ -11,20 +11,21 @@ export default function UserDropdown() {
   const router = useRouter()
   const { logout } = useAuth()
 
-  const goToMypage = () => {
+  function goToMypage() {
     router.push('/mypage')
   }
 
-  const handleLogout = () => {
+  function handleLogout() {
     logout()
-    router.push('/')
+    router.push('/login')
   }
 
   return (
     <Dropdown
       trigger={
         <div className="flex cursor-pointer items-center gap-8">
-          <UserInfo nickname="닉네임" size={36} />
+          {/* 로그인된 사용자 정보 자동으로 불러옴 */}
+          <UserInfo size={36} />
         </div>
       }
       width="w-6"

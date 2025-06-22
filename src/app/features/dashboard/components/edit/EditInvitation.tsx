@@ -1,117 +1,178 @@
-import { UserInfo } from '@components/common/UserInfo'
+'use client'
+
+import Tooltip from '@components/common/header/Collaborator/Tooltip'
+import api from '@lib/axios'
 import { cn } from '@lib/cn'
+import { showError, showSuccess } from '@lib/toast'
+import { useModalStore } from '@store/useModalStore'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
-import React from 'react'
+import { useParams } from 'next/navigation'
+import React, { useState } from 'react'
 
-import { useModalStore } from '@/app/shared/store/useModalStore'
+import { getTeamId } from '@/app/shared/lib/getTeamId'
 
-import { mockMembers } from './mockMember'
+import { PaginationHeader } from './PaginationHeader'
 
-const PAGE_SIZE = 5 // 페이지당 표시할 초대 내역 수
+const INVITATION_SIZE = 5
+const teamId = getTeamId()
+
+interface Invitation {
+  id: number
+  invitee: {
+    nickname: string
+    email: string
+  }
+}
 
 export default function EditInvitation() {
-  const pathname = usePathname()
+  const params = useParams()
   const { openModal } = useModalStore()
-  const [currentPage, setCurrentPage] = React.useState(1)
-  const totalPages = Math.ceil(mockMembers.length / PAGE_SIZE)
-  const startIndex = (currentPage - 1) * PAGE_SIZE
-  const paginationMembers = mockMembers.slice(
-    startIndex,
-    startIndex + PAGE_SIZE,
+
+  const dashboardId = params.id as string
+  const queryClient = useQueryClient()
+
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const {
+    data: invitations = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery<Invitation[]>({
+    queryKey: ['invitations', teamId, dashboardId],
+    queryFn: async () => {
+      if (!teamId || !dashboardId) return []
+      const res = await api.get<{ invitations: Invitation[] }>(
+        `/${teamId}/dashboards/${dashboardId}/invitations`,
+      )
+      return res.data.invitations
+    },
+    enabled: !!teamId && !!dashboardId,
+    retry: false,
+  })
+
+  // length가 0인 경우에도 최소 페이지 1로 보장
+  const totalPages = Math.max(
+    1,
+    Math.ceil(invitations.length / INVITATION_SIZE),
   )
 
-  const handlePrev = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1)
-    }
-  }
+  const currentItems = invitations.slice(
+    (currentPage - 1) * INVITATION_SIZE,
+    currentPage * INVITATION_SIZE,
+  )
 
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1)
-    }
-  }
+  const cancelMutation = useMutation({
+    mutationFn: async (invitationId: number) => {
+      if (!teamId || !dashboardId)
+        throw new Error('teamId 또는 dashboardId가 없습니다.')
+      await api.delete(
+        `/${teamId}/dashboards/${dashboardId}/invitations/${invitationId}`,
+      )
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['invitations', teamId, dashboardId],
+      })
+      showSuccess('초대가 취소되었습니다.')
+    },
+    onError: (error) => {
+      showError(error.message)
+    },
+  })
+
+  const handlePrev = () => setCurrentPage((p) => Math.max(p - 1, 1))
+  const handleNext = () => setCurrentPage((p) => Math.min(p + 1, totalPages))
+
+  // 에러 메시지 정리
+  const errorMessage =
+    isError && axios.isAxiosError(error)
+      ? error.response?.status === 403
+        ? '초대 권한이 없습니다.'
+        : '초대 정보를 불러오는 데 실패했습니다.'
+      : isError
+        ? '초대 정보를 불러오는 데 실패했습니다.'
+        : null
 
   return (
     <div>
-      {/* 컨테이너 */}
-      <div className="BG-white h-360 w-584 rounded-16 px-32 py-24">
-        <div className="mb-24 flex items-center justify-between">
-          <h2 className="Text-black text-18 font-bold">초대 내역</h2>
-
-          <div className="flex items-center">
-            <p className="Text-gray mr-16 text-12">
-              {totalPages} 페이지 중 {currentPage}
-            </p>
-            <button onClick={handlePrev} disabled={currentPage === 1}>
-              <Image
-                src={
-                  currentPage === 1
-                    ? '/images/prev-disabled.png'
-                    : '/images/prev.png'
-                }
-                alt="이전"
-                width={36}
-                height={36}
-              />
-            </button>
-            <button onClick={handleNext} disabled={currentPage === totalPages}>
-              <Image
-                src={
-                  currentPage === totalPages
-                    ? '/images/next-disabled.png'
-                    : '/images/next.png'
-                }
-                alt="다음"
-                width={36}
-                height={36}
-              />
-            </button>
-            <button
-              onClick={() => openModal('invite')}
-              className={cn(
-                'BG-violet ml-16 flex items-center gap-8 rounded-5 px-12 py-6',
-                pathname === '/modal' && 'font-semibold',
-              )}
-            >
-              <div className="relative flex size-12">
-                <Image
-                  src="/images/invitation-white.png"
-                  fill
-                  alt="초대 버튼"
-                />
-              </div>
-              <p className="text-14 text-white">초대하기</p>
-            </button>
-          </div>
-        </div>
+      <div className="BG-white max-h-[360px] w-584 overflow-y-auto rounded-16 px-32 py-24">
+        <PaginationHeader
+          currentPage={currentPage}
+          totalPages={totalPages}
+          title="초대 내역"
+          onPrev={handlePrev}
+          onNext={handleNext}
+        >
+          <button
+            onClick={() => openModal('invite')}
+            className="BG-violet flex items-center gap-8 rounded-5 px-12 py-6"
+          >
+            <div className="relative flex size-12">
+              <Image src="/images/invitation-white.png" fill alt="초대 버튼" />
+            </div>
+            <p className="text-14 text-white">초대하기</p>
+          </button>
+        </PaginationHeader>
 
         <form>
           <label htmlFor="title" className="Text-black mb-8 block text-16">
             이메일
           </label>
           <div className="flex flex-col gap-4">
-            {paginationMembers.map((member, index) => {
-              const isLast = index === paginationMembers.length - 1
-              return (
-                <div
-                  key={index}
-                  className={`flex items-center justify-between py-4 ${
-                    !isLast ? 'Border-bottom' : ''
-                  }`}
-                >
-                  <UserInfo
-                    key={index}
-                    nickname={member.nickname}
-                    imageUrl={member.imageUrl}
-                  />
-                  <button className="Text-btn Border-btn rounded-md px-16 py-2">
-                    취소
-                  </button>
-                </div>
-              )
-            })}
+            {isLoading && (
+              <p className="Text-gray py-12 text-center">로딩 중...</p>
+            )}
+
+            {errorMessage && (
+              <p className="Text-blue py-12 text-center">{errorMessage}</p>
+            )}
+
+            {!isLoading && !errorMessage && currentItems.length === 0 && (
+              <p className="Text-gray py-12 text-center">
+                초대된 사용자가 없습니다.
+              </p>
+            )}
+
+            {!isLoading &&
+              !errorMessage &&
+              currentItems.map((member, index) => {
+                const isLast = index === currentItems.length - 1
+                return (
+                  <div
+                    key={member.id}
+                    className={cn(
+                      'flex items-center justify-between py-4',
+                      !isLast && 'Border-bottom',
+                    )}
+                  >
+                    <div className="flex items-center gap-12">
+                      <div className="flex flex-col">
+                        <Tooltip content={member.invitee.nickname}>
+                          <p className="Text-black cursor-help text-13">
+                            {member.invitee.email}
+                          </p>
+                        </Tooltip>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      disabled={cancelMutation.isPending}
+                      className={cn(
+                        'Text-btn Border-btn rounded-md px-16 py-2',
+                        cancelMutation.isPending &&
+                          'cursor-not-allowed opacity-50',
+                      )}
+                      onClick={() => cancelMutation.mutate(member.id)}
+                    >
+                      {cancelMutation.isPending ? '취소 중...' : '취소'}
+                    </button>
+                  </div>
+                )
+              })}
           </div>
         </form>
       </div>
