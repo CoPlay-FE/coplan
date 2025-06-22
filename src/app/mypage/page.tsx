@@ -11,7 +11,10 @@ export default function Mypage() {
   const router = useRouter()
   return (
     <>
-      <Header />
+      <div className="pl-300">
+        <Header />
+      </div>
+
       <div className="BG-gray h-full">
         {/* 사이드바 */}
         <Sidebar />

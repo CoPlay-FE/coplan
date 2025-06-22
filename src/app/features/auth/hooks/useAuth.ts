@@ -24,5 +24,6 @@ export function useAuth() {
   return {
     updateAuthState,
     logout,
+    setUser,
   }
 }

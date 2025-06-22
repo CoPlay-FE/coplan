@@ -58,7 +58,7 @@ export default function DeleteDashboardButton({
       onClick={handleDelete}
       // isLoading -> isPending으로 수정됨
       disabled={mutation.isPending}
-      className={`Text-black my-8 rounded-8 font-semibold transition-opacity ${
+      className={`Text-black my-8 whitespace-nowrap rounded-8 font-semibold transition-opacity ${
         mutation.isPending
           ? 'cursor-not-allowed opacity-50'
           : 'hover:opacity-90'
