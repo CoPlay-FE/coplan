@@ -6,7 +6,7 @@ import { useAuthStore } from '@/app/features/auth/store/useAuthStore'
 import { DashboardListResponse } from '../types/dashboard'
 
 export function useFirstDashboardIdQuery() {
-  const isLoggedIn = useAuthStore.getState().isLoggedIn // ✅ 상태 직접 가져옴
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn) // ✅ 상태 직접 가져옴
 
   return useQuery<DashboardListResponse, Error, number>({
     queryKey: ['firstDashboardId'],
