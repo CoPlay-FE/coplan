@@ -9,11 +9,10 @@ import UserDropdown from './UserDropdown'
 
 export default function Header() {
   return (
-    //px-48
-    <header className="z-1 BG-white Border-bottom Text-black fixed inset-x-0 top-0 w-full overflow-x-auto border-b py-10 pl-320 pr-10 mobile-wide:pl-100 tablet-wide:pl-210">
-      <div className="flex w-full items-center justify-between pr-16 mobile-wide:justify-end tablet-wide:justify-between">
+    <header className="BG-white Border-bottom Text-black fixed inset-x-0 top-0 z-40 w-full overflow-x-auto border-b py-10 pl-360 pr-10 mobile-wide:pl-80 tablet-wide:pl-200">
+      <div className="flex w-full items-center justify-between pr-16 mobile-wide:justify-between tablet-wide:justify-between">
         {/* 좌측 대시보드명 */}
-        <div className="hidden lg:block">
+        <div className="hidden md:block">
           <LeftHeaderContent />
         </div>
 
