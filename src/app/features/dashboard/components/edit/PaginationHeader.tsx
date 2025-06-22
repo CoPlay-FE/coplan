@@ -24,9 +24,10 @@ export function PaginationHeader({
       <h2 className="Text-black text-18 font-bold">{title}</h2>
 
       <div className="flex shrink-0 items-center">
-        <p className="Text-gray mx-32 shrink-0 text-12">
+        <p className="Text-gray mx-16 shrink-0 text-12 sm:mx-32">
           {totalPages} 페이지 중 {currentPage}
         </p>
+
         <button onClick={onPrev} disabled={currentPage === 1}>
           <Image
             src={
