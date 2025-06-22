@@ -33,7 +33,7 @@ export default function Card({
       draggable="true"
       onDragStart={() => setDraggingCard({ cardData: card })}
       onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
-      className="BG-white Border-section relative rounded-6 border-solid px-20 py-16"
+      className="BG-white Border-section relative rounded-6 border-solid px-20 py-16 transition-transform duration-300 ease-in-out hover:scale-95"
       onClick={() => setOpenCard(true)}
     >
       <div className="mobile:flex-col tablet:flex tablet:w-full tablet:items-center tablet:gap-20">

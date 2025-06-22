@@ -32,7 +32,7 @@ export default function DashboardForm({
   return (
     <form onSubmit={onSubmit}>
       {/* 제목 */}
-      <div className="mb-24">
+      <div className="mb-24 text-16">
         <Input
           labelName="대시보드 이름"
           name="title"
