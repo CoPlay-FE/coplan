@@ -82,13 +82,13 @@ export default function CreateInvitationModal() {
             <button
               type="button"
               onClick={closeModal}
-              className="Border-btn Text-black h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold mobile:h-40 mobile:text-12 tablet:h-48 tablet:w-full tablet:text-14 mobile-sm:w-full"
+              className="Border-btn Text-black h-54 w-full rounded-8 px-16 py-10 text-16 font-semibold mobile:h-40 mobile:text-12 tablet:h-48 tablet:w-full tablet:text-14"
             >
               취소
             </button>
             <button
               type="submit"
-              className="BG-violet h-54 w-256 rounded-8 px-16 py-10 text-16 font-semibold text-white hover:opacity-90 mobile:h-40 mobile:text-12 tablet:h-48 tablet:w-full tablet:text-14 mobile-sm:w-full"
+              className="BG-violet h-54 w-full rounded-8 px-16 py-10 text-16 font-semibold text-white hover:opacity-90 mobile:h-40 mobile:text-12 tablet:h-48 tablet:w-full tablet:text-14"
             >
               초대
             </button>
