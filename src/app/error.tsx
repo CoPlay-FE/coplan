@@ -4,7 +4,7 @@ import { useMounted } from '@hooks/useMounted'
 import Image from 'next/image'
 import { useTheme } from 'next-themes'
 
-export default function Error({ reset }: { reset?: () => void }) {
+export default function ErrorPage({ reset }: { reset?: () => void }) {
   const { theme, systemTheme } = useTheme()
   const mounted = useMounted()
   if (!mounted) return null

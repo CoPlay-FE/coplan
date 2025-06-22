@@ -2,7 +2,7 @@ import Header from '@components/common/header/Header'
 
 import Sidebar from '@/app/shared/components/common/sidebar/Sidebar'
 
-export default function AboutLayout({
+export default function MypageLayout({
   children,
 }: {
   children: React.ReactNode
