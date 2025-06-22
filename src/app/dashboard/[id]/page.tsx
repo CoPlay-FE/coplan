@@ -155,7 +155,7 @@ export default function DashboardID() {
           {columns?.map((column) => (
             <Column key={column.id} column={column} dashboardId={dashboardId} />
           ))}{' '}
-          <div className="BG-gray Border-column p-20 mobile:w-308 mobile:border-t-2 tablet:w-584 tablet:border-t-2">
+          <div className="BG-gray Border-column p-20 mobile:h-full mobile:w-308 mobile:border-t-2 tablet:h-full tablet:w-584 tablet:border-t-2">
             <button
               className="BG-white Border-btn m flex justify-center gap-12 whitespace-nowrap rounded-8 px-85 pb-20 pt-24 text-18 font-bold mobile:flex mobile:w-full mobile:justify-center mobile:px-50 mobile:py-20 mobile:text-16 tablet:flex tablet:w-full tablet:items-center"
               onClick={handleCreateColumn}
