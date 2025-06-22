@@ -44,7 +44,7 @@ export default function Comment({ comment }: { comment: CommentType }) {
             content={comment.content}
           />
         ) : (
-          <p className="text-14">{comment.content}</p>
+          <p className="whitespace-pre-line text-14">{comment.content}</p>
         )}
         {!modifyComment && (
           <div className="Text-gray-light active:Text-btn flex gap-14 text-12 font-normal underline underline-offset-2 mobile:gap-8 tablet:gap-12">

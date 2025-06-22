@@ -76,9 +76,13 @@ export default function ModifyCardForm({
   })
 
   // React Hook Form 과 tags 값 연결
+  // 💥 트러블슈팅: 태그수정해도 isDirty가 잡히지 않아서, shouldDirty를 추가하여 해결(배열 주소는 그대로니까..)
   useEffect(() => {
     setValue('tags', tags, { shouldDirty: true })
   }, [tags, tags.length, setValue])
+  //   useEffect(() => {
+  //    {shouldDirty: true }
+  // }, [preview])
 
   // 상태(컬럼) 선택 시 / assignee 선택 시 드롭다운 닫기
   useEffect(() => {
@@ -99,7 +103,7 @@ export default function ModifyCardForm({
       { columnId, file },
       {
         onSuccess: ({ imageUrl }) => {
-          setValue('imageUrl', imageUrl)
+          setValue('imageUrl', imageUrl, { shouldDirty: true })
           setPreview(imageUrl)
         },
       },
