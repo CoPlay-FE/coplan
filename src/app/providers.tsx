@@ -15,7 +15,7 @@ export function Providers({ children }: { children: ReactNode }) {
         defaultTheme="system"
         enableSystem={true}
       >
-        {children}
+        <Redirect>{children}</Redirect>
       </ThemeProvider>
     </QueryClientProvider>
   )
