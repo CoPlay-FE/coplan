@@ -12,8 +12,6 @@ export const metadata: Metadata = {
   description: '팀워크를 더 쉽게 만드는 협업 툴',
   icons: {
     icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png',
   },
   openGraph: {
     title: 'Coplan - 팀워크를 더 쉽게',
@@ -22,7 +20,7 @@ export const metadata: Metadata = {
     siteName: 'Coplan',
     images: [
       {
-        url: '/banner.png', // 이건 네가 넣을 이미지
+        url: 'https://coplan.work/images/banner.png', // ✅ 상대 경로 대신 절대 URL로만 수정
         width: 1200,
         height: 630,
         alt: 'Coplan OG 이미지',
@@ -34,7 +32,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Coplan - 팀워크를 더 쉽게',
     description: '프로젝트 관리를 위한 스마트한 협업툴',
-    images: ['/banner.png'],
+    images: ['https://coplan.work/images/banner.png'], // ✅ 여기서도 절대 URL로만 수정
     creator: '@coplan_team',
   },
 }
