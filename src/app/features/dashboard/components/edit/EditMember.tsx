@@ -64,7 +64,7 @@ export default function EditMember() {
 
   return (
     <div>
-      <div className="BG-white max-w-584 rounded-16 px-32 py-24">
+      <div className="BG-white max-w-584 overflow-x-auto rounded-16 px-32 py-24">
         <PaginationHeader
           currentPage={currentPage}
           totalPages={totalPages}
