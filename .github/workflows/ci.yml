@@ -14,17 +14,27 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # HEAD와 HEAD~1을 모두 가져오기
 
       - name: Lightning fast lint check
         run: |
           echo "⚡ Quick lint check..."
 
-          # 변경된 파일만 검사(전체가 아닌 2~3개 파일만)
-          CHANGED_FILES=$(git diff --name-only HEAD~1 -- '*.ts' '*.tsx' '*.js' '*.jsx')
+          # 더 안전한 변경 파일 감지
+          if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+            # HEAD~1이 존재하는 경우 (일반적인 경우)
+            CHANGED_FILES=$(git diff --name-only HEAD~1 -- '*.ts' '*.tsx' '*.js' '*.jsx')
+            echo "🔍 Checking changed files since last commit"
+          else
+            # 첫 커밋이거나 shallow clone인 경우
+            echo "🔍 Checking recent TypeScript/JavaScript files..."
+            CHANGED_FILES=$(find . -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" | grep -v node_modules | head -10)
+          fi
 
           # 변경사항 없으면 즉시 종료
           if [ -z "$CHANGED_FILES" ]; then
-            echo "✅ No JS/TS files changed"
+            echo "✅ No JS/TS files to check"
             exit 0
           fi
 
