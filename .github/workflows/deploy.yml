@@ -3,54 +3,74 @@ name: Deploy to EC2
 on:
   pull_request:
     types: [closed]
-    branches: [main, develop]
+    branches: [main] # main 브랜치만 배포
+
+env:
+  DOCKER_CONTAINER_NAME: coplan-app
 
 jobs:
-  deploy:
+  warmup:
+    # 🛡️ 머지된 경우에만 실행
     if: github.event.pull_request.merged == true
     runs-on: self-hosted
-    timeout-minutes: 15
+    timeout-minutes: 3
+    steps:
+      - name: Environment check
+        run: |
+          echo "=== Deployment System Check ==="
+          echo "📋 Merged PR: ${{ github.event.pull_request.title }}"
+          echo "👤 Author: ${{ github.event.pull_request.user.login }}"
+          echo "🔄 From: ${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}"
+          echo "📝 Commit: ${{ github.event.pull_request.merge_commit_sha }}"
+          echo ""
+          echo "🖥️ System Status:"
+          whoami                
+          docker --version       
+          free -h
+          echo ""
+          echo "🐳 Container Status:"
+          docker ps
 
+  deploy:
+    needs: warmup
+    runs-on: self-hosted
+    timeout-minutes: 10
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Deploy to EC2
+      - name: Execute deployment script
         run: |
           echo "🚀 Starting deployment..."
           echo "🔄 Branch: ${{ github.ref_name }}"
           echo "🔄 Commit: ${{ github.sha }}"
+          echo "📦 PR: #${{ github.event.pull_request.number }}"
 
-          # 메모리 정리
-          echo "🧹 Cleaning up memory..."
-          docker system prune -f
-
-          # 앱 디렉토리로 코드 복사
-          echo "📂 Copying files..."
-          rsync -av --delete \
-            --exclude='.git' \
-            --exclude='node_modules' \
-            --exclude='.next' \
-            ./ /home/ubuntu/coplan/app/
-
-          # 배포 디렉토리로 이동
+          # deploy.sh 실행
           cd /home/ubuntu/coplan
+          chmod +x ./deploy.sh
+          ./deploy.sh
 
-          # Docker 컨테이너 재시작
-          echo "🔄 Restarting containers..."
-          docker compose down
-          docker compose up -d --build
-
-          # 헬스체크
+      - name: Health check
+        run: |
           echo "🏥 Health checking..."
           sleep 15
 
-          if docker ps | grep -q coplan-app; then
+          if docker ps | grep -q $DOCKER_CONTAINER_NAME; then
             echo "✅ Deployment completed successfully!"
-            docker logs --tail 10 coplan-app
-            echo "🌐 Service available at: http://15.164.127.149"
+            echo "📊 Container status:"
+            docker ps | grep $DOCKER_CONTAINER_NAME
+            echo ""
+            echo "📝 Recent logs:"
+            docker logs --tail 5 $DOCKER_CONTAINER_NAME
+            echo ""
+            echo "🌐 Service available at: https://coplan.work"
           else
             echo "❌ Deployment failed!"
-            docker logs coplan-app
+            echo "🔍 Checking container logs..."
+            docker logs $DOCKER_CONTAINER_NAME 2>/dev/null || echo "No container logs available"
+            echo "🔍 Checking system status..."
+            docker ps -a
+            free -h
             exit 1
           fi
