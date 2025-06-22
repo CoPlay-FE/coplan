@@ -51,7 +51,7 @@ export const useCardMutation = () => {
         return
       }
 
-      // A. 이전 컬럼에서 카드 제거 & 카드 추출
+      // A. 이전 컬럼에서 카드currentCard 제거
       // setQueryData의 콜백함수의 리턴값이 쿼리키 캐시에 저장됨(캐시 업데이트)
       queryClient.setQueryData<InfiniteData<CardResponse>>(
         ['columnId', currentCard.cardData.columnId],
@@ -66,6 +66,7 @@ export const useCardMutation = () => {
             return {
               ...page,
               cards: page.cards.filter((card) => card.id !== cardData.id),
+              totalCount: page.totalCount - 1,
             }
           })
           return { ...oldData, pages: updatedPages }
@@ -84,6 +85,7 @@ export const useCardMutation = () => {
               return {
                 ...page,
                 cards: [...page.cards, movedCard],
+                totalCount: page.totalCount + 1,
               }
             }
             return page

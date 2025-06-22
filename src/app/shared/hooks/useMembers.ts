@@ -14,7 +14,7 @@ export type Member = {
 
 const teamId = getTeamId()
 
-export async function fetchMembers(dashboardId: string): Promise<Member[]> {
+export async function fetchMembers(dashboardId: number): Promise<Member[]> {
   const { data } = await authHttpClient.get(`/${teamId}/members`, {
     params: {
       page: 1,

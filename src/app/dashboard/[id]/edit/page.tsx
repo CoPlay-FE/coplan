@@ -14,9 +14,10 @@ export default function DashBoardEditPage() {
   const router = useRouter()
 
   return (
-    <div className="BG-gray pb-16">
+    <div className="BG-gray px-4 pb-16 sm:px-8 md:px-16">
+      {/* 돌아가기 버튼 */}
       <button
-        className="flex cursor-pointer items-center gap-12 px-16 pt-16"
+        className="flex cursor-pointer items-center gap-12 pt-16"
         type="button"
         onClick={() => router.back()}
       >
@@ -24,15 +25,15 @@ export default function DashBoardEditPage() {
         <p className="text-14">돌아가기</p>
       </button>
 
-      {/* 컨텐츠 박스: 기본 너비 500px, 화면 작으면 100% 최대 500px */}
-      <div className="mx-auto ml-16 flex flex-col gap-16 p-16 sm:max-w-full sm:px-4">
+      {/* 콘텐츠 영역 */}
+      <div className="mobile-sm:max-w-full mt-8 flex w-full flex-col gap-16 pl-16 sm:max-w-[460px] md:max-w-[500px]">
         <EditInfo />
         <EditMember />
         <EditInvitation />
       </div>
 
-      {/* 삭제 버튼 영역: 기본 너비 292px, 화면 작으면 100% 최대 292px, 좌측 margin 제거 */}
-      <div className="BG-white align-center Text-btn i8 ml-16 mt-8 flex max-w-292 justify-center rounded-md px-16 py-6">
+      {/* 삭제 버튼 영역 */}
+      <div className="BG-white Text-btn ml-18 mt-18 flex justify-center rounded-md py-6 sm:max-w-[292px]">
         <DeleteDashboardButton dashboardId={String(id)} />
       </div>
     </div>

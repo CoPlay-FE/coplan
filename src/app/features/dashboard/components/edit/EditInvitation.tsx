@@ -32,7 +32,6 @@ export default function EditInvitation() {
 
   const dashboardId = params.id as string
   const queryClient = useQueryClient()
-
   const [currentPage, setCurrentPage] = useState(1)
 
   const {
@@ -53,7 +52,6 @@ export default function EditInvitation() {
     retry: false,
   })
 
-  // length가 0인 경우에도 최소 페이지 1로 보장
   const totalPages = Math.max(
     1,
     Math.ceil(invitations.length / INVITATION_SIZE),
@@ -86,7 +84,6 @@ export default function EditInvitation() {
   const handlePrev = () => setCurrentPage((p) => Math.max(p - 1, 1))
   const handleNext = () => setCurrentPage((p) => Math.min(p + 1, totalPages))
 
-  // 에러 메시지 정리
   const errorMessage =
     isError && axios.isAxiosError(error)
       ? error.response?.status === 403
@@ -98,37 +95,55 @@ export default function EditInvitation() {
 
   return (
     <div className="BG-white w-full max-w-584 overflow-x-auto whitespace-nowrap rounded-16 px-32 py-24">
-      <PaginationHeader
-        currentPage={currentPage}
-        totalPages={totalPages}
-        title="초대 내역"
-        onPrev={handlePrev}
-        onNext={handleNext}
-      >
+      {/* Header + 초대 버튼 영역 (데스크탑용) */}
+      <div className="mb-16 flex flex-col gap-12 md:flex-row md:items-center md:justify-between">
+        <PaginationHeader
+          currentPage={currentPage}
+          totalPages={totalPages}
+          title="초대 내역"
+          onPrev={handlePrev}
+          onNext={handleNext}
+        />
+
+        {/* 데스크탑에서만 보이는 초대 버튼 */}
         <button
           onClick={() => openModal('invite')}
-          className="BG-violet flex w-fit shrink-0 items-center gap-8 rounded-5 px-12 py-6"
+          className="BG-violet mb-24 hidden w-fit shrink-0 items-center gap-8 self-end rounded-5 px-12 py-6 md:flex"
         >
           <div className="relative flex size-12 shrink-0">
             <Image src="/images/invitation-white.png" fill alt="초대 버튼" />
           </div>
           <p className="text-14 text-white">초대하기</p>
         </button>
-      </PaginationHeader>
+      </div>
 
+      {/* 이메일 입력 및 모바일 전용 버튼 */}
       <form className="overflow-x-auto">
-        <label htmlFor="title" className="Text-black mb-8 block text-16">
-          이메일
-        </label>
+        <div className="mb-8 flex flex-row items-center justify-between gap-4 md:block">
+          <label htmlFor="title" className="Text-black block text-16">
+            이메일
+          </label>
+
+          {/* 모바일/태블릿에서만 보이는 초대 버튼 */}
+          <button
+            onClick={() => openModal('invite')}
+            type="button"
+            className="BG-violet mb-12 flex w-fit shrink-0 items-center gap-8 rounded-5 px-12 py-6 md:hidden"
+          >
+            <div className="relative flex size-12 shrink-0">
+              <Image src="/images/invitation-white.png" fill alt="초대 버튼" />
+            </div>
+            <p className="text-14 text-white">초대하기</p>
+          </button>
+        </div>
+
         <div className="flex flex-col gap-4">
           {isLoading && (
             <p className="Text-gray py-12 text-center">로딩 중...</p>
           )}
-
           {errorMessage && (
             <p className="Text-blue py-12 text-center">{errorMessage}</p>
           )}
-
           {!isLoading &&
             !errorMessage &&
             currentItems.map((member, index) => {
@@ -150,7 +165,6 @@ export default function EditInvitation() {
                       </Tooltip>
                     </div>
                   </div>
-
                   <button
                     type="button"
                     disabled={cancelMutation.isPending}
