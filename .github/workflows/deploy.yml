@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   pull_request:
     types: [closed]
-    branches: [main] # main 브랜치만 배포
+    branches: [main, develop]
 
 env:
   DOCKER_CONTAINER_NAME: coplan-app
