@@ -111,7 +111,7 @@ export default function ProfileEditForm() {
     >
       <h2 className="text-2xl font-bold">프로필</h2>
 
-      <div className="flex justify-between gap-42 tablet:flex-col">
+      <div className="flex justify-between gap-42 mobile-wide:flex-col tablet-wide:flex-col">
         <Controller
           name="profileImageUrl"
           control={control}
