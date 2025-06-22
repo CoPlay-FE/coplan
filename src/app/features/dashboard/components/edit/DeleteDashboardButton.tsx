@@ -3,6 +3,7 @@
 import api from '@lib/axios'
 import { showError, showSuccess } from '@lib/toast'
 import { useMutation } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -16,6 +17,7 @@ export default function DeleteDashboardButton({
   dashboardId,
 }: DeleteDashboardButtonProps) {
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   const mutation = useMutation<void, Error, void>({
     mutationFn: async () => {
@@ -27,7 +29,10 @@ export default function DeleteDashboardButton({
       )
     },
     onSuccess: () => {
-      router.push('/dashboard')
+      // 대시보드 삭제 후 사이드 바 대시보드 목록 쿼리 무효화
+      queryClient.invalidateQueries({ queryKey: ['dashboards'] })
+
+      router.push('/mydashboard')
       showSuccess('대시보드가 삭제되었습니다')
     },
     onError: (error) => {
