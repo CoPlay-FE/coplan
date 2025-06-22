@@ -109,7 +109,6 @@ export default function Column({
         className="BG-white Border-section flex justify-center rounded-6 py-9"
         onClick={() => setOpenCreateCard(true)}
       >
-        {/* <div className="flex h-22 w-22 items-center justify-center rounded-4 bg-blue-100 dark:bg-[#363636]"> */}
         <div className="BG-lightblue flex h-22 w-22 items-center justify-center rounded-4">
           <Image
             src={'/images/plus.svg'}
