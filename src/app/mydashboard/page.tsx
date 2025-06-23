@@ -18,7 +18,7 @@ export default function MyDashboardPage() {
         <Header />
 
         {/* 페이지 콘텐츠 */}
-        <main className="mobile-wide:p-16 tablet-wide:p-24 p-40">
+        <main className="mobile-wide:mt-76 mobile-wide:p-16 tablet-wide:mt-76 tablet-wide:p-24 mt-60 p-40">
           <MyDashboardGrid />
 
           {/* 초대받은 대시보드 섹션 */}
