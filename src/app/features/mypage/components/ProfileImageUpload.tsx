@@ -83,7 +83,7 @@ export default function ProfileImageUpload({
   }
 
   return (
-    <div className="relative size-182 basis-182">
+    <div className="relative size-182 basis-182 mobile-wide:size-140 mobile-wide:basis-140">
       {/* 파일 선택 트리거 역할 */}
       <label
         htmlFor="userProfile"

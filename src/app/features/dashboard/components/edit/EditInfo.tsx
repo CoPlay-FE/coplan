@@ -16,8 +16,8 @@ export default function EditInfo() {
 
   return (
     <div>
-      <div className="BG-white max-w-584 rounded-16 px-32 py-24">
-        <h2 className="Text-black mb-24 text-18 font-bold">
+      <div className="BG-white relative z-0 max-w-584 rounded-16 px-32 py-24">
+        <h2 className="Text-black mb-24 text-18 font-bold mobile-sm:text-16">
           {selectedDashboard?.title || '대시보드 편집'}
         </h2>
 

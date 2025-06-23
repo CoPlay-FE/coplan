@@ -51,7 +51,12 @@ export default function Column({
     })
   }
 
-  if (isLoading) return <p>loading...</p> // 스켈레톤 적용???⭐️
+  if (isLoading)
+    return (
+      <div className="BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20 pt-104 mobile:h-190 mobile:w-full tablet:h-190 tablet:w-full">
+        <div className="BG-white size-full"></div>
+      </div>
+    ) // 스켈레톤 적용???⭐️
   if (isError) return toast.error('할 일 불러오기 실패')
 
   return (
@@ -82,7 +87,9 @@ export default function Column({
       }}
       data-column-id={id}
       className={cn(
-        'BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20 mobile:w-308 tablet:w-584',
+        // 'BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20 mobile:w-308 tablet:w-584',
+        'BG-gray Border-column flex w-354 shrink-0 flex-col gap-16 p-20 mobile:w-full tablet:w-full',
+
         {
           'BG-drag-hovered': isDraggingover,
         },
@@ -132,14 +139,12 @@ export default function Column({
           />
         </CreateCardModal>
       )}
-
       {/* 무한 스크롤 관련 */}
       {isFetchingNextPage && (
         <p className="text-center text-sm text-gray-400">
           카드를 불러오는 중...
         </p>
       )}
-
       {!hasNextPage && (
         <p className="py-4 text-center text-sm text-gray-300">
           모든 카드를 불러왔습니다

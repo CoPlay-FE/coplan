@@ -31,7 +31,7 @@ export default function CollaboratorList() {
   const extraCount = members.length - MAX_COLLABS
 
   return (
-    <div className="flex -space-x-10">
+    <div className="flex -space-x-10 mobile-sm:hidden">
       {visibleCollaborators.map((collab) => (
         <Tooltip key={collab.id} content={collab.nickname}>
           <div className="flex flex-col items-center text-xs">

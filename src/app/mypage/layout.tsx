@@ -11,7 +11,7 @@ export default function MypageLayout({
     <>
       <Sidebar />
       {/* Sidebar의 반응형이 적용 될 경우 변경 예정 */}
-      <div className="mobile:pl-67 tablet:pl-160 pl-300">
+      <div className="mobile-wide:pl-67 tablet-wide:pl-160 pl-300">
         <Header />
         <main className="BG-gray mt-57 h-screen">{children}</main>
       </div>
